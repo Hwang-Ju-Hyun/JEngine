@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{9b3eda35-5e57-4264-9d2f-62b12440676a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="header">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="GL">
+      <UniqueIdentifier>{f9cc57e1-5ef8-400f-9d84-019646018d95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GL\GLModel">
+      <UniqueIdentifier>{bdb3ae87-aa49-4c3e-9029-78704b193aec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{5e24bab7-8537-489c-bd4f-0588473cc800}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GL\GLShader">
+      <UniqueIdentifier>{317b21ae-7c5e-4ecf-a211-fd3d584127ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{3fa4d37a-31d3-4117-b6a0-03b67c721c4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{abf90660-a375-4e0d-8be1-40da0a69b438}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\ShaderMgr">
+      <UniqueIdentifier>{a7bc7775-cf9f-44b4-a35f-b6be7c91fb55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\ModelMgr">
+      <UniqueIdentifier>{29ee4950-9064-4965-9bc4-845625e16b41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\GoMgr">
+      <UniqueIdentifier>{61b0c015-6538-49ef-a5c0-e26c1cb9489c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GL\GLApp">
+      <UniqueIdentifier>{f008b5e3-1d09-484b-b08a-b548474ab612}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GL\GLHelper">
+      <UniqueIdentifier>{6d50a84f-8e4a-4484-b62e-e72e0ec7b4c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\RenderMgr">
+      <UniqueIdentifier>{e4ac162c-6cd2-4dd6-a470-14591c8479f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\ComponentMgr">
+      <UniqueIdentifier>{f9e82c7b-f958-4c44-93a2-8f0d9c006b8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{99af649e-d497-42da-be44-4830ff7e718d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Component\Transform">
+      <UniqueIdentifier>{e26ceeaf-3893-4226-a879-47f34a69e050}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level">
+      <UniqueIdentifier>{39d321d0-5f33-49a9-b91b-d35d0457da3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\GameStateMgr">
+      <UniqueIdentifier>{57e0718c-aab5-4f9e-8a47-2b63ea37423b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level\Stage01">
+      <UniqueIdentifier>{726311ce-086b-4ac7-93dc-5c79382f4ccf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Sprite">
+      <UniqueIdentifier>{8897a72f-8742-4b97-8674-b638788e6749}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Editor">
+      <UniqueIdentifier>{fb74bb76-f8fa-4352-af53-bea1949be5fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="IMGUI">
+      <UniqueIdentifier>{4a4741ef-7efc-4d26-9c27-b11c9cc4533f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RTTI">
+      <UniqueIdentifier>{6c95cd2e-b3d0-4694-b9cc-26a70caaa9c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RTTI\Registry">
+      <UniqueIdentifier>{fe40c889-ad39-42f2-8bf5-3c52d0fccc88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\Serializer">
+      <UniqueIdentifier>{d05ba41d-8746-46fc-9f63-682b64d8398a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_demo.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_draw.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_stdlib.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_tables.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_widgets.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IMGUI\imconfig.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_impl_glfw.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_impl_opengl3.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_impl_opengl3_loader.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_internal.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imgui_stdlib.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imstb_rectpack.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imstb_textedit.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="IMGUI\imstb_truetype.h">
+      <Filter>IMGUI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="IMGUI\imgui.ini">
+      <Filter>IMGUI</Filter>
+    </None>
+  </ItemGroup>
+</Project>
