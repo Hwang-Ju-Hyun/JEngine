@@ -25,6 +25,16 @@ std::string GLModel::GetName() const
 	return m_strName;
 }
 
+void GLModel::SetModelType(MODEL_TYPE _eModelType)
+{
+	m_eModelType = _eModelType;
+}
+
+MODEL_TYPE GLModel::GetModelType() const
+{
+	return m_eModelType;
+}
+
 void GLModel::SetVerticesCnt(int _count)
 {
 	m_iVerticesCnt = _count;
@@ -107,12 +117,13 @@ GLuint GLModel::GetEBO() const
 	return m_iEBO;
 }
 
-void GLModel::CreateModel(GLenum _PrimitveType, std::vector<glm::vec3> _vertices, const std::string& _name, GLboolean _ebo, std::vector<unsigned int>_indices)
+void GLModel::CreateModel(GLenum _PrimitveType, std::vector<glm::vec3> _vertices, const std::string& _name, enum MODEL_TYPE _eModelType,GLboolean _ebo, std::vector<unsigned int>_indices)
 {
 	SetName(_name);	
 
 	SetVertices(_vertices);
 
+	SetModelType(_eModelType);
 
 	auto VAO = GetVAO();
 	//1개만 만들겠다
@@ -182,7 +193,7 @@ void GLModel::Draw()
 		glDrawElements(GetPrimitiveType(), GetIndicesCnt(), GL_UNSIGNED_INT, 0);
 }
 
-GLModel* GLModel::EditFromImgui()
+GLModel* GLModel::GetModelFromImgui()
 {	
 	const char* TreeName = "Model";
 	auto models=ModelManager::GetInstance()->GetAllModel();

@@ -15,6 +15,7 @@ public:
 	std::vector<GLModel*> GetAllModel()const;//»ó¹«´Ô <- À¯³äÇØ¼­ ¾²±â
 	GLModel* AddModel(GLModel* _model);
 	GLModel* FindModel(const std::string& _ModelName);
+	GLModel* FindModel(MODEL_TYPE _eModelType);
 public:
 	bool Init();	
 public:

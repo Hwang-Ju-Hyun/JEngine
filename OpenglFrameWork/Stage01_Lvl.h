@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseLevel.h"
+#include <vector>
 
 class GameObject;
 
@@ -15,7 +16,8 @@ public:
     virtual bool Update() override;
     virtual bool Exit() override;   
 private:
+    std::vector<GameObject*> m_vecTempObj = {};
     GameObject* temp_obj1 = nullptr;  
     GameObject* temp_obj2 = nullptr;
+    GameObject* temp_obj3 = nullptr;
 };
-

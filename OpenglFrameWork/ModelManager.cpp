@@ -2,6 +2,7 @@
 #include "GLModel.h"
 #include "GLApp.h"
 #include <iostream>
+#include "header.h"
 
 ModelManager::ModelManager()
 {
@@ -41,6 +42,17 @@ GLModel* ModelManager::FindModel(const std::string& _ModelName)
 	return nullptr;
 }
 
+GLModel* ModelManager::FindModel(MODEL_TYPE _eModelType)
+{
+	for (int i = 0; i <= MODEL_TYPE::RECTANGLE; i++)
+	{
+		if (m_vecModel[i]->GetModelType() == _eModelType)
+		{
+			return m_vecModel[i];
+		}
+	}
+}
+
 bool ModelManager::Init()
 {	
 	if(!InitTriangle()||!InitRectangle())
@@ -61,7 +73,7 @@ bool ModelManager::InitTriangle()
 	GLenum type = GL_TRIANGLES;	
 
 	GLModel* model = new GLModel;
-	model->CreateModel(type, vertices, name);
+	model->CreateModel(type, vertices, name,MODEL_TYPE::TRIANGLE);
 	if (model == nullptr)
 	{
 		std::cerr << "Error : model is nulltpr - ModelManager::InitTriangle" << std::endl;
@@ -91,7 +103,7 @@ bool ModelManager::InitRectangle()
 	GLenum type = GL_TRIANGLES;
 	
 	GLModel* model = new GLModel;
-	model->CreateModel(type, vertices, name, GL_TRUE, indices);
+	model->CreateModel(type, vertices, name,MODEL_TYPE::RECTANGLE, GL_TRUE, indices);
 	if (model == nullptr)
 	{
 		std::cerr << "Error : model is nulltpr - ModelManager::InitRectangle" << std::endl;

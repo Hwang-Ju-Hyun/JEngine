@@ -4,6 +4,7 @@
 #include <glm.hpp>
 #include <string>
 #include <vector>
+#include "header.h"
 
 class BaseComponent;
 class GLModel;
@@ -16,9 +17,10 @@ public:
 	~GameObject();
 private:
 	GLModel* model = nullptr;
-public:
-	void SetModel(GLModel* _model);
+public:	
+	void SetModelType(MODEL_TYPE _eModelType=MODEL_TYPE::TRIANGLE);
 	GLModel* GetModel()const;
+	MODEL_TYPE GetModelType()const;
 private:	
 	std::string m_strName="Object Nothing";
 	unsigned int m_iID = 0;

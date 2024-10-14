@@ -3,9 +3,14 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-//#define _MOUSE_CURSOR
-//#define _KEY
+#define _MOUSE_CURSOR
+#define _KEY
 //#define _KEY_PRESSED
+
+glm::vec2 GLHelper::m_vMouseCursorPosition = { 0.f,0.f };
+GLboolean GLHelper::m_bLeftMouseTriggered = false;
+GLboolean GLHelper::m_bRightMouseTriggered = false;
+
 
 GLHelper::GLHelper()
 {
@@ -70,10 +75,12 @@ void GLHelper::KeyCallBack(GLFWwindow* _window, int _key, int _scancod, int _act
 }
 
 void GLHelper::MousePositionCallBack(GLFWwindow* _window, double _xpos, double _ypos)
-{
+{           
 #ifdef _DEBUG 
     #ifdef _MOUSE_CURSOR
-    std::cout << "Mouse cursor position: (" << _xpos << ", " << _ypos << ")" << std::endl;
+        m_vMouseCursorPosition.x = _xpos;
+        m_vMouseCursorPosition.y = _ypos;
+        std::cout << "Mouse cursor position: (" << _xpos << ", " << _ypos << ")" << std::endl;
     #endif
 #endif
 }
@@ -85,6 +92,7 @@ void GLHelper::MousebuttonCallBack(GLFWwindow* _window, int _button, int _action
     case GLFW_MOUSE_BUTTON_LEFT:
 #ifdef _DEBUG
 #ifdef _KEY
+        m_bLeftMouseTriggered = true;
         std::cout << "Left mouse button ";
 #endif
 #endif
@@ -92,6 +100,7 @@ void GLHelper::MousebuttonCallBack(GLFWwindow* _window, int _button, int _action
     case GLFW_MOUSE_BUTTON_RIGHT:
 #ifdef _DEBUG
 #ifdef _KEY
+        m_bRightMouseTriggered = true;
         std::cout << "Right mouse button ";
 #endif
 #endif
@@ -123,6 +132,21 @@ void GLHelper::setup_event_callbacks()
     glfwSetKeyCallback(GLHelper::GetInstance()->GetWindow(),KeyCallBack);
     glfwSetCursorPosCallback(GLHelper::GetInstance()->GetWindow(), MousePositionCallBack);
     glfwSetMouseButtonCallback(GLHelper::GetInstance()->GetWindow(), MousebuttonCallBack);
+}
+
+glm::vec2 GLHelper::GetMouseCursorPosition() const
+{
+    return m_vMouseCursorPosition;
+}
+
+GLboolean GLHelper::GetLeftMouseTriggered() const
+{
+    return m_bLeftMouseTriggered;
+}
+
+GLboolean GLHelper::GetRightMouseTriggered() const
+{
+    return m_bRightMouseTriggered;
 }
 
 bool GLHelper::Init(GLint _width, GLint _height, const std::string& _title)

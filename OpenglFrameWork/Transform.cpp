@@ -48,7 +48,7 @@ void Transform::AddScale(glm::vec2 _scale)
 	m_vScale += _scale;
 }
 
-glm::vec2 Transform::GetPositoin() const
+glm::vec2 Transform::GetPosition() const
 {
 	return m_vPosition;
 }
@@ -62,6 +62,20 @@ glm::mat3 Transform::GetModelToNDC()
 {
 	return m_mModelToNDC;
 }
+
+glm::mat3 Transform::GetWorldToScreen()
+{
+	glm::mat3 world_to_screen;
+	glm::mat3 H =
+	{
+		1.f / 1980.f,0,0,
+		0,1.f / 1020.f,0,
+		0,0,1
+	};
+	world_to_screen = (H / 2.f) * (m_mModeltToWorld);
+	return world_to_screen;
+}
+
 
 void Transform::Update()
 {
@@ -87,11 +101,12 @@ void Transform::Update()
 
 	glm::mat3 H =
 	{
-		1.f / 5000.f,0,0,
-		0,1.f / 5000.f,0,
+		1.f / 1980.f,0,0,
+		0,1.f / 1020.f,0,
 		0,0,1
 	};
-	m_mModelToNDC = Transform * Rot * Scale;
+	m_mModeltToWorld = (Transform * Rot * Scale);
+	m_mModelToNDC = H * m_mModeltToWorld;
 }
 
 BaseRTTI* Transform::CreateTransformComponent()

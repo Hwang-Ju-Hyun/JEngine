@@ -2,6 +2,7 @@
 #include "header.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm.hpp>
 
 class GLHelper
 {
@@ -26,7 +27,13 @@ public:
 	static void MousebuttonCallBack(GLFWwindow* _window, int _button, int _action, int _mod);
 public:
 	static void setup_event_callbacks();
-private:
-	GLboolean LeftMouse;
+private:	
+	static glm::vec2 m_vMouseCursorPosition;
+	static GLboolean m_bLeftMouseTriggered;
+	static GLboolean m_bRightMouseTriggered;
+public:
+	glm::vec2 GetMouseCursorPosition()const;
+	GLboolean GetLeftMouseTriggered()const;
+	GLboolean GetRightMouseTriggered()const;
 };
 

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <string>
 #include "json.hpp"
+#include "header.h"
 
 using json = nlohmann::ordered_json;
 
@@ -60,8 +61,10 @@ GameObject* Serializer::LoadGameObject(const std::string& _path, unsigned int _i
 				}
 					
 			}
-			//auto shader_ref = item.find("Shader_Ref");
-			//go_obj->SetShaderRef(shader_ref->begin().value());
+			auto shader_ref = item.find("Shader_Ref");
+			go_obj->SetShaderRef(shader_ref->begin().value());
+			auto model_type = item.find("Model_Type");
+			go_obj->SetModelType(model_type->begin().value());
 
 			file.close();
 			return go_obj;
@@ -78,7 +81,7 @@ void Serializer::SaveGameObject(const std::string& _path)
 	for (const auto& go_obj : all_objs)
 	{
 		json js_components;
-		if (go_obj->GetName() == "tempObject"|| go_obj->GetName()=="EditObject")
+		if (go_obj->GetName() == "tempObject")
 		{
 			json js_obj;
 			js_obj["tempObject"] = go_obj->GetID();;
@@ -89,6 +92,7 @@ void Serializer::SaveGameObject(const std::string& _path)
 			}
 			js_obj["Components"] = js_components;
 			js_obj["Shader_Ref"] = go_obj->GetShaderRef();
+			js_obj["Model_Type"] = go_obj->GetModelType();
 			js_all_data.push_back(js_obj);			
 		}
 	}
@@ -107,4 +111,26 @@ void Serializer::SaveGameObject(const std::string& _path)
 	file << std::setw(2) << js_all_data;
 
 	file.close();
+}
+
+int Serializer::GetObjectSize(const std::string& _path)
+{
+	std::fstream file;
+	file.open(_path, std::fstream::in);
+	if (!file.is_open())
+	{
+		std::cerr << "Error : Can't open the file - Serializer::GetObjectSize" << std::endl;
+		return -1;
+	}
+	json js_all_data;
+	file >> js_all_data;
+	int obj_count = 0;
+	for (auto& item : js_all_data)
+		obj_count++;
+	if (obj_count == 0)
+	{
+		std::cerr << "Nothing object in "<<_path << std::endl;
+		return -1;
+	}
+	return obj_count;
 }

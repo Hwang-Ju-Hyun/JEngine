@@ -76,6 +76,23 @@ void GameObjectManager::RemoveAllObjects()
     temp.swap(m_vecGameObject);    
 }
 
+void GameObjectManager::RemoveObject(unsigned int _id)
+{
+    for (auto iter = m_vecGameObject.begin(); iter != m_vecGameObject.end();)
+    {
+        if ((*iter)->GetID()==_id)
+        {
+            delete* iter;
+            iter = m_vecGameObject.erase(iter);
+            return;
+        }
+        else
+        {
+            iter++;
+        }
+    }
+}
+
 bool GameObjectManager::Init()
 {
     for (int i = 0; i < m_vecGameObject.size(); i++)    

@@ -25,15 +25,19 @@ GameObject::~GameObject()
 	}
 }
 
-void GameObject::SetModel(GLModel* _model)
-{					
-	model = _model;
-	
+void GameObject::SetModelType(MODEL_TYPE _eModelType)
+{
+	model=ModelManager::GetInstance()->FindModel(_eModelType);
 }
 
 GLModel* GameObject::GetModel() const
 {
 	return model;
+}
+
+MODEL_TYPE GameObject::GetModelType() const
+{
+	return model->GetModelType();
 }
 
 void GameObject::SetShaderRef(GLuint _ref)

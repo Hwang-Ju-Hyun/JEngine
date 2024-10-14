@@ -15,6 +15,7 @@ public:
 	GameObject* GetLastObject()const;
 	std::vector<GameObject*> GetAllObject()const;
 	void RemoveAllObjects();
+	void RemoveObject(unsigned int _id);
 public:
 	bool Init();
 	bool Update();

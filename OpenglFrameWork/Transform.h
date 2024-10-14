@@ -16,8 +16,10 @@ public:
 private:
 	glm::vec2 m_vPosition = { 0.f,0.f };
 	glm::vec2 m_vScale = { 0.f,0.f };
-	float m_vRotate=0.f;
+	float m_vRotate=0.f;	
 	glm::mat3 m_mModelToNDC = {};
+	glm::mat3 m_mModeltToWorld = {};
+	glm::mat3 m_mWorldToScreen = {};
 public:
 	//settor
 	void SetPosition(glm::vec2 _pos);
@@ -29,9 +31,10 @@ public:
 	void AddScale(glm::vec2 _scale);
 public:
 	//gettor
-	glm::vec2 GetPositoin()const;
+	glm::vec2 GetPosition()const;
 	glm::vec2 GetScale()const;
 	glm::mat3 GetModelToNDC();
+	glm::mat3 GetWorldToScreen();
 public:
     virtual void Update()override;
 public:

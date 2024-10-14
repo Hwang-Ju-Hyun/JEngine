@@ -1,9 +1,11 @@
 #include "Registry.h"
 #include "Transform.h"
+#include "Sprite.h"
 
 Registry::Registry()
 {
     m_mapRttiMap.insert({ "Transform",&Transform::CreateTransformComponent });
+    m_mapRttiMap.insert({ "Sprite",&Sprite::CreateSpriteComponent });
 }
 
 Registry::~Registry()

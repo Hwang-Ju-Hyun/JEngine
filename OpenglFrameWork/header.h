@@ -10,3 +10,9 @@
 							~type();
 #include <string>
 #include <vector>
+
+enum MODEL_TYPE
+{
+	TRIANGLE = 0,
+	RECTANGLE = 1
+};
