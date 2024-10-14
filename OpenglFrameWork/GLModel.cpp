@@ -1,6 +1,9 @@
 #include "GLModel.h"
 #include "ModelManager.h"
 #include <iostream>
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 
 
 GLModel::GLModel()
@@ -177,4 +180,24 @@ void GLModel::Draw()
 		glDrawArrays(GetPrimitiveType(), 0, GetVerticesCnt());	
 	else
 		glDrawElements(GetPrimitiveType(), GetIndicesCnt(), GL_UNSIGNED_INT, 0);
+}
+
+GLModel* GLModel::EditFromImgui()
+{	
+	const char* TreeName = "Model";
+	auto models=ModelManager::GetInstance()->GetAllModel();
+
+	if (ImGui::TreeNode(TreeName))
+	{
+		for (int i = 0; i < models.size(); i++)
+		{
+			if (ImGui::Button(models[i]->GetName().c_str()))
+			{
+				ImGui::TreePop();
+				return models[i];
+			}
+		}
+		ImGui::TreePop();		
+	}
+	return nullptr;
 }

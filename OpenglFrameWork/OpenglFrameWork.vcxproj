@@ -61,7 +61,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\GLFW\lib-vc2019\;$(ProjectDir)Dependencies\GLEW\lib\;$(ProjectDir)IMGUI;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -84,16 +84,51 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseComponent.cpp" />
+    <ClCompile Include="BaseLevel.cpp" />
+    <ClCompile Include="BaseRTTI.cpp" />
+    <ClCompile Include="ComponentManager.cpp" />
+    <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="GameStateManager.cpp" />
+    <ClCompile Include="GLApp.cpp" />
+    <ClCompile Include="GLHelper.cpp" />
+    <ClCompile Include="GLModel.cpp" />
+    <ClCompile Include="GLShader.cpp" />
     <ClCompile Include="IMGUI\imgui.cpp" />
     <ClCompile Include="IMGUI\imgui_demo.cpp" />
     <ClCompile Include="IMGUI\imgui_draw.cpp" />
+    <ClCompile Include="IMGUI\imgui_impl_glfw.cpp" />
     <ClCompile Include="IMGUI\imgui_impl_opengl3.cpp" />
     <ClCompile Include="IMGUI\imgui_stdlib.cpp" />
     <ClCompile Include="IMGUI\imgui_tables.cpp" />
     <ClCompile Include="IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainEditor.cpp" />
+    <ClCompile Include="ModelManager.cpp" />
+    <ClCompile Include="Registry.cpp" />
+    <ClCompile Include="RenderManager.cpp" />
+    <ClCompile Include="Serializer.cpp" />
+    <ClCompile Include="ShaderManager.cpp" />
+    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Stage01_Lvl.cpp" />
+    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="BaseLevel.h" />
+    <ClInclude Include="BaseRTTI.h" />
+    <ClInclude Include="ComponentManager.h" />
+    <ClInclude Include="Engine.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectManager.h" />
+    <ClInclude Include="GameStateManager.h" />
+    <ClInclude Include="GLApp.h" />
+    <ClInclude Include="GLHelper.h" />
+    <ClInclude Include="GLModel.h" />
+    <ClInclude Include="GLShader.h" />
+    <ClInclude Include="header.h" />
     <ClInclude Include="IMGUI\imconfig.h" />
     <ClInclude Include="IMGUI\imgui.h" />
     <ClInclude Include="IMGUI\imgui_impl_glfw.h" />
@@ -104,9 +139,21 @@
     <ClInclude Include="IMGUI\imstb_rectpack.h" />
     <ClInclude Include="IMGUI\imstb_textedit.h" />
     <ClInclude Include="IMGUI\imstb_truetype.h" />
+    <ClInclude Include="MainEditor.h" />
+    <ClInclude Include="ModelManager.h" />
+    <ClInclude Include="Registry.h" />
+    <ClInclude Include="RenderManager.h" />
+    <ClInclude Include="Serializer.h" />
+    <ClInclude Include="ShaderManager.h" />
+    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Stage01_Lvl.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMGUI\imgui.ini" />
+    <None Include="json\GameObject\GameObject.json" />
+    <None Include="shader.frag" />
+    <None Include="shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,14 +2,13 @@
 #include "header.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <iostream>
 
 class GLHelper
 {
 public:
 	SINGLE(GLHelper);
 private:
-	std::string m_strTitleName;
+	std::string m_strTitleName="";
 	GLint m_giWidth=0;
 	GLint m_giHeight = 0;
 	GLFWwindow* m_ptrWindow=nullptr;

@@ -144,13 +144,12 @@ json Transform::SaveToJson(const json& str)
 	return data;
 }
 
-bool Transform::Edit()
+bool Transform::EditFromImgui()
 {
-	if (BaseComponent::Edit())
+	if (BaseComponent::EditFromImgui())
 	{
-		ImGui::InputFloat2("Pos", &(m_vPosition.x));
-
-		ImGui::TreePop();
+		ImGui::InputFloat2("Pos", &(m_vPosition[0]));		
+		ImGui::InputFloat2("Scale", &(m_vScale[0]));
 	}
 	return true;
 }

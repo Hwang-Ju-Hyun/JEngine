@@ -41,6 +41,6 @@ public:
 	virtual void LoadFromJson(const json& str)override;
 	virtual json SaveToJson(const json& str)override;
 public:
-	bool Edit()override;
+	bool EditFromImgui()override;
 };
 

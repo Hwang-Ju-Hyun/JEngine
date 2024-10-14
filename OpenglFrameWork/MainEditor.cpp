@@ -3,7 +3,9 @@
 #include "GameObject.h"
 #include <iostream>
 #include "BaseComponent.h"
+#include "ComponentManager.h"
 #include "Transform.h"
+#include "ModelManager.h"
 #include "Serializer.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -22,87 +24,138 @@ MainEditor::~MainEditor()
 }
 
 
-void MainEditor::TopBar()
+void MainEditor::TopBar_GameObject()
 {
-	//auto all_obj = GameObjectManager::GetInstance()->GetAllObject();
-	//std::cout<<all_obj.size()<<std::endl;
-	ImGui::BeginMainMenuBar(); 
+    ImGui::BeginMainMenuBar();
 
-	ImGui::Text("This is the main menu %i",56);
-	if (ImGui::Button("testbutton"))
-	{
-		static int temp_id = 100;
-		//When i press the button, this happens
-		std::cout << "pressed" << std::endl;
-		GameObject* temp_obj = new GameObject("tempObject", temp_id++);
-		Serializer::GetInstance()->SaveGameObject("json/GameObject/GameObject.json");
-	}
+    if (ImGui::BeginMenu("GameObject"))
+    {                        
+        static glm::vec3 position(0.5f);
+        static glm::vec3 scale(0.5f);
 
-	if (ImGui::BeginMenu("new gameobject"))
-	{
-		ImGui::Text("New GameObject Menu");
+        if (ImGui::Button("CreateObject"))
+        {
+            m_bShowObjectWindow = true;
+            m_bCheckBoxTransform = true;
+            m_bBtnObjectCreate = true; // Reset objectCreated state when opening the window
+        }
 
-		char buffer[100] = { "\0" };
+        if (m_bShowObjectWindow)
+        {
+            ImGui::Begin("New GameObject", &m_bShowObjectWindow);
 
-		ImGui::InputText("GO Name",buffer,100);
+            if (ImGui::TreeNode("Components"))
+            {
+                ImGui::Checkbox("Transform", &m_bCheckBoxTransform);
 
-		if (ImGui::Button("Create"))
-		{
-			//GameObject* temp_obj=new GameObject("tempimgui",3);
-			//std::cout << "GameObject Create!" << std::endl; //콘솔에 입력할 시 프로그램이 멈춤 왜지...
-			//std::cout << GameObjectManager::GetInstance()->GetAllObject().size()<<std::endl;
-		}		
-		ImGui::EndMenu();
-	}
+                if (m_bCheckBoxTransform)
+                {
+                    ImGui::Text("Position");
+                    ImGui::InputFloat3("Position", &position[0]);
 
-	if (ImGui::BeginMenu("Load Level"))
-	{
-		ImGui::MenuItem("Load Level");
-		ImGui::EndMenu();
+                    ImGui::Text("Scale");
+                    ImGui::InputFloat3("Scale", &scale[0]);
+                }
+                
+                if (m_bBtnObjectCreate && ImGui::Button("Create GameObject"))
+                {                     
+                    m_ptrSelectedGameObject = new GameObject("EditObject", tempObjectID++);
 
-	}
+                    if (m_bCheckBoxTransform)
+                    {
+                        m_ptrSelectedGameObject->AddComponent("Transform", new Transform(m_ptrSelectedGameObject));
+                        Transform* trans = static_cast<Transform*>(m_ptrSelectedGameObject->FindComponent("Transform"));
+                        trans->SetPosition({ position.x, position.y });
+                        trans->SetScale({ scale.x, scale.y });
+                    }
+                    GLModel* model = ModelManager::GetInstance()->FindModel("Triangle");
+                    m_ptrSelectedGameObject->SetModel(model);
+                    
+                    std::cout << "GameObject created!" << std::endl;                    
+                }
+                ImGui::TreePop();
+            }
 
+            ImGui::End();
+        }
 
-	ImGui::EndMainMenuBar();
+        ImGui::EndMenu();
+    }
+
+    if (ImGui::BeginMenu("Load Level"))
+    {
+        ImGui::MenuItem("Load Level");
+        ImGui::EndMenu();
+    }
+
+    ImGui::EndMainMenuBar();
 }
 
-void MainEditor::Update()
-{
-	TopBar();
-	//ShowAllObject();
-}
 
-void MainEditor::ShowAllObject()
-{		
-	for (auto& comp : selected->GetAllComponentOfObj())
-	{
-		comp.second->Edit();
-	}
+void MainEditor::TopBar_Save()
+{
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("Save"))
+        {            
+            m_bShowSaveConfirmation = true;
+            if (m_bShowSaveConfirmation)
+            {
+                ImGui::Text("Are you sure to save?");
+                if (ImGui::Button("YES"))
+                {
+                    auto all_objects = GameObjectManager::GetInstance()->GetAllObject();
+                    Serializer::GetInstance()->SaveGameObject("json/GameObject/GameObject.json");
+                    m_bShowSaveConfirmation = false; 
+                }
+                if (ImGui::Button("NO"))
+                {
+                    m_bShowSaveConfirmation = false;
+                }
+            }         
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+    }
 }
 
 void MainEditor::SelectedObjectWindow()
 {
-	ImGui::Begin("object list");
-	for (auto a : GameObjectManager::GetInstance()->GetAllObject())
-	{
-		selected = a;
-	}
+    ImGui::Begin("Object List");
 
+    for (auto obj : GameObjectManager::GetInstance()->GetAllObject())
+    {        
+        if (ImGui::Button((obj->GetName()+std::to_string(obj->GetID())).c_str()))
+        {                       
+            m_ptrSelectedGameObject = obj;
+        }
+    }
+    
+    if (m_ptrSelectedGameObject)
+    {        
+        GLModel* model= m_ptrSelectedGameObject->GetModel();
+        GLModel* NewModel = nullptr;
+        Transform* transform = static_cast<Transform*>(m_ptrSelectedGameObject->FindComponent("Transform"));
+        if (transform)
+        {     
+            transform->EditFromImgui();
+        }
+        if (model)
+        {
+            NewModel = model->EditFromImgui();
+            if (NewModel!=nullptr)
+            {
+                m_ptrSelectedGameObject->SetModel(NewModel);
+            }            
+        }
+    }    
 
+    ImGui::End();
+}
 
-	if (ImGui::TreeNode("AddComponent"))
-	{
-		//std::vector<std::string> comps = { Transform::GetName() };
-
-		//for (auto compType : comps)
-		//{
-		//	if()
-		//}
-
-	}
-
-	
-
-
-	ImGui::End();
+void MainEditor::Update()
+{
+    TopBar_GameObject();
+    SelectedObjectWindow();
+    TopBar_Save();
 }

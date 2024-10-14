@@ -84,6 +84,9 @@
     <Filter Include="Manager\Serializer">
       <UniqueIdentifier>{d05ba41d-8746-46fc-9f63-682b64d8398a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="JSON">
+      <UniqueIdentifier>{9fa3a204-c743-4e08-9063-9ad3dd9d0d38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -108,6 +111,72 @@
       <Filter>IMGUI</Filter>
     </ClCompile>
     <ClCompile Include="IMGUI\imgui_widgets.cpp">
+      <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Component\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
+      <Filter>Manager\ShaderMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Serializer.cpp">
+      <Filter>Manager\Serializer</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelManager.cpp">
+      <Filter>Manager\ModelMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectManager.cpp">
+      <Filter>Manager\GoMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateManager.cpp">
+      <Filter>Manager\GameStateMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentManager.cpp">
+      <Filter>Manager\ComponentMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="MainEditor.cpp">
+      <Filter>Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="Registry.cpp">
+      <Filter>RTTI\Registry</Filter>
+    </ClCompile>
+    <ClCompile Include="GLModel.cpp">
+      <Filter>GL\GLModel</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseLevel.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseRTTI.cpp">
+      <Filter>RTTI</Filter>
+    </ClCompile>
+    <ClCompile Include="GLHelper.cpp">
+      <Filter>GL\GLHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage01_Lvl.cpp">
+      <Filter>Level\Stage01</Filter>
+    </ClCompile>
+    <ClCompile Include="GLShader.cpp">
+      <Filter>GL\GLShader</Filter>
+    </ClCompile>
+    <ClCompile Include="GLApp.cpp">
+      <Filter>GL\GLApp</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderManager.cpp">
+      <Filter>Manager\RenderMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="IMGUI\imgui_impl_glfw.cpp">
       <Filter>IMGUI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -142,10 +211,85 @@
     <ClInclude Include="IMGUI\imstb_truetype.h">
       <Filter>IMGUI</Filter>
     </ClInclude>
+    <ClInclude Include="header.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseRTTI.h">
+      <Filter>RTTI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="GLApp.h">
+      <Filter>GL\GLApp</Filter>
+    </ClInclude>
+    <ClInclude Include="GLHelper.h">
+      <Filter>GL\GLHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="GLModel.h">
+      <Filter>GL\GLModel</Filter>
+    </ClInclude>
+    <ClInclude Include="GLShader.h">
+      <Filter>GL\GLShader</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelManager.h">
+      <Filter>Manager\ModelMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Serializer.h">
+      <Filter>Manager\Serializer</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentManager.h">
+      <Filter>Manager\ComponentMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseLevel.h">
+      <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="Registry.h">
+      <Filter>RTTI\Registry</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateManager.h">
+      <Filter>Manager\GameStateMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="MainEditor.h">
+      <Filter>Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderManager.h">
+      <Filter>Manager\RenderMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage01_Lvl.h">
+      <Filter>Level\Stage01</Filter>
+    </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>Manager\ShaderMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Component\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectManager.h">
+      <Filter>Manager\GoMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="IMGUI\imgui.ini">
       <Filter>IMGUI</Filter>
+    </None>
+    <None Include="shader.frag">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="shader.vert">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="json\GameObject\GameObject.json">
+      <Filter>JSON</Filter>
     </None>
   </ItemGroup>
 </Project>

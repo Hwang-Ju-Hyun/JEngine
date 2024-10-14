@@ -27,17 +27,12 @@ void BaseComponent::Update()
 {
 }
 
-bool BaseComponent::Edit()
+bool BaseComponent::EditFromImgui()
 {	
 	if (ImGui::TreeNode(GetName().c_str()))
-	{
-		if (ImGui::Button("DELETE"))
-		{			
-			//m_pOwner->deleteCopmonent();
-			ImGui::TreePop();
-		}
-	}
+	{		
+		ImGui::TreePop();
 		return true;
-
+	}
 	return false;
 }

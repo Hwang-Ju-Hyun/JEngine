@@ -1,13 +1,13 @@
 [
   {
-    "tempObject": 4294967295,
+    "tempObject": 1,
     "Components": [
       {
         "Type": "Transform",
         "CompData": {
           "Pos": [
-            0.0,
-            0.0
+            -0.30000001192092896,
+            0.5
           ],
           "sca": [
             0.5,
@@ -23,14 +23,37 @@
     "Shader_Ref": 0
   },
   {
-    "tempObject": 4294967295,
+    "tempObject": 2,
     "Components": [
       {
         "Type": "Transform",
         "CompData": {
           "Pos": [
+            0.30000001192092896,
+            0.5
+          ],
+          "sca": [
+            0.5,
+            0.5
+          ],
+          "Rot": [
             0.0,
             0.0
+          ]
+        }
+      }
+    ],
+    "Shader_Ref": 0
+  },
+  {
+    "tempObject": 1000,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -0.5,
+            -0.5
           ],
           "sca": [
             0.5,

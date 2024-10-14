@@ -11,12 +11,10 @@
 
 GLApp::GLApp()
 {
-	std::cout << __FUNCTION__ << std::endl;
 }
 
 GLApp::~GLApp()
-{
-	std::cout << __FUNCTION__ << std::endl;
+{	
 }
 
 bool GLApp::Init()
@@ -59,5 +57,3 @@ bool GLApp::Exit()
 {	
 	return false;
 }
-
-

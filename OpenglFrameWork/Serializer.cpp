@@ -19,7 +19,7 @@ Serializer::~Serializer()
 
 }
 
-GameObject* Serializer::LoadGameObject(const std::string& _path)
+GameObject* Serializer::LoadGameObject(const std::string& _path, unsigned int _id)
 {
 	std::fstream file;
 	file.open(_path, std::fstream::in);
@@ -34,10 +34,10 @@ GameObject* Serializer::LoadGameObject(const std::string& _path)
 	for (auto& item : js_all_data)
 	{
 		auto obj = item.find("tempObject");
-		if (obj != item.end())
+		if (obj != item.end()&&obj->begin().value()==_id)
 		{
 			//Create
-			GameObject* go_obj = new GameObject("tempObject",-1);
+			GameObject* go_obj = new GameObject("tempObject",_id);
 			
 			auto components = item.find("Components");
 			
@@ -78,10 +78,10 @@ void Serializer::SaveGameObject(const std::string& _path)
 	for (const auto& go_obj : all_objs)
 	{
 		json js_components;
-		if (go_obj->GetName() == "tempObject")
+		if (go_obj->GetName() == "tempObject"|| go_obj->GetName()=="EditObject")
 		{
 			json js_obj;
-			js_obj["tempObject"] = go_obj->GetID();
+			js_obj["tempObject"] = go_obj->GetID();;
 			for (auto comp : go_obj->GetAllComponentOfObj())
 			{
 				BaseComponent* c = comp.second;
@@ -89,7 +89,7 @@ void Serializer::SaveGameObject(const std::string& _path)
 			}
 			js_obj["Components"] = js_components;
 			js_obj["Shader_Ref"] = go_obj->GetShaderRef();
-			js_all_data.push_back(js_obj);		
+			js_all_data.push_back(js_obj);			
 		}
 	}
 

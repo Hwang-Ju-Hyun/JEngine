@@ -1,4 +1,5 @@
 #include "GLHelper.h"
+#include <iostream>
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -8,12 +9,12 @@
 
 GLHelper::GLHelper()
 {
-    std::cout << __FUNCTION__ << std::endl;
+    
 }
 
 GLHelper::~GLHelper()
 {
-    std::cout << __FUNCTION__ << std::endl;
+    
 }
 
 GLFWwindow* GLHelper::GetWindow() const
@@ -126,55 +127,55 @@ void GLHelper::setup_event_callbacks()
 
 bool GLHelper::Init(GLint _width, GLint _height, const std::string& _title)
 {
-    //m_giWidth = _width;
-    //m_giHeight = _height;
-    //m_strTitleName = _title;
-    //
-    //if (!glfwInit())
-    //{
-    //    std::cerr << "Error : glfwInit is false - GLHelper::Init" << std::endl;
-    //    return false;
-    //}   
-        
-    //m_ptrWindow = glfwCreateWindow(_width, _height, _title.c_str(), NULL,NULL);
-    //
-    //if (!m_ptrWindow)
-    //{
-    //    std::cerr<< "Error : window is nullptr - GLHelper::Init" << std::endl;
-    //    glfwTerminate();
-    //    return false;
-    //}
-    //
-    //glfwMakeContextCurrent(m_ptrWindow);
+    m_giWidth = _width;
+    m_giHeight = _height;
+    m_strTitleName = _title;
+    
+    if (!glfwInit())
+    {
+        std::cerr << "Error : glfwInit is false - GLHelper::Init" << std::endl;
+        return false;
+    }   
+      
+    m_ptrWindow = glfwCreateWindow(_width, _height, _title.c_str(), NULL,NULL);
+    
+    if (!m_ptrWindow)
+    {
+        std::cerr<< "Error : window is nullptr - GLHelper::Init" << std::endl;
+        glfwTerminate();
+        return false;
+    }
+    
+    glfwMakeContextCurrent(m_ptrWindow);
 
-    //GLenum err = glewInit();
-    //if (err != GLEW_OK)
-    //{
-    //    glfwTerminate();
-    //    std::cerr << "Error! : glewInit is false - GLHelper::Init" << std::endl;
-    //    std::cerr << "Error Message : " << glewGetErrorString(err) << std::endl;                
-    //    return false;
-    //}    
+    GLenum err = glewInit();
+    if (err != GLEW_OK)
+    {
+        glfwTerminate();
+        std::cerr << "Error! : glewInit is false - GLHelper::Init" << std::endl;
+        std::cerr << "Error Message : " << glewGetErrorString(err) << std::endl;                
+        return false;
+    }    
     
-    //glfwSetKeyCallback(m_ptrWindow, KeyCallBack);
-    //glfwSetMouseButtonCallback(m_ptrWindow, MousebuttonCallBack);
-    //glfwSetCursorPosCallback(m_ptrWindow, MousePositionCallBack);
+    glfwSetKeyCallback(m_ptrWindow, KeyCallBack);
+    glfwSetMouseButtonCallback(m_ptrWindow, MousebuttonCallBack);
+    glfwSetCursorPosCallback(m_ptrWindow, MousePositionCallBack);
     
-    //IMGUI_CHECKVERSION();
-    //ImGui::CreateContext();
-    //ImGuiIO& io = ImGui::GetIO();
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls	
-    //
-    //// Setup Platform/Renderer backends
-    //ImGui_ImplGlfw_InitForOpenGL(m_ptrWindow, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
-    //ImGui_ImplOpenGL3_Init();
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls	
+    
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(m_ptrWindow, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+    ImGui_ImplOpenGL3_Init();
 
     return true;
 }
 
 bool GLHelper::Exit()
 {
-    //glfwTerminate();
+    glfwTerminate();
     return true;
 }

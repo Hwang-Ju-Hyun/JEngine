@@ -69,11 +69,11 @@ bool RenderManager::Draw()
 					glUniformMatrix3fv(Model_To_NDC_Location, 1/*전달할 유니폼 갯수*/, GL_FALSE/*전치? 여부*/, glm::value_ptr(trs->GetModelToNDC())/*실제로 전달할 변수의 포인터(적용될 행렬)*/);
 			}
 		}
-
-		obj->Draw();			
-		
+		obj->Draw();					
 	}
 
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     return true;
 }

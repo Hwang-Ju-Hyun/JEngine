@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "GameStateManager.h"
-#include <iostream>
+
 class GameStateManager;
 
 class Engine

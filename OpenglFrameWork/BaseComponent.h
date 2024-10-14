@@ -16,7 +16,7 @@ public:
 	const std::string& GetName()const;
 public:
 	virtual void Update();
-	virtual bool Edit();
+	virtual bool EditFromImgui();
 public:
 	GameObject* m_pOwner;
 };
