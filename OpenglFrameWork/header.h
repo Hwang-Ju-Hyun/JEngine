@@ -1,18 +1,16 @@
 #pragma once
-#define	SINGLE(type) public:\
-						static type* GetInstance()\
-						{\
-							static type mgr;\
-							return &mgr;\
-						}\
-						private:\
-							type();\
-							~type();
-#include <string>
-#include <vector>
+
+const int window_width = 1980;
+const int window_height = 900;
 
 enum MODEL_TYPE
 {
 	TRIANGLE = 0,
 	RECTANGLE = 1
+};
+
+typedef struct WorldMouseCursor
+{
+	float x;
+	float y;	
 };

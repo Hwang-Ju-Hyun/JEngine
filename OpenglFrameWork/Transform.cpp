@@ -6,6 +6,11 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "ShaderManager.h"
+#include "GLShader.h"
+#include "header.h"
+#include <../GLM/gtc/type_ptr.hpp>
+
 
 
 Transform::Transform(GameObject* _owner)
@@ -64,16 +69,23 @@ glm::mat3 Transform::GetModelToNDC()
 }
 
 glm::mat3 Transform::GetWorldToScreen()
-{
-	glm::mat3 world_to_screen;
-	glm::mat3 H =
+{	
+	glm::mat3 trans =
 	{
-		1.f / 1980.f,0,0,
-		0,1.f / 1020.f,0,
-		0,0,1
+		1,0,0,
+		0,1,0,
+		window_width/2.f,window_height/2.f,1.f
 	};
-	world_to_screen = (H / 2.f) * (m_mModeltToWorld);
-	return world_to_screen;
+	glm::mat3 X_axis_Revert =
+	{
+	    1,  0,  0,
+		0, -1,  0,
+		0,  0,  1
+	};	
+
+	m_mWorldToScreen = trans*X_axis_Revert *(m_mModelToWorld);
+	m_mWorldToScreen *= X_axis_Revert;
+	return m_mWorldToScreen;
 }
 
 
@@ -101,12 +113,12 @@ void Transform::Update()
 
 	glm::mat3 H =
 	{
-		1.f / 1980.f,0,0,
-		0,1.f / 1020.f,0,
+		1.f /( window_width/2.f),0,0,
+		0,1.f/( window_height/2.f),0,
 		0,0,1
-	};
-	m_mModeltToWorld = (Transform * Rot * Scale);
-	m_mModelToNDC = H * m_mModeltToWorld;
+	};	
+	m_mModelToWorld = (Transform * Rot * Scale);
+	m_mModelToNDC = H * m_mModelToWorld;	
 }
 
 BaseRTTI* Transform::CreateTransformComponent()

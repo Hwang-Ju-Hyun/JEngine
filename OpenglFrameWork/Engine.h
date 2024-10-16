@@ -1,8 +1,9 @@
 #pragma once
-#include "header.h"
+#include "single.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include "GameStateManager.h"
+#include <string>
 
 class GameStateManager;
 

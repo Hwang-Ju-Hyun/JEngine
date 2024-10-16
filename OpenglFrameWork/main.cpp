@@ -1,16 +1,17 @@
 #include "Engine.h"
 #include "GLHelper.h"
-#include <string>
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "header.h"
+#include <stb_image.h>
 
 
 int main(void)
 {
 	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	
-	if (!Engine::GetInstance()->Init(1980, 1020, "Hello World!"))
+	if (!Engine::GetInstance()->Init(window_width, window_height, "Hello World!"))
 		return 0;
 	while (!glfwWindowShouldClose(GLHelper::GetInstance()->GetWindow()))
 	{			

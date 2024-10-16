@@ -6,12 +6,78 @@
         "Type": "Transform",
         "CompData": {
           "Pos": [
-            100.0,
-            100.0
+            -351.0,
+            -236.0
           ],
           "sca": [
-            129.0,
-            230.0
+            43.0,
+            125.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.936274528503418,
+          "GREEN": 0.936274528503418,
+          "BLUE": 0.009179189801216125,
+          "ALPHA": 0.5
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 0
+  },
+  {
+    "tempObject": 2,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            545.0,
+            0.0
+          ],
+          "sca": [
+            123.0,
+            225.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.41028890013694763,
+          "GREEN": 0.10467129945755005,
+          "BLUE": 0.970588207244873,
+          "ALPHA": 0.5
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 0
+  },
+  {
+    "tempObject": 4,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            272.0,
+            185.0
+          ],
+          "sca": [
+            124.0,
+            52.0
           ],
           "Rot": [
             0.0,
@@ -23,112 +89,13 @@
         "Type": "Sprite",
         "CompData": {
           "RED": 0.0,
-          "GREEN": 1.0,
-          "BLUE": 1.0,
-          "ALPHA": 1.0
-        }
-      }
-    ],
-    "Shader_Ref": 0,
-    "Model_Type": 1
-  },
-  {
-    "tempObject": 2,
-    "Components": [
-      {
-        "Type": "Transform",
-        "CompData": {
-          "Pos": [
-            400.0,
-            500.0
-          ],
-          "sca": [
-            400.0,
-            320.0
-          ],
-          "Rot": [
-            0.0,
-            0.0
-          ]
-        }
-      },
-      {
-        "Type": "Sprite",
-        "CompData": {
-          "RED": 0.06492697447538376,
-          "GREEN": 0.9460784196853638,
-          "BLUE": 0.19450798630714417,
-          "ALPHA": 0.0
-        }
-      }
-    ],
-    "Shader_Ref": 0,
-    "Model_Type": 0
-  },
-  {
-    "tempObject": 3,
-    "Components": [
-      {
-        "Type": "Transform",
-        "CompData": {
-          "Pos": [
-            -600.0,
-            -300.0
-          ],
-          "sca": [
-            500.0,
-            300.0
-          ],
-          "Rot": [
-            0.0,
-            0.0
-          ]
-        }
-      },
-      {
-        "Type": "Sprite",
-        "CompData": {
-          "RED": 0.6740904450416565,
-          "GREEN": 0.033640921115875244,
-          "BLUE": 0.9803921580314636,
-          "ALPHA": 0.5
-        }
-      }
-    ],
-    "Shader_Ref": 0,
-    "Model_Type": 1
-  },
-  {
-    "tempObject": 4,
-    "Components": [
-      {
-        "Type": "Transform",
-        "CompData": {
-          "Pos": [
-            1400.0,
-            400.0
-          ],
-          "sca": [
-            30.0,
-            20.0
-          ],
-          "Rot": [
-            0.0,
-            0.0
-          ]
-        }
-      },
-      {
-        "Type": "Sprite",
-        "CompData": {
-          "RED": 0.44117647409439087,
-          "GREEN": 0.25317513942718506,
+          "GREEN": 0.0,
           "BLUE": 0.0,
           "ALPHA": 0.5
         }
       }
     ],
     "Shader_Ref": 0,
-    "Model_Type": 0
+    "Model_Type": 1
   }
 ]

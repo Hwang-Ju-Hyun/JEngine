@@ -34,8 +34,7 @@ bool RenderManager::Init()
 }
 
 bool RenderManager::Update()
-{
-    //TODO: What do i do in here...
+{    
     return true;
 }
 
@@ -51,6 +50,10 @@ bool RenderManager::Draw()
 	
 	for (auto obj : objects)
 	{		
+		if (obj->GetName() == "WALL")
+		{
+			int a = 0;
+		}
 		auto shader_ref = obj->GetShaderRef();				
 				
 		shaders[shader_ref].Use();				

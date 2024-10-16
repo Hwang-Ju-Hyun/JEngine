@@ -211,7 +211,7 @@
     <ClInclude Include="IMGUI\imstb_truetype.h">
       <Filter>IMGUI</Filter>
     </ClInclude>
-    <ClInclude Include="header.h">
+    <ClInclude Include="single.h">
       <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="BaseComponent.h">
@@ -277,6 +277,9 @@
     <ClInclude Include="GameObjectManager.h">
       <Filter>Manager\GoMgr</Filter>
     </ClInclude>
+    <ClInclude Include="header.h">
+      <Filter>header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="IMGUI\imgui.ini">
@@ -289,6 +292,9 @@
       <Filter>Shader</Filter>
     </None>
     <None Include="json\GameObject\GameObject.json">
+      <Filter>JSON</Filter>
+    </None>
+    <None Include="json\GameObject\Wall.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

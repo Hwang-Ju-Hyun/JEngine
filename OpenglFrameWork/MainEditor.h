@@ -1,10 +1,12 @@
 #pragma once
-#include "header.h"
+#include "single.h"
+#include <glm.hpp>
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-#include <glm.hpp>
+#include "header.h"
 
+class Transform;
 class GameObject;
 class BaseLevel;
 
@@ -20,17 +22,25 @@ private:
 	bool m_bShowSaveConfirmation = false;
 	bool m_bShowDeleteConfirmationWindow = false;
 private:
-	unsigned int tempObjectID = 1000;
-private:
 	GameObject* m_ptrSelectedGameObject = nullptr;
 public:	
 	void TopBar_GameObject();
 	void TopBar_Save();
-	void SelectedObjectWindow();
+	void SelectedObjectWindow();	
+private:
+	WorldMouseCursor m_vWorldMousePos = {};
+	bool m_bSelectedObjByMouse = false;
+	Transform* m_pTransByMouseSelect = nullptr;
 public:
 	void SelectedObjectByMouse();
 private:
-	bool IsMouseInsideObject(glm::vec2 _mousePos, GameObject* _obj);
+	bool IsMouseInsideObject(GameObject* _obj);		
+	void EditMapMode();
+private:	
+	glm::mat3 m_mScreenToWorldMat = {};
+	glm::vec2 m_mScreenToMousePos = {};
+	void CaculateWallPosition(glm::vec2* _wall);
+	bool m_aWallGridCord[1000][1000] = { false, };
 public:
 	void Update();
 };

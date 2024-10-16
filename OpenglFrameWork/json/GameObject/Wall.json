@@ -1,0 +1,35 @@
+[
+  {
+    "WALL": 1,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -657.0,
+            8.0
+          ],
+          "sca": [
+            43.0,
+            125.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.07771047949790955,
+          "GREEN": 0.6752326488494873,
+          "BLUE": 0.7549019455909729,
+          "ALPHA": 0.5
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 0
+  }
+]

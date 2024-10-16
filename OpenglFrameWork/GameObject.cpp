@@ -14,7 +14,7 @@ GameObject::GameObject(const std::string& _name,const unsigned int _id)
 	:m_strName(_name),
 	m_iID(_id)
 {
-	GameObjectManager::GetInstance()->AddObject(this);
+	GameObjectManager::GetInstance()->AddObject(this);	
 }
 
 GameObject::~GameObject()
@@ -37,7 +37,10 @@ GLModel* GameObject::GetModel() const
 
 MODEL_TYPE GameObject::GetModelType() const
 {
-	return model->GetModelType();
+	if (model == nullptr)
+		std::cerr << "Error : model is nullptr - GameObject::GetModelType" << std::endl;
+	else
+		return model->GetModelType();
 }
 
 void GameObject::SetShaderRef(GLuint _ref)

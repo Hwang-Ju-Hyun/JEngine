@@ -1,8 +1,10 @@
 #pragma once
-#include "header.h"
+#include "single.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm.hpp>
+#include "header.h"
+#include <string>
 
 class GLHelper
 {
@@ -27,13 +29,27 @@ public:
 	static void MousebuttonCallBack(GLFWwindow* _window, int _button, int _action, int _mod);
 public:
 	static void setup_event_callbacks();
-private:	
+private:
+	//Mouse Info
+	glm::mat3 m_mScreenToWorld = {};
+	glm::mat3 m_mWorldToScreen = {};
 	static glm::vec2 m_vMouseCursorPosition;
-	static GLboolean m_bLeftMouseTriggered;
+	static GLboolean m_bLeftMouseTriggered; 	
+	static GLboolean m_bLeftMouseReleased;
 	static GLboolean m_bRightMouseTriggered;
 public:
 	glm::vec2 GetMouseCursorPosition()const;
 	GLboolean GetLeftMouseTriggered()const;
+	GLboolean GetLeftMouseReleased()const;	
 	GLboolean GetRightMouseTriggered()const;
+	void ResetLeftMouseTriggered()const;
+private:
+	//Keyboard Info
+	static GLboolean m_bLeftControlKeyPressed;
+	static GLboolean m_bLeftControlKeyReleased;
+public:
+	GLboolean GetLeftControlPressed()const;
+public:
+	glm::mat3 GetScreenToWorldMatFromMouse();	
 };
 

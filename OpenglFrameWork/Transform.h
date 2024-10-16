@@ -16,9 +16,11 @@ public:
 private:
 	glm::vec2 m_vPosition = { 0.f,0.f };
 	glm::vec2 m_vScale = { 0.f,0.f };
-	float m_vRotate=0.f;	
-	glm::mat3 m_mModelToNDC = {};
-	glm::mat3 m_mModeltToWorld = {};
+	float m_vRotate=0.f;
+
+	glm::mat3 m_mScreenToWorld = {};
+	glm::mat3 m_mModelToNDC = {};	
+	glm::mat3 m_mModelToWorld = {};
 	glm::mat3 m_mWorldToScreen = {};
 public:
 	//settor

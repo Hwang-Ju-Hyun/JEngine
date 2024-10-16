@@ -1,6 +1,7 @@
 #pragma once
-#include "header.h"
+#include "single.h"
 #include <map>
+#include <string>
 
 class BaseRTTI;
 

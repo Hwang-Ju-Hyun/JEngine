@@ -9,8 +9,10 @@
 
 glm::vec2 GLHelper::m_vMouseCursorPosition = { 0.f,0.f };
 GLboolean GLHelper::m_bLeftMouseTriggered = false;
+GLboolean GLHelper::m_bLeftMouseReleased = false;
 GLboolean GLHelper::m_bRightMouseTriggered = false;
-
+GLboolean GLHelper::m_bLeftControlKeyPressed = false;
+GLboolean GLHelper::m_bLeftControlKeyReleased = false;
 
 GLHelper::GLHelper()
 {
@@ -44,12 +46,20 @@ std::string GLHelper::GetWindowTitleName() const
 
 
 void GLHelper::KeyCallBack(GLFWwindow* _window, int _key, int _scancod, int _action, int _mod)
-{
-
-    if (GLFW_PRESS == _action) 
+{    
+    if (_action == GLFW_PRESS && _key == GLFW_KEY_LEFT_CONTROL)
+    {     
+        m_bLeftControlKeyPressed = true;
+    }
+    if (m_bLeftControlKeyPressed && _action == GLFW_RELEASE)
+    {        
+        m_bLeftControlKeyPressed = false;
+    }        
+   
+    /*if (GLFW_PRESS == _action) 
     {
 #ifdef _DEBUG
-#ifdef _KEY
+#ifdef _KEY_PRESSED        
         std::cout << "Key pressed" << std::endl;    
 #endif
 #endif
@@ -57,7 +67,7 @@ void GLHelper::KeyCallBack(GLFWwindow* _window, int _key, int _scancod, int _act
     else if (GLFW_REPEAT == _action) 
     {
 #ifdef _DEBUG     
-#ifdef _KEY
+#ifdef _KEY_PRESSED
         std::cout << "Key repeatedly pressed" << std::endl;    
 #endif
 #endif
@@ -65,13 +75,14 @@ void GLHelper::KeyCallBack(GLFWwindow* _window, int _key, int _scancod, int _act
     else if (GLFW_RELEASE == _action)
     {
 #ifdef _DEBUG    
-#ifdef _KEY
+#ifdef _KEY_PRESSED
+
         std::cout << "Key released" << std::endl;    
 #endif
 #endif
         if (GLFW_KEY_ESCAPE == _key && GLFW_PRESS == _action)
             glfwSetWindowShouldClose(_window, GLFW_TRUE);
-    }    
+    }    */
 }
 
 void GLHelper::MousePositionCallBack(GLFWwindow* _window, double _xpos, double _ypos)
@@ -80,51 +91,45 @@ void GLHelper::MousePositionCallBack(GLFWwindow* _window, double _xpos, double _
     #ifdef _MOUSE_CURSOR
         m_vMouseCursorPosition.x = _xpos;
         m_vMouseCursorPosition.y = _ypos;
-        std::cout << "Mouse cursor position: (" << _xpos << ", " << _ypos << ")" << std::endl;
+        //std::cout << "Mouse cursor position: (" << _xpos << ", " << _ypos << ")" << std::endl;
     #endif
 #endif
 }
 
 void GLHelper::MousebuttonCallBack(GLFWwindow* _window, int _button, int _action, int _mod)
 {
-    switch (_button) 
+    //if (_button == GLFW_MOUSE_BUTTON_LEFT && _action == GLFW_PRESS)
+    //{
+    //    m_bLeftMouseTriggered = true;
+    //    //std::cout << "Left mouse button  press"<<std::endl;
+    //}
+    //if (m_bLeftMouseTriggered && _action == GLFW_RELEASE)
+    //{
+    //    m_bLeftMouseTriggered = false;
+    //    //std::cout << "Left mouse button released "<<std::endl;
+    //}
+    if (_button == GLFW_MOUSE_BUTTON_LEFT)
     {
-    case GLFW_MOUSE_BUTTON_LEFT:
-#ifdef _DEBUG
-#ifdef _KEY
-        m_bLeftMouseTriggered = true;
-        std::cout << "Left mouse button ";
-#endif
-#endif
-        break;
-    case GLFW_MOUSE_BUTTON_RIGHT:
-#ifdef _DEBUG
-#ifdef _KEY
-        m_bRightMouseTriggered = true;
-        std::cout << "Right mouse button ";
-#endif
-#endif
-        break;
-    }
-
-    switch (_action) 
-    {
-    case GLFW_PRESS:
-#ifdef _DEBUG        
-#ifdef _KEY_PRESSED
-        std::cout << "pressed!!!" << std::endl;
-#endif
-#endif
-        break;
-
-    case GLFW_RELEASE:
-#ifdef _DEBUG
-#ifdef _KEY_PRESSED
-        std::cout << "released!!!" << std::endl;
-#endif
-#endif
-        break;
-    }
+        if (_action == GLFW_PRESS)
+        {
+            if (!m_bLeftMouseTriggered) 
+            {
+                m_bLeftMouseTriggered = true;               
+            }
+        }
+        else if (_action == GLFW_RELEASE)
+        {
+            if (m_bLeftMouseTriggered)
+            {
+                m_bLeftMouseTriggered = false;
+                m_bLeftMouseReleased = true;                
+            }
+            else
+            {                
+                m_bLeftMouseReleased = false;
+            }
+        }
+    }    
 }
 
 void GLHelper::setup_event_callbacks()
@@ -144,10 +149,54 @@ GLboolean GLHelper::GetLeftMouseTriggered() const
     return m_bLeftMouseTriggered;
 }
 
+GLboolean GLHelper::GetLeftMouseReleased() const
+{
+    return m_bLeftMouseReleased;
+}
+
+
+
 GLboolean GLHelper::GetRightMouseTriggered() const
 {
     return m_bRightMouseTriggered;
 }
+
+void GLHelper::ResetLeftMouseTriggered() const
+{
+    m_bLeftMouseTriggered = false;
+}
+
+GLboolean GLHelper::GetLeftControlPressed() const
+{
+    return m_bLeftControlKeyPressed;
+}
+
+glm::mat3 GLHelper::GetScreenToWorldMatFromMouse()
+{
+    glm::mat3 Inversed_Trans =
+    {
+        1,0,0,
+        0,1,0,
+        -window_width / 2.f,-window_height / 2.f,1.f
+    };
+    glm::mat3 X_axis_Revert =
+    {
+        1,  0,  0,
+        0, -1,  0,
+        0,  0,  1
+    };
+
+    glm::mat3 ScreenMouseMat =
+    {
+        1,0,0,
+        0,1,0,
+        m_vMouseCursorPosition.x,m_vMouseCursorPosition.y,1
+    };   
+    m_mScreenToWorld = X_axis_Revert* Inversed_Trans *ScreenMouseMat;
+    m_mScreenToWorld *= X_axis_Revert;
+    return m_mScreenToWorld;
+}
+
 
 bool GLHelper::Init(GLint _width, GLint _height, const std::string& _title)
 {

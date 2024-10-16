@@ -1,5 +1,7 @@
 #pragma once
-#include "header.h"
+#include "single.h"
+#include <vector>
+#include <string>
 
 class GameObject;
 
@@ -16,6 +18,8 @@ public:
 	std::vector<GameObject*> GetAllObject()const;
 	void RemoveAllObjects();
 	void RemoveObject(unsigned int _id);
+public:
+
 public:
 	bool Init();
 	bool Update();
