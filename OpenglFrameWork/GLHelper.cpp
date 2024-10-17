@@ -197,6 +197,17 @@ glm::mat3 GLHelper::GetScreenToWorldMatFromMouse()
     return m_mScreenToWorld;
 }
 
+//여기 스크린좌표랑 월드좌표 보정해주기
+bool GLHelper::IsPointInsideRectangle(glm::vec2 _pos, float _RecLeft, float _RecRight, float _RecTop, float _RecBottom)
+{    
+    if (_pos.x >= _RecLeft && _pos.x <= _RecRight
+        && _pos.y <= _RecTop && _pos.y >= _RecBottom)
+    {
+        return true;
+    }
+    return false;
+}
+
 
 bool GLHelper::Init(GLint _width, GLint _height, const std::string& _title)
 {

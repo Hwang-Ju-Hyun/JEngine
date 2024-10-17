@@ -238,44 +238,36 @@ void MainEditor::TopBar_TileEdit()
     
 }
 
-bool MainEditor::IsMouseInsideObject(GameObject* _obj)
-{
-    Transform* trs = dynamic_cast<Transform*>(_obj->FindComponent("Transform"));
-    if (trs == nullptr)
-        return false;
-
-    float Left = trs->GetPosition().x - trs->GetScale().x / 2.f;
-    float Right = trs->GetPosition().x + trs->GetScale().x / 2.f;
-    float Top = trs->GetPosition().y + trs->GetScale().y / 2.f;
-    float Bottom = trs->GetPosition().y - trs->GetScale().y / 2.f;
-
-    if (m_vWorldMousePos.x >= Left && m_vWorldMousePos.x <= Right
-        && m_vWorldMousePos.y <= Top && m_vWorldMousePos.y >= Bottom)
-    {
-        return true;
-    }
-    return false;
-}
 
 void MainEditor::SelectedObjectByMouse()
 {    
     auto all_objs = GameObjectManager::GetInstance()->GetAllObject();    
-    auto L_mouse_trigger = GLHelper::GetInstance()->GetLeftMouseTriggered();        
+    auto L_mouse_trigger = GLHelper::GetInstance()->GetLeftMouseTriggered();
+    auto mouse_pos = GLHelper::GetInstance()->GetMouseCursorPosition();    
     for (const auto& obj : all_objs)
     {       
-        if (!m_bSelectedObjByMouse&&IsMouseInsideObject(obj))
+        Transform* trans = dynamic_cast<Transform*>(obj->FindComponent("Transform"));
+        if (trans!=nullptr)
         {
-            m_pTransByMouseSelect = static_cast<Transform*>(obj->FindComponent("Transform"));
-            if (L_mouse_trigger)
+            float left   = trans->GetPosition().x - trans->GetScale().x / 2.f;
+            float right  = trans->GetPosition().x + trans->GetScale().x / 2.f;
+            float top    = trans->GetPosition().y + trans->GetScale().y / 2.f;
+            float bottom = trans->GetPosition().y - trans->GetScale().y / 2.f;
+
+            if (!m_bSelectedObjByMouse && GLHelper::GetInstance()->IsPointInsideRectangle(mouse_pos, left, right, top, bottom))
             {
-                if (m_pTransByMouseSelect == nullptr)
+                m_pTransByMouseSelect = static_cast<Transform*>(obj->FindComponent("Transform"));
+                if (L_mouse_trigger)
                 {
-                    std::cerr << "Error : Object Can't find Transform Component - MainEditor:: SelectedObjectByMouse" << std::endl;
-                    return;
+                    if (m_pTransByMouseSelect == nullptr)
+                    {
+                        std::cerr << "Error : Object Can't find Transform Component - MainEditor:: SelectedObjectByMouse" << std::endl;
+                        return;
+                    }
+                    m_bSelectedObjByMouse = true;
                 }
-                m_bSelectedObjByMouse = true;
             }
-        }
+        }                
     }           
     if (m_bSelectedObjByMouse)
     {                       
@@ -288,7 +280,7 @@ void MainEditor::SelectedObjectByMouse()
     }
 }
 
-void MainEditor::ChangeCurrentEditMode(EDIT_MODE _eMode)
+void MainEditor::ChangeCurrentEditMode(enum EDIT_MODE _eMode)
 {
     m_iCurrentMode = _eMode;
 }

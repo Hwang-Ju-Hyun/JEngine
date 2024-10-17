@@ -51,5 +51,6 @@ public:
 	GLboolean GetLeftControlPressed()const;
 public:
 	glm::mat3 GetScreenToWorldMatFromMouse();	
+	bool IsPointInsideRectangle(glm::vec2 _pos, float _RecLeft, float _RecRight, float _RecTop, float _RecBottom);
 };
 

@@ -37,7 +37,7 @@ private:
 public:
 	void SelectedObjectByMouse();
 private:
-	bool IsMouseInsideObject(GameObject* _obj);				
+	
 private:	
 	glm::mat3 m_mScreenToWorldMat = {};
 	glm::vec2 m_mScreenToMousePos = {};		
