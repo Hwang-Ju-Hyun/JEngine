@@ -14,7 +14,7 @@
 #include "imgui_impl_opengl3.h"
 #include "Sprite.h"
 #include "GLHelper.h"
-
+#include "TileEditor.h"
 
 //에디터에서 new level을 구현할 시 selected 꼭 nullptr로 만들자
 MainEditor::MainEditor()
@@ -45,7 +45,7 @@ void MainEditor::TopBar_GameObject()
             m_bShowObjectWindow = true;
             m_bCheckBoxTransform = true;
             m_bCheckBoxSprite = true;
-            m_bBtnObjectCreate = true;
+            m_bObjectCreateBtn = true;
         }
 
         if (m_bShowObjectWindow)
@@ -69,7 +69,7 @@ void MainEditor::TopBar_GameObject()
                     ImGui::Text("Color");
                     ImGui::InputFloat4("Color", &color[0]);                    
                 }
-                if (m_bBtnObjectCreate && ImGui::Button("Create GameObject"))
+                if (m_bObjectCreateBtn && ImGui::Button("Create GameObject"))
                 {                 
                     auto id = GameObjectManager::GetInstance()->GetAllObject().size();                    
                     m_pSelectedGameObject = new GameObject("tempObject", id++);
@@ -116,29 +116,29 @@ void MainEditor::TopBar_Save()
     {
 
         std::string s;
-        s.reserve(250);
+        s.reserve(200);
 
-        for (int i = 0; i < 250; i++)
+        for (int i = 0; i < 200; i++)
             s.append(" ");
 
         ImGui::Text(s.c_str());
 
         if (ImGui::BeginMenu("Save"))
         {
-            m_bShowSaveConfirmation = true;
-            if (m_bShowSaveConfirmation)
+            m_bShowSaveConf = true;
+            if (m_bShowSaveConf)
             {
                 ImGui::Text("Are you sure to save?");
                 if (ImGui::Button("YES"))
                 {                    
                     Serializer::GetInstance()->SaveGameObject("json/GameObject/GameObject.json");
                     Serializer::GetInstance()->SaveWall("json/GameObject/Wall.json");
-                    m_bShowSaveConfirmation = false;
+                    m_bShowSaveConf = false;
                     ImGui::CloseCurrentPopup();
                 }
                 if (ImGui::Button("NO"))
                 {
-                    m_bShowSaveConfirmation = false;
+                    m_bShowSaveConf = false;
                     ImGui::CloseCurrentPopup();
                 }
             }         
@@ -184,9 +184,9 @@ void MainEditor::SelectedObjectWindow()
         }
         if (ImGui::Button("DeleteObject"))
         {
-            m_bShowDeleteConfirmationWindow = true;
+            m_bShowDeleteConf = true;
         }
-        if (m_bShowDeleteConfirmationWindow)
+        if (m_bShowDeleteConf)
         {
             ImGui::Begin("Are you sure to delete?");
             if (ImGui::Button("YES"))
@@ -194,16 +194,48 @@ void MainEditor::SelectedObjectWindow()
                 auto obj_id = m_pSelectedGameObject->GetID();
                 GameObjectManager::GetInstance()->RemoveObject(obj_id);
                 m_pSelectedGameObject = nullptr;
-                m_bShowDeleteConfirmationWindow = false;
+                m_bShowDeleteConf = false;
             }
             else if (ImGui::Button("No"))
             {
-                m_bShowDeleteConfirmationWindow = false;
+                m_bShowDeleteConf = false;
             }
             ImGui::End();
         }
     }
     ImGui::End();
+}
+
+void MainEditor::TopBar_TileEdit()
+{
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("ChangeEditMode"))
+        {
+            m_bShowChangeEditModeConf = true;
+            if (m_bShowChangeEditModeConf)
+            {                       
+                if (ImGui::TreeNode("MODE"))
+                {                    
+                    if (ImGui::Button("Normal"))
+                    {                        
+                        ChangeCurrentEditMode(EDIT_MODE::NORMAL);
+                        ImGui::CloseCurrentPopup();
+                    }
+                    else if (ImGui::Button("TileEdit"))
+                    {                        
+                        ChangeCurrentEditMode(EDIT_MODE::TILE);
+                        ImGui::CloseCurrentPopup();                        
+                    }
+                    m_bShowChangeEditModeConf = false;
+                    ImGui::TreePop();
+                }                                
+            }
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+    }
+    
 }
 
 bool MainEditor::IsMouseInsideObject(GameObject* _obj)
@@ -223,79 +255,6 @@ bool MainEditor::IsMouseInsideObject(GameObject* _obj)
         return true;
     }
     return false;
-}
-
-void MainEditor::EditMapMode()//Not working perfectly
-{
-    auto L_mouse_Trigger = GLHelper::GetInstance()->GetLeftMouseTriggered();
-    auto L_mouse_Released = GLHelper::GetInstance()->GetLeftMouseReleased();
-
-    int number_of_walls = 30;
-
-    m_iWallWidth = window_width / number_of_walls;
-    m_iWallHeight = window_height / number_of_walls;
-    
-    m_mScreenToMousePos = GLHelper::GetInstance()->GetMouseCursorPosition();
-    m_mScreenToWorldMat = GLHelper::GetInstance()->GetScreenToWorldMatFromMouse();    
-
-    int screen_grid_x = m_mScreenToMousePos.x / m_iWallWidth;
-    int screen_grid_y = m_mScreenToMousePos.y / m_iWallHeight;
-
-    if (L_mouse_Trigger)
-    {                
-        if (!m_aWallGridCord[(int)screen_grid_x][(int)screen_grid_y])
-        {
-            static int id = 2;
-            m_pSelectedGameObject = new GameObject("WALL", id++);
-            m_pSelectedGameObject->AddComponent("Transform", new Transform(m_pSelectedGameObject));
-            m_pSelectedGameObject->AddComponent("Sprite", new Sprite(m_pSelectedGameObject));
-            Transform* trans = static_cast<Transform*>(m_pSelectedGameObject->FindComponent("Transform"));                                     
-            glm::vec2 wall;
-
-            CaculateWallPosition(screen_grid_x , screen_grid_y,&wall);
-
-            trans->SetPosition({ wall.x,wall.y });
-            trans->SetScale({ m_iWallWidth, m_iWallHeight });
-            m_pSelectedGameObject->SetModelType(MODEL_TYPE::RECTANGLE);
-            m_aWallGridCord[(int)screen_grid_x][(int)screen_grid_y] = true;
-            GLHelper::GetInstance()->ResetLeftMouseTriggered();
-        }
-    }    
-}
-
-void MainEditor::CaculateWallPosition(int _screen_grid_X, int _screen_gridY, glm::vec2* _wall)
-{   
-    int w = window_width;
-    int h = window_height;
-
-    m_vWorldMousePos = { m_mScreenToWorldMat[2][0],m_mScreenToWorldMat[2][1] }; 
-
-    //1사분면
-    if (((_screen_grid_X * m_iWallWidth) + (m_iWallWidth / 2.f)) < window_width / 2
-        && ((_screen_gridY * m_iWallHeight) + (m_iWallHeight / 2.f)) < window_height / 2)
-    {
-        _wall->x = -w / 2 + ((_screen_grid_X * m_iWallWidth) + (m_iWallWidth / 2));
-        _wall->y = h / 2 - ((_screen_gridY * m_iWallHeight) + (m_iWallHeight / 2));
-    }
-    //2사분면
-    else if (((_screen_grid_X * m_iWallWidth) + (m_iWallWidth / 2.f)) > window_width / 2
-        && ((_screen_gridY * m_iWallHeight) + (m_iWallHeight / 2.f)) < window_height / 2)
-    {
-        _wall->x = -(w / 2) + ((_screen_grid_X * m_iWallWidth) + (m_iWallWidth / 2));
-        _wall->y = (h / 2) - ((_screen_gridY * m_iWallHeight) + (m_iWallHeight / 2));
-    }
-    //3사분면
-    else if (((_screen_grid_X * m_iWallWidth) + (m_iWallWidth / 2.f)) < window_width / 2
-        && ((_screen_gridY* m_iWallHeight) + (m_iWallHeight / 2.f)) > window_height / 2)
-    {
-        _wall->x = -(w / 2) + ((_screen_grid_X * m_iWallWidth) + (m_iWallWidth / 2));
-        _wall->y = (h / 2) - ((_screen_gridY * m_iWallHeight) + (m_iWallHeight / 2));
-    }
-    else
-    {
-        _wall->x = -(w / 2) + ((_screen_grid_X * m_iWallWidth) + (m_iWallWidth / 2));
-        _wall->y = (h / 2) - ((_screen_gridY * m_iWallHeight) + (m_iWallHeight / 2));
-    }     
 }
 
 void MainEditor::SelectedObjectByMouse()
@@ -329,14 +288,35 @@ void MainEditor::SelectedObjectByMouse()
     }
 }
 
+void MainEditor::ChangeCurrentEditMode(EDIT_MODE _eMode)
+{
+    m_iCurrentMode = _eMode;
+}
+
+int MainEditor::GetCurrentEditMode() const
+{
+    return m_iCurrentMode;
+}
+
 void MainEditor::Update()
 {
     auto ScreenToWorld = GLHelper::GetInstance()->GetScreenToWorldMatFromMouse();
-    m_vWorldMousePos = { ScreenToWorld[2][0],ScreenToWorld[2][1] };    
+    m_vWorldMousePos = { ScreenToWorld[2][0],ScreenToWorld[2][1] };            
+
+    switch (GetCurrentEditMode())
+    {
+    case EDIT_MODE::NORMAL:
+        SelectedObjectByMouse();
+        break;
+    case EDIT_MODE::TILE:
+        TileEditor::GetInstance()->Update();
+        break;
+    default:
+        break;
+    }
 
     TopBar_GameObject();
+    TopBar_TileEdit();
     TopBar_Save();
-    //SelectedObjectByMouse();
-    EditMapMode(); //Not working perfectly
     SelectedObjectWindow();
 }

@@ -16,77 +16,58 @@ TileEditor::~TileEditor()
 
 }
 
-void TileEditor::CaculateWallPosition()
-{    
-    int w = window_width;
-    int h = window_height;    
-    MainEditor::GetInstance()->m_vWorldMousePos = { MainEditor::GetInstance()->m_mScreenToWorldMat[2][0],MainEditor::GetInstance()->m_mScreenToWorldMat[2][1] };
 
-    //1사분면
-    if (((m_iScreenGridX * m_iWidth) + (m_iWidth / 2.f)) < w / 2
-        && ((m_iScreenGridY * m_iHeight) + (m_iHeight / 2.f)) < h / 2)
-    {
-        m_vWall.x = -w / 2 + ((m_iScreenGridX * m_iWidth) + (m_iWidth / 2));
-        m_vWall.y = h / 2 - ((m_iScreenGridY * m_iHeight) + (m_iHeight / 2));
-    }
-    //2사분면
-    else if (((m_iScreenGridX * m_iWidth) + (m_iWidth / 2.f)) > w / 2
-        && ((m_iScreenGridY * m_iHeight) + (m_iHeight / 2.f)) < h / 2)
-    {
-        m_vWall.x = -(w / 2) + ((m_iScreenGridX * m_iWidth) + (m_iWidth / 2));
-        m_vWall.y = (h / 2) - ((m_iScreenGridY * m_iHeight) + (m_iHeight / 2));
-    }
-    //3사분면
-    else if (((m_iScreenGridX * m_iWidth) + (m_iWidth / 2.f)) < w / 2
-        && ((m_iScreenGridY * m_iHeight) + (m_iHeight / 2.f)) > h / 2)
-    {
-        m_vWall.x = -(w / 2) + ((m_iScreenGridX * m_iWidth) + (m_iWidth / 2));
-        m_vWall.y = (h / 2) - ((m_iScreenGridY * m_iHeight) + (m_iHeight / 2));
-    }
-    else
-    {
-        m_vWall.x = -(w / 2) + ((m_iScreenGridX * m_iWidth) + (m_iWidth / 2));
-        m_vWall.y = (h / 2) - ((m_iScreenGridY * m_iHeight) + (m_iHeight / 2));
-    }
+glm::vec2 TileEditor::GetWorldPosbyScreenGrid(int _width, int _height, int _gridX, int _gridY)
+{
+    int w = window_width;
+    int h = window_height;
+
+    glm::vec2 wall;
+
+    wall.x = -w / 2 + ((_gridX * _width) + (_width / 2));
+    wall.y = h / 2 - ((_gridY * _height) + (_height / 2));  
+
+    return wall;
 }
 
 void TileEditor::Update()
-{
+{    
+    auto L_mouse_Trigger = GLHelper::GetInstance()->GetLeftMouseTriggered();    
     
+    glm::vec2 ScreenToMousePos = GLHelper::GetInstance()->GetMouseCursorPosition();    
 
-    auto L_mouse_Trigger = GLHelper::GetInstance()->GetLeftMouseTriggered();
-    auto L_mouse_Released = GLHelper::GetInstance()->GetLeftMouseReleased();
+    int NumberOfWalls = 30;
 
-    m_iNumberOfWalls = 30;
+    int WallWidth = window_width / NumberOfWalls;
+    int WallHeight = window_height / NumberOfWalls;
 
-    m_iWidth = window_width / m_iNumberOfWalls;
-    m_iHeight = window_height / m_iNumberOfWalls;
 
-    glm::vec2 ScreenToMousePos = GLHelper::GetInstance()->GetMouseCursorPosition();
-    glm::mat3 ScreenToWorldMat = GLHelper::GetInstance()->GetScreenToWorldMatFromMouse();
-
-    int screen_grid_x = ScreenToMousePos.x / m_iWidth;
-    int screen_grid_y = ScreenToMousePos.y / m_iHeight;
-
-    GameObject* selected_obj = MainEditor::GetInstance()->m_pSelectedGameObject;
+    int ScreenGridX = ScreenToMousePos.x / WallWidth;
+    int ScreenGridY = ScreenToMousePos.y / WallHeight;
 
     if (L_mouse_Trigger)
     {
-        if (!m_aWallGridCord[(int)screen_grid_x][(int)screen_grid_y])
-        {
-            static int id = 2;
-            selected_obj = new GameObject("WALL", id++);
-            selected_obj->AddComponent("Transform", new Transform(selected_obj));
-            selected_obj->AddComponent("Sprite", new Sprite(selected_obj));
-            Transform* trans = static_cast<Transform*>(selected_obj->FindComponent("Transform"));            
+        if (!m_aWallGridCord[ScreenGridX][ScreenGridY])
+        {            
+            static int wall_id = 2;
+            GameObject* wall_obj=nullptr;
+            
+            wall_obj = new GameObject("WALL", wall_id++);            
+            wall_obj->AddComponent("Transform", new Transform(wall_obj));
+            wall_obj->AddComponent("Sprite", new Sprite(wall_obj));
+            
+            Transform* trans = static_cast<Transform*>(wall_obj->FindComponent("Transform"));
+            
+            glm::vec2 wall;
 
-            CaculateWallPosition();
+            wall=GetWorldPosbyScreenGrid(WallWidth,WallHeight,ScreenGridX,ScreenGridY);
 
-            trans->SetPosition({ m_vWall.x,m_vWall.y });
-            trans->SetScale({ m_iWidth, m_iHeight });
-            selected_obj->SetModelType(MODEL_TYPE::RECTANGLE);
-            m_aWallGridCord[(int)screen_grid_x][(int)screen_grid_y] = true;
-            GLHelper::GetInstance()->ResetLeftMouseTriggered();
+            trans->SetPosition({ wall.x,wall.y });
+            trans->SetScale({ WallWidth, WallHeight });
+            wall_obj->SetModelType(MODEL_TYPE::RECTANGLE);
+
+            GLHelper::GetInstance()->ResetLeftMouseTriggered();            
+            m_aWallGridCord[(int)ScreenGridX][(int)ScreenGridY] = true;
         }
     }
 }

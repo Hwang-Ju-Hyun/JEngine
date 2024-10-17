@@ -19,15 +19,17 @@ private:
 	bool m_bShowObjectWindow = false;
 	bool m_bCheckBoxTransform = false;
 	bool m_bCheckBoxSprite = false;
-	bool m_bBtnObjectCreate = false;
-	bool m_bShowSaveConfirmation = false;
-	bool m_bShowDeleteConfirmationWindow = false;
+	bool m_bObjectCreateBtn = false;
+	bool m_bShowSaveConf = false;
+	bool m_bShowDeleteConf = false;
+	bool m_bShowChangeEditModeConf = false;
 private:
 	GameObject* m_pSelectedGameObject = nullptr;
 public:	
 	void TopBar_GameObject();
 	void TopBar_Save();
-	void SelectedObjectWindow();	
+	void TopBar_TileEdit();
+	void SelectedObjectWindow();
 private:
 	WorldMouseCursor m_vWorldMousePos = {};
 	bool m_bSelectedObjByMouse = false;
@@ -35,15 +37,20 @@ private:
 public:
 	void SelectedObjectByMouse();
 private:
-	bool IsMouseInsideObject(GameObject* _obj);		
-	void EditMapMode();
+	bool IsMouseInsideObject(GameObject* _obj);				
 private:	
 	glm::mat3 m_mScreenToWorldMat = {};
-	glm::vec2 m_mScreenToMousePos = {};
-	void CaculateWallPosition(int _screen_grid_X,int _screen_gridY,glm::vec2* _wall);
-	bool m_aWallGridCord[1000][1000] = { false, };
-	int  m_iWallWidth = 0;
-	int  m_iWallHeight = 0;
+	glm::vec2 m_mScreenToMousePos = {};		
+private:
+	enum EDIT_MODE
+	{
+		NORMAL,
+		TILE
+	};
+	int m_iCurrentMode =EDIT_MODE::NORMAL;
+public:
+	void ChangeCurrentEditMode(enum EDIT_MODE _eMode);
+	int GetCurrentEditMode()const;
 public:
 	void Update();
 public:
