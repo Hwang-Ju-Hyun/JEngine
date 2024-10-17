@@ -115,6 +115,7 @@
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Stage01_Lvl.cpp" />
+    <ClCompile Include="TileEditor.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +151,7 @@
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Stage01_Lvl.h" />
+    <ClInclude Include="TileEditor.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>

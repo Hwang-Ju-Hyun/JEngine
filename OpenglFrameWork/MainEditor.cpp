@@ -72,23 +72,23 @@ void MainEditor::TopBar_GameObject()
                 if (m_bBtnObjectCreate && ImGui::Button("Create GameObject"))
                 {                 
                     auto id = GameObjectManager::GetInstance()->GetAllObject().size();                    
-                    m_ptrSelectedGameObject = new GameObject("tempObject", id++);
+                    m_pSelectedGameObject = new GameObject("tempObject", id++);
                     if (m_bCheckBoxTransform)
                     {
-                        m_ptrSelectedGameObject->AddComponent("Transform", new Transform(m_ptrSelectedGameObject));
-                        Transform* trans = static_cast<Transform*>(m_ptrSelectedGameObject->FindComponent("Transform"));
+                        m_pSelectedGameObject->AddComponent("Transform", new Transform(m_pSelectedGameObject));
+                        Transform* trans = static_cast<Transform*>(m_pSelectedGameObject->FindComponent("Transform"));
                         trans->SetPosition({ position.x, position.y });
                         trans->SetScale({ scale.x, scale.y });
                     }
                     if (m_bCheckBoxSprite)
                     {
-                        m_ptrSelectedGameObject->AddComponent("Sprite", new Sprite(m_ptrSelectedGameObject));
-                        Sprite* sprite = static_cast<Sprite*>(m_ptrSelectedGameObject->FindComponent("Sprite"));
+                        m_pSelectedGameObject->AddComponent("Sprite", new Sprite(m_pSelectedGameObject));
+                        Sprite* sprite = static_cast<Sprite*>(m_pSelectedGameObject->FindComponent("Sprite"));
                         sprite->SetColor(color);
                     }
 
                     GLModel* model = ModelManager::GetInstance()->FindModel(MODEL_TYPE::TRIANGLE);
-                    m_ptrSelectedGameObject->SetModelType(model->GetModelType());
+                    m_pSelectedGameObject->SetModelType(model->GetModelType());
                     
                     std::cout << "GameObject created!" << std::endl;                    
                 }
@@ -156,16 +156,16 @@ void MainEditor::SelectedObjectWindow()
     {        
         if (ImGui::Button((obj->GetName()+std::to_string(obj->GetID())).c_str()))
         {                       
-            m_ptrSelectedGameObject = obj;
+            m_pSelectedGameObject = obj;
         }
     }
     
-    if (m_ptrSelectedGameObject)
+    if (m_pSelectedGameObject)
     {        
-        GLModel* model= m_ptrSelectedGameObject->GetModel();
+        GLModel* model= m_pSelectedGameObject->GetModel();
         GLModel* NewModel = nullptr;
-        Transform* transform = static_cast<Transform*>(m_ptrSelectedGameObject->FindComponent("Transform"));
-        Sprite* sprite = static_cast<Sprite*>(m_ptrSelectedGameObject->FindComponent("Sprite"));
+        Transform* transform = static_cast<Transform*>(m_pSelectedGameObject->FindComponent("Transform"));
+        Sprite* sprite = static_cast<Sprite*>(m_pSelectedGameObject->FindComponent("Sprite"));
         if (transform)
         {
             transform->EditFromImgui();
@@ -179,7 +179,7 @@ void MainEditor::SelectedObjectWindow()
             NewModel = model->GetModelFromImgui();
             if (NewModel != nullptr)
             {
-                m_ptrSelectedGameObject->SetModelType(NewModel->GetModelType());
+                m_pSelectedGameObject->SetModelType(NewModel->GetModelType());
             }
         }
         if (ImGui::Button("DeleteObject"))
@@ -191,9 +191,9 @@ void MainEditor::SelectedObjectWindow()
             ImGui::Begin("Are you sure to delete?");
             if (ImGui::Button("YES"))
             {
-                auto obj_id = m_ptrSelectedGameObject->GetID();
+                auto obj_id = m_pSelectedGameObject->GetID();
                 GameObjectManager::GetInstance()->RemoveObject(obj_id);
-                m_ptrSelectedGameObject = nullptr;
+                m_pSelectedGameObject = nullptr;
                 m_bShowDeleteConfirmationWindow = false;
             }
             else if (ImGui::Button("No"))
@@ -203,7 +203,6 @@ void MainEditor::SelectedObjectWindow()
             ImGui::End();
         }
     }
-
     ImGui::End();
 }
 
@@ -227,77 +226,75 @@ bool MainEditor::IsMouseInsideObject(GameObject* _obj)
 }
 
 void MainEditor::EditMapMode()//Not working perfectly
-{        
+{
     auto L_mouse_Trigger = GLHelper::GetInstance()->GetLeftMouseTriggered();
     auto L_mouse_Released = GLHelper::GetInstance()->GetLeftMouseReleased();
 
     int number_of_walls = 30;
-    int wall_width = window_width / number_of_walls;
-    int wall_height = window_height / number_of_walls;
 
+    m_iWallWidth = window_width / number_of_walls;
+    m_iWallHeight = window_height / number_of_walls;
+    
     m_mScreenToMousePos = GLHelper::GetInstance()->GetMouseCursorPosition();
-    m_mScreenToWorldMat = GLHelper::GetInstance()->GetScreenToWorldMatFromMouse();
+    m_mScreenToWorldMat = GLHelper::GetInstance()->GetScreenToWorldMatFromMouse();    
 
-    int screen_grid_x = screen_mouse_pos.x / wall_width;
-    int screen_grid_y = screen_mouse_pos.y / wall_height;
+    int screen_grid_x = m_mScreenToMousePos.x / m_iWallWidth;
+    int screen_grid_y = m_mScreenToMousePos.y / m_iWallHeight;
 
     if (L_mouse_Trigger)
-    {
-        
-
+    {                
         if (!m_aWallGridCord[(int)screen_grid_x][(int)screen_grid_y])
         {
             static int id = 2;
-            m_ptrSelectedGameObject = new GameObject("WALL", id++);
-            m_ptrSelectedGameObject->AddComponent("Transform", new Transform(m_ptrSelectedGameObject));
-            m_ptrSelectedGameObject->AddComponent("Sprite", new Sprite(m_ptrSelectedGameObject));
-            Transform* trans = static_cast<Transform*>(m_ptrSelectedGameObject->FindComponent("Transform"));                                     
+            m_pSelectedGameObject = new GameObject("WALL", id++);
+            m_pSelectedGameObject->AddComponent("Transform", new Transform(m_pSelectedGameObject));
+            m_pSelectedGameObject->AddComponent("Sprite", new Sprite(m_pSelectedGameObject));
+            Transform* trans = static_cast<Transform*>(m_pSelectedGameObject->FindComponent("Transform"));                                     
             glm::vec2 wall;
 
-            CaculateWallPosition(&wall);
+            CaculateWallPosition(screen_grid_x , screen_grid_y,&wall);
 
             trans->SetPosition({ wall.x,wall.y });
-            trans->SetScale({ wall_width, wall_height });
-            m_ptrSelectedGameObject->SetModelType(MODEL_TYPE::RECTANGLE);
+            trans->SetScale({ m_iWallWidth, m_iWallHeight });
+            m_pSelectedGameObject->SetModelType(MODEL_TYPE::RECTANGLE);
             m_aWallGridCord[(int)screen_grid_x][(int)screen_grid_y] = true;
             GLHelper::GetInstance()->ResetLeftMouseTriggered();
         }
     }    
 }
 
-void MainEditor::CaculateWallPosition(glm::vec2* _wall)
+void MainEditor::CaculateWallPosition(int _screen_grid_X, int _screen_gridY, glm::vec2* _wall)
 {   
     int w = window_width;
     int h = window_height;
 
-    m_vWorldMousePos = { m_mScreenToWorldMat[2][0],m_mScreenToWorldMat[2][1] };
-  
+    m_vWorldMousePos = { m_mScreenToWorldMat[2][0],m_mScreenToWorldMat[2][1] }; 
 
     //1사분면
-    if (((screen_grid_x * wall_width) + (wall_width / 2.f)) < window_width / 2
-        && ((screen_grid_y * wall_height) + (wall_height / 2.f)) < window_height / 2)
+    if (((_screen_grid_X * m_iWallWidth) + (m_iWallWidth / 2.f)) < window_width / 2
+        && ((_screen_gridY * m_iWallHeight) + (m_iWallHeight / 2.f)) < window_height / 2)
     {
-        _wall->x = -w / 2 + ((screen_grid_x * wall_width) + (wall_width / 2));
-        _wall->y = h / 2 - ((screen_grid_y * wall_height) + (wall_height / 2));
+        _wall->x = -w / 2 + ((_screen_grid_X * m_iWallWidth) + (m_iWallWidth / 2));
+        _wall->y = h / 2 - ((_screen_gridY * m_iWallHeight) + (m_iWallHeight / 2));
     }
     //2사분면
-    else if (((screen_grid_x * wall_width) + (wall_width / 2.f)) > window_width / 2
-        && ((screen_grid_y * wall_height) + (wall_height / 2.f)) < window_height / 2)
+    else if (((_screen_grid_X * m_iWallWidth) + (m_iWallWidth / 2.f)) > window_width / 2
+        && ((_screen_gridY * m_iWallHeight) + (m_iWallHeight / 2.f)) < window_height / 2)
     {
-        _wall->x = -(w / 2) + ((screen_grid_x * wall_width) + (wall_width / 2));
-        _wall->y = (h / 2) - ((screen_grid_y * wall_height) + (wall_height / 2));
+        _wall->x = -(w / 2) + ((_screen_grid_X * m_iWallWidth) + (m_iWallWidth / 2));
+        _wall->y = (h / 2) - ((_screen_gridY * m_iWallHeight) + (m_iWallHeight / 2));
     }
     //3사분면
-    else if (((screen_grid_x * wall_width) + (wall_width / 2.f)) < window_width / 2
-        && ((screen_grid_y * wall_height) + (wall_height / 2.f)) > window_height / 2)
+    else if (((_screen_grid_X * m_iWallWidth) + (m_iWallWidth / 2.f)) < window_width / 2
+        && ((_screen_gridY* m_iWallHeight) + (m_iWallHeight / 2.f)) > window_height / 2)
     {
-        _wall->x = -(w / 2) + ((screen_grid_x * wall_width) + (wall_width / 2));
-        _wall->y = (h / 2) - ((screen_grid_y * wall_height) + (wall_height / 2));
+        _wall->x = -(w / 2) + ((_screen_grid_X * m_iWallWidth) + (m_iWallWidth / 2));
+        _wall->y = (h / 2) - ((_screen_gridY * m_iWallHeight) + (m_iWallHeight / 2));
     }
     else
     {
-        _wall->x = -(w / 2) + ((screen_grid_x * wall_width) + (wall_width / 2));
-        _wall->y = (h / 2) - ((screen_grid_y * wall_height) + (wall_height / 2));
+        _wall->x = -(w / 2) + ((_screen_grid_X * m_iWallWidth) + (m_iWallWidth / 2));
+        _wall->y = (h / 2) - ((_screen_gridY * m_iWallHeight) + (m_iWallHeight / 2));
     }     
 }
 
@@ -331,8 +328,6 @@ void MainEditor::SelectedObjectByMouse()
         m_bSelectedObjByMouse = false;        
     }
 }
-
-
 
 void MainEditor::Update()
 {

@@ -87,6 +87,9 @@
     <Filter Include="JSON">
       <UniqueIdentifier>{9fa3a204-c743-4e08-9063-9ad3dd9d0d38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Editor\TileEditor">
+      <UniqueIdentifier>{f333a234-0804-4366-b8e6-9eb8edc37397}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -178,6 +181,9 @@
     </ClCompile>
     <ClCompile Include="IMGUI\imgui_impl_glfw.cpp">
       <Filter>IMGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="TileEditor.cpp">
+      <Filter>Editor\TileEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -279,6 +285,9 @@
     </ClInclude>
     <ClInclude Include="header.h">
       <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="TileEditor.h">
+      <Filter>Editor\TileEditor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

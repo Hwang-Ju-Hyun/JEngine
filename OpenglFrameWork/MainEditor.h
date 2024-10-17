@@ -9,6 +9,7 @@
 class Transform;
 class GameObject;
 class BaseLevel;
+class TileEditor;
 
 class MainEditor
 {
@@ -22,7 +23,7 @@ private:
 	bool m_bShowSaveConfirmation = false;
 	bool m_bShowDeleteConfirmationWindow = false;
 private:
-	GameObject* m_ptrSelectedGameObject = nullptr;
+	GameObject* m_pSelectedGameObject = nullptr;
 public:	
 	void TopBar_GameObject();
 	void TopBar_Save();
@@ -39,8 +40,12 @@ private:
 private:	
 	glm::mat3 m_mScreenToWorldMat = {};
 	glm::vec2 m_mScreenToMousePos = {};
-	void CaculateWallPosition(glm::vec2* _wall);
+	void CaculateWallPosition(int _screen_grid_X,int _screen_gridY,glm::vec2* _wall);
 	bool m_aWallGridCord[1000][1000] = { false, };
+	int  m_iWallWidth = 0;
+	int  m_iWallHeight = 0;
 public:
 	void Update();
+public:
+	friend class TileEditor;
 };
