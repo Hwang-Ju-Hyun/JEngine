@@ -150,8 +150,12 @@ void MainEditor::TopBar_Save()
 
 void MainEditor::SelectedObjectWindow()
 {
-    auto all_objs = GameObjectManager::GetInstance()->GetAllObject();    
-    ImGui::Begin("Object List");        
+    auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
+    if(ImGui::Begin("Object List"))
+        m_bCurWindowObjectList = true;
+    else
+        m_bCurWindowObjectList = false;
+
     for (auto obj : all_objs)
     {        
         if (ImGui::Button((obj->GetName()+std::to_string(obj->GetID())).c_str()))
@@ -168,7 +172,7 @@ void MainEditor::SelectedObjectWindow()
         Sprite* sprite = static_cast<Sprite*>(m_pSelectedGameObject->FindComponent("Sprite"));
         if (transform)
         {
-            transform->EditFromImgui();
+            transform->EditFromImgui();            
         }
         if (sprite)
         {
@@ -179,7 +183,7 @@ void MainEditor::SelectedObjectWindow()
             NewModel = model->GetModelFromImgui();
             if (NewModel != nullptr)
             {
-                m_pSelectedGameObject->SetModelType(NewModel->GetModelType());
+                m_pSelectedGameObject->SetModelType(NewModel->GetModelType());                
             }
         }
         if (ImGui::Button("DeleteObject"))
@@ -202,7 +206,7 @@ void MainEditor::SelectedObjectWindow()
             }
             ImGui::End();
         }
-    }
+    }    
     ImGui::End();
 }
 
@@ -243,22 +247,31 @@ void MainEditor::SelectedObjectByMouse()
 {    
     auto all_objs = GameObjectManager::GetInstance()->GetAllObject();    
     auto L_mouse_trigger = GLHelper::GetInstance()->GetLeftMouseTriggered();
-    auto mouse_pos = GLHelper::GetInstance()->GetMouseCursorPosition();    
+    auto screen_mouse_pos = GLHelper::GetInstance()->GetMouseCursorPosition();    
     for (const auto& obj : all_objs)
     {       
         Transform* trans = dynamic_cast<Transform*>(obj->FindComponent("Transform"));
         if (trans!=nullptr)
-        {
+        {                    
             float left   = trans->GetPosition().x - trans->GetScale().x / 2.f;
             float right  = trans->GetPosition().x + trans->GetScale().x / 2.f;
             float top    = trans->GetPosition().y + trans->GetScale().y / 2.f;
-            float bottom = trans->GetPosition().y - trans->GetScale().y / 2.f;
-
-            if (!m_bSelectedObjByMouse && GLHelper::GetInstance()->IsPointInsideRectangle(mouse_pos, left, right, top, bottom))
+            float bottom = trans->GetPosition().y - trans->GetScale().y / 2.f;                        
+            glm::vec2 vertex;
+                            
+            if (!m_bSelectedObjByMouse && GLHelper::GetInstance()->IsPointInsideRectangle(screen_mouse_pos, left,right,top,bottom,false));
             {
                 m_pTransByMouseSelect = static_cast<Transform*>(obj->FindComponent("Transform"));
                 if (L_mouse_trigger)
                 {
+
+                    std::cout << "Pos : " << trans->GetPosition().x << "," << trans->GetPosition().y << std::endl;
+                    std::cout << "left : " << left << std::endl;
+                    std::cout << "right : " << right << std::endl;
+                    std::cout << "top : " << top << std::endl;
+                    std::cout << "bottom : " << bottom << std::endl;
+                    std::cout << std::endl;
+
                     if (m_pTransByMouseSelect == nullptr)
                     {
                         std::cerr << "Error : Object Can't find Transform Component - MainEditor:: SelectedObjectByMouse" << std::endl;
@@ -270,8 +283,7 @@ void MainEditor::SelectedObjectByMouse()
         }                
     }           
     if (m_bSelectedObjByMouse)
-    {                       
-        std::cout << m_pTransByMouseSelect->m_pOwner->GetID() << std::endl;       
+    {                               
         m_pTransByMouseSelect->SetPosition({m_vWorldMousePos.x,m_vWorldMousePos.y});
     }    
     if (!L_mouse_trigger)
@@ -294,14 +306,18 @@ void MainEditor::Update()
 {
     auto ScreenToWorld = GLHelper::GetInstance()->GetScreenToWorldMatFromMouse();
     m_vWorldMousePos = { ScreenToWorld[2][0],ScreenToWorld[2][1] };            
+    
+    std::cout <<"World Mouse Pos : "<< m_vWorldMousePos.x << "," << m_vWorldMousePos.y << std::endl;
 
     switch (GetCurrentEditMode())
     {
     case EDIT_MODE::NORMAL:
-        SelectedObjectByMouse();
+        if(!m_bCurWindowObjectList)
+            SelectedObjectByMouse();
         break;
     case EDIT_MODE::TILE:
-        TileEditor::GetInstance()->Update();
+        if(!m_bCurWindowObjectList)
+            TileEditor::GetInstance()->Update();
         break;
     default:
         break;

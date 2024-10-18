@@ -97,5 +97,38 @@
     ],
     "Shader_Ref": 0,
     "Model_Type": 0
+  },
+  {
+    "tempObject": 4,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            0.0,
+            0.0
+          ],
+          "sca": [
+            100.0,
+            100.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.7009804248809814,
+          "GREEN": 0.7009804248809814,
+          "BLUE": 0.7009804248809814,
+          "ALPHA": 0.5
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 0
   }
 ]

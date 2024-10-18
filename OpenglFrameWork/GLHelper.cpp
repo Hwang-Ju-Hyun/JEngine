@@ -191,17 +191,91 @@ glm::mat3 GLHelper::GetScreenToWorldMatFromMouse()
         1,0,0,
         0,1,0,
         m_vMouseCursorPosition.x,m_vMouseCursorPosition.y,1
-    };   
+    };
     m_mScreenToWorld = X_axis_Revert* Inversed_Trans *ScreenMouseMat;
     m_mScreenToWorld *= X_axis_Revert;
     return m_mScreenToWorld;
 }
 
-//여기 스크린좌표랑 월드좌표 보정해주기
-bool GLHelper::IsPointInsideRectangle(glm::vec2 _pos, float _RecLeft, float _RecRight, float _RecTop, float _RecBottom)
+glm::mat3 GLHelper::GetScreenToWorldMat(glm::vec2 _pos)
 {    
-    if (_pos.x >= _RecLeft && _pos.x <= _RecRight
-        && _pos.y <= _RecTop && _pos.y >= _RecBottom)
+    glm::mat3 Inversed_Trans =
+    {
+        1,0,0,
+        0,1,0,
+        -window_width / 2.f,-window_height / 2.f,1.f
+    };
+    glm::mat3 X_axis_Revert =
+    {
+        1,  0,  0,
+        0, -1,  0,
+        0,  0,  1
+    };
+
+    glm::mat3 ScreenPosMat =
+    {
+        1,0,0,
+        0,1,0,
+        _pos.x,_pos.y,1
+    };
+    auto mat = X_axis_Revert * Inversed_Trans * ScreenPosMat;
+    mat *= X_axis_Revert;
+    return mat;
+}
+
+float GLHelper::GetRadianFromTwoVectors(glm::vec2 _vec1, glm::vec2 _vec2)
+{
+    //I will no use cos function <- It's expensive function
+    //By using the normalize   
+    return std::cosf((_vec1.x * _vec2.x) + (_vec2.y * _vec2.y) / std::sqrt(std::pow(_vec1.x, 2) + std::pow(_vec2.y, 2)));
+}
+
+void GLHelper::NormalizeVector(glm::vec2* _vec)
+{
+    float length = std::sqrt(std::pow(_vec->x, 2) + std::pow(_vec->y, 2));
+    _vec->x /= length;
+    _vec->y /= length;
+}
+
+bool GLHelper::IsPointInsideRectangle(glm::vec2 _pos, float _RecLeft, float _RecRight, float _RecTop, float _RecBottom, bool _IsWorldCord)
+{
+    glm::mat3 mat = GetScreenToWorldMat(_pos);        
+    glm::vec2 position;
+    if (!_IsWorldCord)    
+         position = { mat[2][0],mat[2][1] };    
+    else    
+        position = _pos;    
+    if (position.x >= _RecLeft && position.x <= _RecRight
+        && position.y <= _RecTop && position.y >= _RecBottom)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool GLHelper::IsPointInsideTriangle(glm::vec2 _pos, glm::vec2 _vertex1, glm::vec2 _vertex2, glm::vec2 _vertex3, bool _IsWorldCord)
+{
+    glm::mat3 mat = GetScreenToWorldMat(_pos);
+    glm::vec2 position;
+    if (!_IsWorldCord)
+        position = { mat[2][0],mat[2][1] };
+    else
+        position = _pos;
+
+    glm::vec2 ortho_vector1 = { _vertex2.y - _vertex1.y,-_vertex2.x + _vertex1.x };
+    glm::vec2 ortho_vector2 = { _vertex3.y - _vertex2.y,-_vertex3.x + _vertex2.x };
+    glm::vec2 ortho_vector3 = { _vertex1.y - _vertex3.y,-_vertex1.x + _vertex3.x };
+
+    glm::vec2 point_vector1 = { position.x - _vertex1.x,position.y - _vertex1.y };
+    glm::vec2 point_vector2 = { position.x - _vertex2.x,position.y - _vertex2.y };
+    glm::vec2 point_vector3 = { position.x - _vertex3.x,position.y - _vertex3.y };
+        
+
+    float angle1 = std::acosf(GetRadianFromTwoVectors(ortho_vector1, point_vector1));
+    float angle2 = std::acosf(GetRadianFromTwoVectors(ortho_vector2, point_vector2));
+    float angle3 = std::acosf(GetRadianFromTwoVectors(ortho_vector3, point_vector3));
+
+    if (angle1 >= 0 && angle2 >= 0 && angle3 >= 0)
     {
         return true;
     }
@@ -211,7 +285,7 @@ bool GLHelper::IsPointInsideRectangle(glm::vec2 _pos, float _RecLeft, float _Rec
 
 bool GLHelper::Init(GLint _width, GLint _height, const std::string& _title)
 {
-    m_giWidth = _width;
+    m_giWidth = _width; 
     m_giHeight = _height;
     m_strTitleName = _title;
     
@@ -253,7 +327,7 @@ bool GLHelper::Init(GLint _width, GLint _height, const std::string& _title)
     
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(m_ptrWindow, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
-    ImGui_ImplOpenGL3_Init();
+    ImGui_ImplOpenGL3_Init();    
 
     return true;
 }

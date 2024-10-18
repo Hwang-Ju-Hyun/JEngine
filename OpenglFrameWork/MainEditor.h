@@ -23,6 +23,7 @@ private:
 	bool m_bShowSaveConf = false;
 	bool m_bShowDeleteConf = false;
 	bool m_bShowChangeEditModeConf = false;
+	bool m_bCurWindowObjectList = false;
 private:
 	GameObject* m_pSelectedGameObject = nullptr;
 public:	

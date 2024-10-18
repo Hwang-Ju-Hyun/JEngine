@@ -51,6 +51,12 @@ public:
 	GLboolean GetLeftControlPressed()const;
 public:
 	glm::mat3 GetScreenToWorldMatFromMouse();	
-	bool IsPointInsideRectangle(glm::vec2 _pos, float _RecLeft, float _RecRight, float _RecTop, float _RecBottom);
+	glm::mat3 GetScreenToWorldMat(glm::vec2 _pos);
+public:
+	float GetRadianFromTwoVectors(glm::vec2 _vec1, glm::vec2 _vec2);	
+	void NormalizeVector(glm::vec2* _vec);
+public:
+	bool IsPointInsideRectangle(glm::vec2 _pos, float _RecLeft, float _RecRight, float _RecTop, float _RecBottom, bool _IsWorldCord = true);
+	bool IsPointInsideTriangle(glm::vec2 _pos, glm::vec2 _vertex1,glm::vec2 _vertex2,glm::vec2 _vertex3, bool _IsWorldCord = true);
 };
 
