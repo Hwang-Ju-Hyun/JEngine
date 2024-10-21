@@ -19,6 +19,7 @@ public:
 public:
 	bool Init();	
 public:
+	bool InitCircle();
 	bool InitTriangle();
 	bool InitRectangle();
 };

@@ -19,4 +19,6 @@ public:
 	virtual bool EditFromImgui();
 public:
 	GameObject* m_pOwner;
+public:
+	GameObject* GetOwner()const;
 };

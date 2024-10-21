@@ -6,12 +6,12 @@
         "Type": "Transform",
         "CompData": {
           "Pos": [
-            -351.0,
-            -236.0
+            -125.0,
+            -99.0
           ],
           "sca": [
-            43.0,
-            125.0
+            450.0,
+            450.0
           ],
           "Rot": [
             0.0,
@@ -22,108 +22,9 @@
       {
         "Type": "Sprite",
         "CompData": {
-          "RED": 0.936274528503418,
-          "GREEN": 0.936274528503418,
-          "BLUE": 0.009179189801216125,
-          "ALPHA": 0.5
-        }
-      }
-    ],
-    "Shader_Ref": 0,
-    "Model_Type": 0
-  },
-  {
-    "tempObject": 2,
-    "Components": [
-      {
-        "Type": "Transform",
-        "CompData": {
-          "Pos": [
-            545.0,
-            0.0
-          ],
-          "sca": [
-            123.0,
-            225.0
-          ],
-          "Rot": [
-            0.0,
-            0.0
-          ]
-        }
-      },
-      {
-        "Type": "Sprite",
-        "CompData": {
-          "RED": 0.41028890013694763,
-          "GREEN": 0.10467129945755005,
-          "BLUE": 0.970588207244873,
-          "ALPHA": 0.5
-        }
-      }
-    ],
-    "Shader_Ref": 0,
-    "Model_Type": 0
-  },
-  {
-    "tempObject": 3,
-    "Components": [
-      {
-        "Type": "Transform",
-        "CompData": {
-          "Pos": [
-            -900.0,
-            70.0
-          ],
-          "sca": [
-            500.0,
-            500.0
-          ],
-          "Rot": [
-            0.0,
-            0.0
-          ]
-        }
-      },
-      {
-        "Type": "Sprite",
-        "CompData": {
-          "RED": 0.7009804248809814,
-          "GREEN": 0.7009804248809814,
-          "BLUE": 0.7009804248809814,
-          "ALPHA": 0.5
-        }
-      }
-    ],
-    "Shader_Ref": 0,
-    "Model_Type": 0
-  },
-  {
-    "tempObject": 4,
-    "Components": [
-      {
-        "Type": "Transform",
-        "CompData": {
-          "Pos": [
-            0.0,
-            0.0
-          ],
-          "sca": [
-            100.0,
-            100.0
-          ],
-          "Rot": [
-            0.0,
-            0.0
-          ]
-        }
-      },
-      {
-        "Type": "Sprite",
-        "CompData": {
-          "RED": 0.7009804248809814,
-          "GREEN": 0.7009804248809814,
-          "BLUE": 0.7009804248809814,
+          "RED": 0.5,
+          "GREEN": 0.5,
+          "BLUE": 0.5,
           "ALPHA": 0.5
         }
       }

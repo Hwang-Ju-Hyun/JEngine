@@ -6,7 +6,8 @@ const int window_height = 900;
 enum MODEL_TYPE
 {
 	TRIANGLE = 0,
-	RECTANGLE = 1
+	RECTANGLE = 1,
+	CIRCLE = 2
 };
 
 typedef struct WorldMouseCursor

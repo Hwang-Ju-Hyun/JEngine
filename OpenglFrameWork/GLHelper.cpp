@@ -237,6 +237,14 @@ void GLHelper::NormalizeVector(glm::vec2* _vec)
     _vec->y /= length;
 }
 
+float GLHelper::GetDistanceFromTwoVertex(glm::vec2 _vertex1, glm::vec2 _vertex2,bool _IsWorldCord)
+{    
+    if(_IsWorldCord)
+        return std::sqrt(std::pow(std::fabs(_vertex2.x) - std::fabs(_vertex1.x), 2) + std::pow(std::fabs(_vertex2.y) - std::fabs(_vertex2.y), 2));
+    else    
+        return std::sqrt(std::pow(_vertex2.x - _vertex1.x, 2) + std::pow(_vertex2.y - _vertex1.y, 2));    
+}
+
 bool GLHelper::IsPointInsideRectangle(glm::vec2 _pos, float _RecLeft, float _RecRight, float _RecTop, float _RecBottom, bool _IsWorldCord)
 {
     glm::mat3 mat = GetScreenToWorldMat(_pos);        
@@ -256,30 +264,41 @@ bool GLHelper::IsPointInsideRectangle(glm::vec2 _pos, float _RecLeft, float _Rec
 bool GLHelper::IsPointInsideTriangle(glm::vec2 _pos, glm::vec2 _vertex1, glm::vec2 _vertex2, glm::vec2 _vertex3, bool _IsWorldCord)
 {
     glm::mat3 mat = GetScreenToWorldMat(_pos);
-    glm::vec2 position;
-    if (!_IsWorldCord)
-        position = { mat[2][0],mat[2][1] };
-    else
-        position = _pos;
+    glm::vec2 position = _IsWorldCord ? _pos : glm::vec2(mat[2][0], mat[2][1]);
 
-    glm::vec2 ortho_vector1 = { _vertex2.y - _vertex1.y,-_vertex2.x + _vertex1.x };
-    glm::vec2 ortho_vector2 = { _vertex3.y - _vertex2.y,-_vertex3.x + _vertex2.x };
-    glm::vec2 ortho_vector3 = { _vertex1.y - _vertex3.y,-_vertex1.x + _vertex3.x };
 
-    glm::vec2 point_vector1 = { position.x - _vertex1.x,position.y - _vertex1.y };
-    glm::vec2 point_vector2 = { position.x - _vertex2.x,position.y - _vertex2.y };
-    glm::vec2 point_vector3 = { position.x - _vertex3.x,position.y - _vertex3.y };
-        
+    float x1 = _vertex1.x, y1 = _vertex1.y;
+    float x2 = _vertex2.x, y2 = _vertex2.y;
+    float x3 = _vertex3.x, y3 = _vertex3.y;
 
-    float angle1 = std::acosf(GetRadianFromTwoVectors(ortho_vector1, point_vector1));
-    float angle2 = std::acosf(GetRadianFromTwoVectors(ortho_vector2, point_vector2));
-    float angle3 = std::acosf(GetRadianFromTwoVectors(ortho_vector3, point_vector3));
+    glm::vec2 ortho_v1 = { y2 - y1, -x2 + x1 };
+    glm::vec2 ortho_v2 = { y3 - y2, -x3 + x2 };
+    glm::vec2 ortho_v3 = { y1 - y3, -x1 + x3 };
 
-    if (angle1 >= 0 && angle2 >= 0 && angle3 >= 0)
-    {
+
+    glm::vec2 PointAndOrtho_v1 = { position.x - x1, position.y - y1 };
+    glm::vec2 PointAndOrtho_v2 = { position.x - x2, position.y - y2 };
+    glm::vec2 PointAndOrtho_v3 = { position.x - x3, position.y - y3 };
+
+
+    float dot1 = glm::dot(ortho_v1, PointAndOrtho_v1);
+    float dot2 = glm::dot(ortho_v2, PointAndOrtho_v2);
+    float dot3 = glm::dot(ortho_v3, PointAndOrtho_v3);
+    
+    if (dot1 <= 0 && dot2 <= 0 && dot3 <= 0)
         return true;
-    }
     return false;
+}
+
+bool GLHelper::IsPointInsideCircle(glm::vec2 _pointPos, glm::vec2 _circlePos, float _radius, bool _IsWorldCord)
+{
+    glm::mat3 mat = GetScreenToWorldMat(_pointPos);
+    glm::vec2 position = _IsWorldCord ? _pointPos : glm::vec2(mat[2][0], mat[2][1]);
+
+    if (_radius < GetDistanceFromTwoVertex(position,_circlePos, _IsWorldCord))
+        return false;
+
+    return true;
 }
 
 

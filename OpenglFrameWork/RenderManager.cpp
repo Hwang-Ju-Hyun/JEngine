@@ -71,7 +71,7 @@ bool RenderManager::Draw()
 			if (comp.first == "Sprite")
 			{
 				Sprite* spr = static_cast<Sprite*>(comp.second);
-				GLint Color_Location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "uOutColor");				
+				GLint Color_Location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "ourTexture");				
 				float red(spr->GetColor()[0]), blue(spr->GetColor()[1]), green(spr->GetColor()[2]), alpha(spr->GetColor()[3]);
 				if (Color_Location <= -1)
 					std::cerr << "Failed to get uOurColor uniform location" << std::endl;

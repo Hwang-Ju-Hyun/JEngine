@@ -85,6 +85,7 @@ void Serializer::SaveGameObject(const std::string& _path)
 		{
 			json js_obj;
 			js_obj["tempObject"] = go_obj->GetID();
+			int a = go_obj->GetID();
 			for (auto comp : go_obj->GetAllComponentOfObj())
 			{
 				BaseComponent* c = comp.second;

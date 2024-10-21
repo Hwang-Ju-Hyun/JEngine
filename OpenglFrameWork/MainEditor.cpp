@@ -71,8 +71,17 @@ void MainEditor::TopBar_GameObject()
                 }
                 if (m_bObjectCreateBtn && ImGui::Button("Create GameObject"))
                 {                 
-                    auto id = GameObjectManager::GetInstance()->GetAllObject().size();                    
-                    m_pSelectedGameObject = new GameObject("tempObject", id++);
+                    auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
+
+                    int object_last_id = -1;
+                    for (int i = 0; i < all_objs.size(); i++)
+                    {
+                        if (all_objs[i]->GetName() == "tempObject")
+                        {
+                            object_last_id = all_objs[i]->GetID() + 1;
+                        }
+                    }                                 
+                    m_pSelectedGameObject = new GameObject("tempObject", object_last_id++);
                     if (m_bCheckBoxTransform)
                     {
                         m_pSelectedGameObject->AddComponent("Transform", new Transform(m_pSelectedGameObject));
@@ -112,13 +121,14 @@ void MainEditor::TopBar_GameObject()
 
 void MainEditor::TopBar_Save()
 {
+    auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
     if (ImGui::BeginMainMenuBar())
     {
 
         std::string s;
         s.reserve(200);
 
-        for (int i = 0; i < 200; i++)
+        for (int i = 0; i < 230; i++)
             s.append(" ");
 
         ImGui::Text(s.c_str());
@@ -130,7 +140,24 @@ void MainEditor::TopBar_Save()
             {
                 ImGui::Text("Are you sure to save?");
                 if (ImGui::Button("YES"))
-                {                    
+                {                 
+                    for (int i = 0; i < all_objs.size(); i++)
+                    {
+                        if (all_objs[i]->GetName() == "tempObject")
+                        {
+                            static int object_id = 1;
+                            all_objs[i]->SetID(object_id++);
+                        }                        
+                    }
+                        
+                    for (int i = 0; i < all_objs.size(); i++)
+                    {
+                        if (all_objs[i]->GetName() == "WALL")
+                        {
+                            static int wall_id = 1;
+                            all_objs[i]->SetID(wall_id++);
+                        }
+                    }
                     Serializer::GetInstance()->SaveGameObject("json/GameObject/GameObject.json");
                     Serializer::GetInstance()->SaveWall("json/GameObject/Wall.json");
                     m_bShowSaveConf = false;
@@ -196,7 +223,7 @@ void MainEditor::SelectedObjectWindow()
             if (ImGui::Button("YES"))
             {
                 auto obj_id = m_pSelectedGameObject->GetID();
-                GameObjectManager::GetInstance()->RemoveObject(obj_id);
+                GameObjectManager::GetInstance()->RemoveObject(obj_id);                
                 m_pSelectedGameObject = nullptr;
                 m_bShowDeleteConf = false;
             }
@@ -247,44 +274,68 @@ void MainEditor::SelectedObjectByMouse()
 {    
     auto all_objs = GameObjectManager::GetInstance()->GetAllObject();    
     auto L_mouse_trigger = GLHelper::GetInstance()->GetLeftMouseTriggered();
-    auto screen_mouse_pos = GLHelper::GetInstance()->GetMouseCursorPosition();    
+    auto screen_mouse_pos = GLHelper::GetInstance()->GetMouseCursorPosition();
+    auto a =GLHelper::GetInstance()->GetScreenToWorldMat(screen_mouse_pos);
+    glm::vec2 temp = { a[2][0],a[2][1] };
+    std::cout << temp.x << " , " << temp.y << std::endl;
+    auto HelperInst = GLHelper::GetInstance();
     for (const auto& obj : all_objs)
     {       
         Transform* trans = dynamic_cast<Transform*>(obj->FindComponent("Transform"));
         if (trans!=nullptr)
-        {                    
-            float left   = trans->GetPosition().x - trans->GetScale().x / 2.f;
-            float right  = trans->GetPosition().x + trans->GetScale().x / 2.f;
-            float top    = trans->GetPosition().y + trans->GetScale().y / 2.f;
-            float bottom = trans->GetPosition().y - trans->GetScale().y / 2.f;                        
-            glm::vec2 vertex;
-                            
-            if (!m_bSelectedObjByMouse && GLHelper::GetInstance()->IsPointInsideRectangle(screen_mouse_pos, left,right,top,bottom,false));
-            {
-                m_pTransByMouseSelect = static_cast<Transform*>(obj->FindComponent("Transform"));
-                if (L_mouse_trigger)
+        {                                                                   
+            if(!m_bSelectedObjByMouse)
+            {   
+                bool mouse_inside_obj = false;
+
+                switch (obj->GetModelType())
                 {
-
-                    std::cout << "Pos : " << trans->GetPosition().x << "," << trans->GetPosition().y << std::endl;
-                    std::cout << "left : " << left << std::endl;
-                    std::cout << "right : " << right << std::endl;
-                    std::cout << "top : " << top << std::endl;
-                    std::cout << "bottom : " << bottom << std::endl;
-                    std::cout << std::endl;
-
-                    if (m_pTransByMouseSelect == nullptr)
-                    {
-                        std::cerr << "Error : Object Can't find Transform Component - MainEditor:: SelectedObjectByMouse" << std::endl;
-                        return;
-                    }
-                    m_bSelectedObjByMouse = true;
+                case MODEL_TYPE::TRIANGLE:
+                {
+                    glm::vec2 tri_top = { trans->GetPosition().x - (trans->GetScale().x / 2.f), trans->GetPosition().y + (trans->GetScale().y / 2.f) };
+                    glm::vec2 tri_bottom_left = { trans->GetPosition().x - (trans->GetScale().x / 2.f) ,trans->GetPosition().y - (trans->GetScale().y / 2.f) };
+                    glm::vec2 tri_bottom_right = { trans->GetPosition().x + (trans->GetScale().x / 2.f) ,trans->GetPosition().y - (trans->GetScale().y / 2.f) };                    
+                    mouse_inside_obj = HelperInst->IsPointInsideTriangle(screen_mouse_pos, tri_top, tri_bottom_left, tri_bottom_right, false);
+                    break;
+                }                    
+                case MODEL_TYPE::RECTANGLE:
+                {
+                    float rec_left = trans->GetPosition().x - trans->GetScale().x / 2.f;
+                    float rec_right = trans->GetPosition().x + trans->GetScale().x / 2.f;
+                    float rec_top = trans->GetPosition().y + trans->GetScale().y / 2.f;
+                    float rec_bottom = trans->GetPosition().y - trans->GetScale().y / 2.f;
+                    mouse_inside_obj = HelperInst->IsPointInsideRectangle(screen_mouse_pos, rec_left, rec_right, rec_top, rec_bottom, false);
+                    break;
                 }
-            }
+                case MODEL_TYPE::CIRCLE:
+                {
+                    glm::vec2 circle_pos = trans->GetPosition();
+                    float radius = trans->GetScale().x;
+                    mouse_inside_obj = HelperInst->IsPointInsideCircle(screen_mouse_pos,circle_pos,radius, false);
+                }
+                default:
+                    break;
+                }
+
+                if (mouse_inside_obj)
+                {
+                    m_pTransByMouseSelect = dynamic_cast<Transform*>(obj->FindComponent("Transform"));
+                    if (L_mouse_trigger)
+                    {
+                        if (m_pTransByMouseSelect == nullptr)
+                        {
+                            std::cerr << "Error : Object Can't find Transform Component - MainEditor:: SelectedObjectByMouse" << std::endl;
+                            return;
+                        }
+                        m_bSelectedObjByMouse = true;
+                    }
+                }                
+            }   
         }                
     }           
     if (m_bSelectedObjByMouse)
-    {                               
-        m_pTransByMouseSelect->SetPosition({m_vWorldMousePos.x,m_vWorldMousePos.y});
+    {                     
+        m_pTransByMouseSelect->SetPosition({ m_vWorldMousePos.x,m_vWorldMousePos.y });
     }    
     if (!L_mouse_trigger)
     {                        
@@ -306,8 +357,6 @@ void MainEditor::Update()
 {
     auto ScreenToWorld = GLHelper::GetInstance()->GetScreenToWorldMatFromMouse();
     m_vWorldMousePos = { ScreenToWorld[2][0],ScreenToWorld[2][1] };            
-    
-    std::cout <<"World Mouse Pos : "<< m_vWorldMousePos.x << "," << m_vWorldMousePos.y << std::endl;
 
     switch (GetCurrentEditMode())
     {

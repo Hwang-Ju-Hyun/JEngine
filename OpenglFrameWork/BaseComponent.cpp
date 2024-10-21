@@ -3,6 +3,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "GameObject.h"
+#include <iostream>
 
 BaseComponent::BaseComponent(GameObject* _owner)
 	:m_pOwner(_owner)
@@ -35,4 +36,14 @@ bool BaseComponent::EditFromImgui()
 		return true;
 	}
 	return false;
+}
+
+GameObject* BaseComponent::GetOwner() const
+{
+	if (m_pOwner == nullptr)
+	{
+		std::cerr << "Error : Owner is nullptr - BaseComponent::GetOwner" << std::endl;
+		return nullptr;
+	}
+	return m_pOwner;
 }

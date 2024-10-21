@@ -44,7 +44,7 @@ GLModel* ModelManager::FindModel(const std::string& _ModelName)
 
 GLModel* ModelManager::FindModel(MODEL_TYPE _eModelType)
 {
-	for (int i = 0; i <= MODEL_TYPE::RECTANGLE; i++)
+	for (int i = 0; i <= MODEL_TYPE::CIRCLE; i++)
 	{
 		if (m_vecModel[i]->GetModelType() == _eModelType)
 		{
@@ -55,8 +55,33 @@ GLModel* ModelManager::FindModel(MODEL_TYPE _eModelType)
 
 bool ModelManager::Init()
 {	
-	if(!InitTriangle()||!InitRectangle())
+	if(!InitTriangle()||!InitRectangle()||!InitCircle())
 		return false;	
+	return true;
+}
+
+bool ModelManager::InitCircle()
+{
+	std::string name = "Circle";
+	int slice = 300;
+	std::vector<glm::vec3> vertices;
+	vertices.push_back({ glm::vec3{0.f,0.f,0.f} });//pivot
+	float angle = (2.0f * 3.141592f) / slice;
+	for (int i = 1; i < slice + 2; i++)
+	{
+		vertices.push_back({ glm::vec2{ cos(angle * (i - 1)),sin(angle * (i - 1))},0.f });
+	}
+	GLenum type = GL_TRIANGLE_FAN;
+
+	GLModel* model = new GLModel;
+	model->CreateModel(type, vertices, name, MODEL_TYPE::CIRCLE);
+	if (model == nullptr)
+	{
+		std::cerr << "Error : model is nulltpr - ModelManager::InitCircle" << std::endl;
+		return false;
+	}
+	AddModel(model);
+
 	return true;
 }
 
@@ -70,6 +95,16 @@ bool ModelManager::InitTriangle()
 		glm::vec3{ 0.5f,-0.5f,0.0f },//Bottom Right
 		glm::vec3{0.5f,0.5f,0.0f}//Top Right
 	};
+	vertices =
+	{
+		glm::vec3{0.f,0.f,0.f},//Bottom Left
+		glm::vec3{0.f,1.f,0.f},//Top Left
+		glm::vec3{1.f,0.f,0.f},//Bottom Right
+		glm::vec3{1.f,1.f,0.f} //Top Right
+	};
+
+
+
 	GLenum type = GL_TRIANGLES;	
 
 	GLModel* model = new GLModel;
@@ -94,6 +129,15 @@ bool ModelManager::InitRectangle()
 		glm::vec3{ 0.5f,-0.5f,0.0f },//Bottom Right
 		glm::vec3{0.5f,0.5f,0.0f}//Top Right
 	};
+
+	vertices =
+	{
+		glm::vec3{0.f,0.f,0.f},//Bottom Left
+		glm::vec3{0.f,1.f,0.f},//Top Left
+		glm::vec3{1.f,0.f,0.f},//Bottom Right
+		glm::vec3{1.f,1.f,0.f} //Top Right
+	};
+
 	std::vector<unsigned int> indices =
 	{
 		1,0,2,  //First Triangle

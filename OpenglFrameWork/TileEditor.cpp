@@ -4,6 +4,7 @@
 #include "GLHelper.h"
 #include "GameObject.h"
 #include "Transform.h"
+#include "GameObjectManager.h"
 #include "Sprite.h"
 
 TileEditor::TileEditor()
@@ -48,11 +49,21 @@ void TileEditor::Update()
     if (L_mouse_Trigger)
     {
         if (!m_aWallGridCord[ScreenGridX][ScreenGridY])
-        {            
-            static int wall_id = 2;
+        {                  
+            auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
+
+            int wall_last_id=-1;
+
+            for (int i = 0; i <all_objs.size(); i++)
+            {       
+                if (all_objs[i]->GetName() == "WALL")
+                {
+                    wall_last_id = all_objs[i]->GetID()+1;
+                }
+            }            
             GameObject* wall_obj=nullptr;
             
-            wall_obj = new GameObject("WALL", wall_id++);            
+            wall_obj = new GameObject("WALL", wall_last_id++);
             wall_obj->AddComponent("Transform", new Transform(wall_obj));
             wall_obj->AddComponent("Sprite", new Sprite(wall_obj));
             
