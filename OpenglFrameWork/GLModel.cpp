@@ -125,19 +125,46 @@ void GLModel::CreateModel(GLenum _PrimitveType, std::vector<glm::vec3> _vertices
 
 	SetModelType(_eModelType);
 
+	auto VAO = GetVAO();
+	//1개만 만들겠다
+	glGenVertexArrays(1, &VAO);
+	//가장 최근 vao로 Opengl context에 바인딩
+	glBindVertexArray(VAO);
+	if (VAO <= 0)
+	{
+		std::cerr << "Error : VAO Fail - ModelManager::InitTriangle" << std::endl;
+		return;
+	}
+	//VBO를 만들겠다 
+	//VBO를 1개 만들겠다	
+	auto VBO = GetVBO();
+	glGenBuffers(1, &VBO);
+	//GL_ARRAY_BUFFER라는 스탠드에,VBO라는 책(또는 아무거나)을 바인딩(연결)   
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-
-
-
-
-
-
-
-
-
-
-
+	if (VBO <= 0)
+	{
+		std::cerr << "Error : VBO Fail - ModelManager::InitTriangle" << std::endl;
+		return ;
+	}
 	
+	// glBufferData는 현재 책(물건이) 어떤 정보를 가지고 있는지 설정
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * _vertices.size(), &_vertices[0], GL_STATIC_DRAW);
+
+	//밑의 함수에서는 0번째 location을 vao의 0번째 attribute에 적용!
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (void*)0);
+
+	glEnableVertexAttribArray(0);	
+
+
+
+
+
+
+
+
+
+
 
 	unsigned int texture;
 	glGenTextures(1, &texture);
@@ -163,80 +190,10 @@ void GLModel::CreateModel(GLenum _PrimitveType, std::vector<glm::vec3> _vertices
 	stbi_image_free(data);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	auto VAO = GetVAO();
-	//1개만 만들겠다
-	glGenVertexArrays(1, &VAO);
-	//가장 최근 vao로 Opengl context에 바인딩
-	glBindVertexArray(VAO);
-	if (VAO <= 0)
-	{
-		std::cerr << "Error : VAO Fail - ModelManager::InitTriangle" << std::endl;
-		return;
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	//VBO를 만들겠다 
-	//VBO를 1개 만들겠다	
-	auto VBO = GetVBO();
-	glGenBuffers(1, &VBO);
-	//GL_ARRAY_BUFFER라는 스탠드에,VBO라는 책(또는 아무거나)을 바인딩(연결)   
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-	if (VBO <= 0)
-	{
-		std::cerr << "Error : VBO Fail - ModelManager::InitTriangle" << std::endl;
-		return ;
-	}
-	
-	// glBufferData는 현재 책(물건이) 어떤 정보를 가지고 있는지 설정
-	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * _vertices.size(), &_vertices[0], GL_STATIC_DRAW);
-
-	//밑의 함수에서는 0번째 location을 vao의 0번째 attribute에 적용!
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GL_FLOAT), (void*)0);
-
-	glEnableVertexAttribArray(0);	
-
-
-
-
-
-
-
-
-
-
-
-
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(2);
-
+	glBindTexture(GL_TEXTURE_2D, texture);
+	
 
 
 
@@ -268,8 +225,7 @@ void GLModel::CreateModel(GLenum _PrimitveType, std::vector<glm::vec3> _vertices
 	SetVBO(VBO);
 	SetVerticesCnt(_vertices.size());
 
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glBindVertexArray(VAO);	
+	
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -288,7 +244,7 @@ void GLModel::CreateModel(GLenum _PrimitveType, std::vector<glm::vec3> _vertices
 	
 
 
-	return;
+	return;	
 }
 
 void GLModel::Draw()

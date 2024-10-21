@@ -91,17 +91,18 @@ bool ModelManager::InitTriangle()
 	std::vector<glm::vec3> vertices =
 	{
 		glm::vec3{ -0.5f,-0.5f,0.0f},//Bottom Left
+		glm::vec3{0.f,0.f,0.f},//Bottom Left - textrue
+
+
 		glm::vec3{ -0.5f,0.5f,0.0f },//Top Left
+		glm::vec3{0.f,1.f,0.f},//Top Left - texture
+
 		glm::vec3{ 0.5f,-0.5f,0.0f },//Bottom Right
-		glm::vec3{0.5f,0.5f,0.0f}//Top Right
-	};
-	vertices =
-	{
-		glm::vec3{0.f,0.f,0.f},//Bottom Left
-		glm::vec3{0.f,1.f,0.f},//Top Left
-		glm::vec3{1.f,0.f,0.f},//Bottom Right
-		glm::vec3{1.f,1.f,0.f} //Top Right
-	};
+		glm::vec3{1.f,0.f,0.f},//Bottom Right - texture
+
+		glm::vec3{0.5f,0.5f,0.0f},//Top Right
+		glm::vec3{1.f,1.f,0.f} //Top Right - texture
+	};	
 
 
 
@@ -125,18 +126,18 @@ bool ModelManager::InitRectangle()
 	std::vector<glm::vec3> vertices =
 	{
 		glm::vec3{ -0.5f,-0.5f,0.0f},//Bottom Left
-		glm::vec3{ -0.5f,0.5f,0.0f },//Top Left
-		glm::vec3{ 0.5f,-0.5f,0.0f },//Bottom Right
-		glm::vec3{0.5f,0.5f,0.0f}//Top Right
-	};
+		glm::vec3{0.f,0.f,0.f},//Bottom Left - textrue
 
-	vertices =
-	{
-		glm::vec3{0.f,0.f,0.f},//Bottom Left
-		glm::vec3{0.f,1.f,0.f},//Top Left
-		glm::vec3{1.f,0.f,0.f},//Bottom Right
-		glm::vec3{1.f,1.f,0.f} //Top Right
-	};
+
+		glm::vec3{ -0.5f,0.5f,0.0f },//Top Left
+		glm::vec3{0.f,1.f,0.f},//Top Left - texture
+
+		glm::vec3{ 0.5f,-0.5f,0.0f },//Bottom Right
+		glm::vec3{1.f,0.f,0.f},//Bottom Right - texture
+
+		glm::vec3{0.5f,0.5f,0.0f},//Top Right
+		glm::vec3{1.f,1.f,0.f} //Top Right - texture
+	};	
 
 	std::vector<unsigned int> indices =
 	{
