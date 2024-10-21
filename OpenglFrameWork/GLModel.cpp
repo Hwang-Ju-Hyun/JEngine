@@ -152,7 +152,7 @@ void GLModel::CreateModel(GLenum _PrimitveType, std::vector<glm::vec3> _vertices
 	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * _vertices.size(), &_vertices[0], GL_STATIC_DRAW);
 
 	//밑의 함수에서는 0번째 location을 vao의 0번째 attribute에 적용!
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GL_FLOAT), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GL_FLOAT), (void*)0);
 
 	glEnableVertexAttribArray(0);	
 
@@ -174,10 +174,10 @@ void GLModel::CreateModel(GLenum _PrimitveType, std::vector<glm::vec3> _vertices
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
+	
 	// 텍스처 로드 및 생성
 	int width, height, nrChannels;
-	unsigned char* data = stbi_load("container.jpg", &width, &height, &nrChannels, 0);
+	unsigned char* data = stbi_load("../Extern/Assets/container.jpg", &width, &height, &nrChannels, 0);
 	if (data)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
@@ -188,9 +188,9 @@ void GLModel::CreateModel(GLenum _PrimitveType, std::vector<glm::vec3> _vertices
 		std::cout << "Failed to load texture" << std::endl;
 	}
 	stbi_image_free(data);
-
-
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	
+	
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GL_FLOAT), (void*)(3 * sizeof(GL_FLOAT)));
 	glEnableVertexAttribArray(2);
 	glBindTexture(GL_TEXTURE_2D, texture);
 	

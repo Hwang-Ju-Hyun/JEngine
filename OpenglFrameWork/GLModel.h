@@ -57,7 +57,7 @@ public:
 	GLuint GetVBO()const;
 	GLuint GetEBO()const;
 public:
-	void CreateModel(GLenum _PrimitveType, std::vector<glm::vec3> _vertices, const std::string& _name,enum MODEL_TYPE _eModelType,GLboolean _ebo = GL_FALSE, std::vector<unsigned int>_indices = {});
+	void CreateModel(GLenum _PrimitiveType, std::vector<glm::vec3> _vertices, const std::string& _name,enum MODEL_TYPE _eModelType,GLboolean _ebo = GL_FALSE, std::vector<unsigned int>_indices = {});
 public:
 	void Draw();
 public:	
