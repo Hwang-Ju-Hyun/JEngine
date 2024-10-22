@@ -1,1 +1,37 @@
-null
+[
+  {
+    "WALL": 1,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            0.0,
+            0.0
+          ],
+          "sca": [
+            100.0,
+            100.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.5,
+          "GREEN": 0.5,
+          "BLUE": 0.5,
+          "ALPHA": 0.5,
+          "TextureName": "woodtile",
+          "TexturePath": "../Extern/Assets/container.jpg"
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  }
+]

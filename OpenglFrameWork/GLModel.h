@@ -26,6 +26,7 @@ private:
 	GLuint m_iVBO = 0;
 	GLuint m_iEBO = 0;
 	GLuint m_iShader = 0;
+	unsigned int m_iTexture = 0;
 	int m_iVerticesCnt = -1;
 	int m_iIndicesCnt = -1;
 	enum MODEL_TYPE m_eModelType = TRIANGLE;
@@ -50,9 +51,11 @@ public:
 	void SetPrimitiveType(GLenum _PrimitiveType);
 	GLenum GetPrimitiveType()const;
 public:
+	void SetTexture(unsigned int _texture);
 	void SetVAO(GLuint _vao);
 	void SetVBO(GLuint _vbo);
 	void SetEBO(GLuint _ebo);
+	unsigned int GetTexture()const;
 	GLuint GetVAO()const;	
 	GLuint GetVBO()const;
 	GLuint GetEBO()const;

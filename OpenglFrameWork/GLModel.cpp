@@ -3,7 +3,7 @@
 #include <iostream>
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
+#include "imgui_impl_opengl3.h" 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
@@ -87,6 +87,11 @@ GLenum GLModel::GetPrimitiveType() const
 	return m_ePrimitive_type;
 }
 
+void GLModel::SetTexture(unsigned int _texture)
+{
+	m_iTexture = _texture;
+}
+
 void GLModel::SetVAO(GLuint _vao)
 {
 	m_iVAO = _vao;
@@ -100,6 +105,11 @@ void GLModel::SetVBO(GLuint _vbo)
 void GLModel::SetEBO(GLuint _ebo)
 {
 	m_iEBO = _ebo;
+}
+
+unsigned int GLModel::GetTexture() const
+{
+	return m_iTexture;
 }
 
 GLuint GLModel::GetVAO() const
@@ -152,58 +162,16 @@ void GLModel::CreateModel(GLenum _PrimitveType, std::vector<glm::vec3> _vertices
 	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * _vertices.size(), &_vertices[0], GL_STATIC_DRAW);
 
 	//밑의 함수에서는 0번째 location을 vao의 0번째 attribute에 적용!
+	//coord vertex
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GL_FLOAT), (void*)0);
-
 	glEnableVertexAttribArray(0);	
 
 
-
-
-
-
-
-
-
-
-
-	unsigned int texture;
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	// 텍스처 wrapping/filtering 옵션 설정(현재 바인딩된 텍스처 객체에 대해)
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	
-	// 텍스처 로드 및 생성
-	int width, height, nrChannels;
-	unsigned char* data = stbi_load("../Extern/Assets/container.jpg", &width, &height, &nrChannels, 0);
-	if (data)
-	{
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else
-	{
-		std::cout << "Failed to load texture" << std::endl;
-	}
-	stbi_image_free(data);
-	
-	
+	//texture vertex
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GL_FLOAT), (void*)(3 * sizeof(GL_FLOAT)));
 	glEnableVertexAttribArray(2);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	
 
 
-
-
-
-
-
-
-
-	
 	if (_ebo)
 	{
 		auto EBO = GetEBO();
@@ -225,25 +193,11 @@ void GLModel::CreateModel(GLenum _PrimitveType, std::vector<glm::vec3> _vertices
 	SetVBO(VBO);
 	SetVerticesCnt(_vertices.size());
 
-	
-
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	
 
-
-
-
-
-
-
-
-
-
-
 	
-
-
 	return;	
 }
 

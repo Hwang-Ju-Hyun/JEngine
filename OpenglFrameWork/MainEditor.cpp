@@ -14,6 +14,7 @@
 #include "imgui_impl_opengl3.h"
 #include "Sprite.h"
 #include "GLHelper.h"
+#include "TextureResource.h"
 #include "TileEditor.h"
 
 //에디터에서 new level을 구현할 시 selected 꼭 nullptr로 만들자
@@ -196,7 +197,7 @@ void MainEditor::SelectedObjectWindow()
         GLModel* model= m_pSelectedGameObject->GetModel();
         GLModel* NewModel = nullptr;
         Transform* transform = static_cast<Transform*>(m_pSelectedGameObject->FindComponent("Transform"));
-        Sprite* sprite = static_cast<Sprite*>(m_pSelectedGameObject->FindComponent("Sprite"));
+        Sprite* sprite = static_cast<Sprite*>(m_pSelectedGameObject->FindComponent("Sprite"));        
         if (transform)
         {
             transform->EditFromImgui();            
@@ -212,7 +213,8 @@ void MainEditor::SelectedObjectWindow()
             {
                 m_pSelectedGameObject->SetModelType(NewModel->GetModelType());                
             }
-        }
+        }  
+
         if (ImGui::Button("DeleteObject"))
         {
             m_bShowDeleteConf = true;
@@ -275,9 +277,13 @@ void MainEditor::SelectedObjectByMouse()
     auto all_objs = GameObjectManager::GetInstance()->GetAllObject();    
     auto L_mouse_trigger = GLHelper::GetInstance()->GetLeftMouseTriggered();
     auto screen_mouse_pos = GLHelper::GetInstance()->GetMouseCursorPosition();
-    auto a =GLHelper::GetInstance()->GetScreenToWorldMat(screen_mouse_pos);
-    glm::vec2 temp = { a[2][0],a[2][1] };
-    std::cout << temp.x << " , " << temp.y << std::endl;
+
+
+    //auto a =GLHelper::GetInstance()->GetScreenToWorldMat(screen_mouse_pos);
+    //glm::vec2 temp = { a[2][0],a[2][1] };
+    //std::cout << temp.x << " , " << temp.y << std::endl;
+    
+    
     auto HelperInst = GLHelper::GetInstance();
     for (const auto& obj : all_objs)
     {       

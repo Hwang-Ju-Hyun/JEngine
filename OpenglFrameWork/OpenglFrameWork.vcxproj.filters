@@ -90,6 +90,15 @@
     <Filter Include="Editor\TileEditor">
       <UniqueIdentifier>{f333a234-0804-4366-b8e6-9eb8edc37397}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager\ResourceMgr">
+      <UniqueIdentifier>{a9939ab0-c765-4290-ad66-2c4849674400}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{10cad99d-600b-46e3-8e82-c01bc70449fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Texture">
+      <UniqueIdentifier>{1dd20298-de76-41fc-b526-8dbbe4b73f4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -184,6 +193,15 @@
     </ClCompile>
     <ClCompile Include="TileEditor.cpp">
       <Filter>Editor\TileEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Manager\ResourceMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureResource.cpp">
+      <Filter>Resource\Texture</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -288,6 +306,15 @@
     </ClInclude>
     <ClInclude Include="TileEditor.h">
       <Filter>Editor\TileEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Manager\ResourceMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureResource.h">
+      <Filter>Resource\Texture</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -111,10 +111,13 @@
     <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="Registry.cpp" />
     <ClCompile Include="RenderManager.cpp" />
+    <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Serializer.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Stage01_Lvl.cpp" />
+    <ClCompile Include="TextureResource.cpp" />
     <ClCompile Include="TileEditor.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
@@ -132,6 +135,8 @@
     <ClInclude Include="GLModel.h" />
     <ClInclude Include="GLShader.h" />
     <ClInclude Include="header.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="single.h" />
     <ClInclude Include="IMGUI\imconfig.h" />
     <ClInclude Include="IMGUI\imgui.h" />
@@ -151,6 +156,7 @@
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Stage01_Lvl.h" />
+    <ClInclude Include="TextureResource.h" />
     <ClInclude Include="TileEditor.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>

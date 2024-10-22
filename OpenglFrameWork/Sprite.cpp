@@ -2,10 +2,15 @@
 #include <iostream>
 #include "GameObject.h"
 #include "GameObjectManager.h"
+#include "TextureResource.h"
 #include "json.hpp"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "GL/glew.h"
+#include "ResourceManager.h"
+#include "Resource.h"
+
 
 Sprite::Sprite(GameObject* _owner)
 	:BaseComponent(_owner)
@@ -19,14 +24,24 @@ Sprite::~Sprite()
 
 
 void Sprite::Update()
-{
+{				
 	
+}
+
+void Sprite::SetTexture(TextureResource* _texture)
+{
+	m_pTexture = _texture;
+}
+
+TextureResource* Sprite::GetTexture() const
+{
+	return m_pTexture;
 }
 
 BaseRTTI* Sprite::CreateSpriteComponent()
 {
 	GameObject* last_obj = GameObjectManager::GetInstance()->GetLastObject();
-	BaseRTTI* p = last_obj->AddComponent("Sprite", new Sprite(last_obj));
+	BaseRTTI* p = last_obj->AddComponent("Sprite", new Sprite(last_obj));		
 	if (p == nullptr)
 	{
 		std::cerr << "Error : BaseRTTI is nullptr - Sprite::CreateSpriteComponent" << std::endl;
@@ -51,6 +66,16 @@ void Sprite::LoadFromJson(const json& str)
 		
 		auto alpha = comp_data->find("ALPHA");
 		m_vColor[3] = alpha->begin().value();
+
+		auto texture_name = comp_data->find("TextureName");
+		auto texture_path = comp_data->find("TexturePath");
+
+		if (texture_name != comp_data->end() && texture_path != comp_data->end())
+		{
+			auto resource = ResourceManager::GetInstance()->GetAndLoad(texture_name.value(), texture_path.value());
+			//resource = static_cast<TextureResource*>(resource);
+			//SetTexture((TextureResource*)resource);
+		}
 	}
 }
 
@@ -69,13 +94,43 @@ json Sprite::SaveToJson(const json& str)
 	return data;
 }
 
+TextureResource* Sprite::GetTextureFromImGui() const
+{		
+	auto resources = ResourceManager::GetInstance()->GetAllResources();	
+	std::string str=m_pOwner->GetName() + std::to_string(m_pOwner->GetID());
+	if (ImGui::Begin(str.c_str()))
+	{
+		if (ImGui::TreeNode("Texture"))
+		{
+			for (auto iter = resources.begin(); iter != resources.end(); iter++)
+			{
+				if (ImGui::Button(iter->second->GetName().c_str()))
+				{										
+					ImGui::TreePop();
+					ImGui::End();
+					return (TextureResource*)iter->second;
+				}
+			}
+			if (ImGui::Button("No Texture"))
+			{
+				ImGui::TreePop();
+				ImGui::End();
+				return nullptr;
+			}
+			ImGui::TreePop();
+		}
+		ImGui::End();
+	}
+	return nullptr;
+}
+
 bool Sprite::EditFromImgui()
-{
+{	
 	if (BaseComponent::EditFromImgui())
 	{
-		ImGui::InputFloat4("Color", &m_vColor[0]);
-		ImGui::SliderFloat4("Color", &m_vColor[0], 0.0f, 1.f);//요거이 질문
-		ImGui::ColorEdit3("Color", (float*)&m_vColor);
+		ImGui::InputFloat4("Color", &m_vColor[0]);		
+		ImGui::ColorEdit3("Color", (float*)&m_vColor);	
+		m_pTexture=GetTextureFromImGui();
 	}
 	return true;
 }
