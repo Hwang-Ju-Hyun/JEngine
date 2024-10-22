@@ -58,8 +58,7 @@ GameObject* Serializer::LoadGameObject(const std::string& _path, unsigned int _i
 				if (p != nullptr)
 				{					
 					p->LoadFromJson(element);
-				}
-					
+				}					
 			}
 			auto shader_ref = item.find("Shader_Ref");
 			go_obj->SetShaderRef(shader_ref->begin().value());

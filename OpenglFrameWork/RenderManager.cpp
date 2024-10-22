@@ -42,61 +42,76 @@ bool RenderManager::Update()
 
 bool RenderManager::Draw()
 {
-	glClear(GL_COLOR_BUFFER_BIT);
-	auto shaders = ShaderManager::GetInstance()->GetAllShader();	
-	auto objects = GameObjectManager::GetInstance()->GetAllObject();
-	auto models = ModelManager::GetInstance()->GetAllModel();
-	auto comps = ComponentManager::GetInstance()->GetAllComponents();
-	
-	for (auto obj : objects)
-	{				
-		auto shader_ref = obj->GetShaderRef();				
-				
-		shaders[shader_ref].Use();				
-		
-		auto obj_comps=obj->GetAllComponentOfObj();
+    glClear(GL_COLOR_BUFFER_BIT);
+    auto shaders = ShaderManager::GetInstance()->GetAllShader();    
+    auto objects = GameObjectManager::GetInstance()->GetAllObject();
 
-		for (auto comp : obj_comps)
-		{
-			if (comp.first == "Transform")
-			{
-				Transform* trs = static_cast<Transform*>(comp.second);
-				//유니폼값의 주소를 리턴
-				GLint Model_To_NDC_Location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "uModelToNDC");
-				if (Model_To_NDC_Location <= -1)
-					std::cerr << "Failed to get uModelToNDC uniform location" << std::endl;
-				else
-					glUniformMatrix3fv(Model_To_NDC_Location, 1/*전달할 유니폼 갯수*/, GL_FALSE/*전치? 여부*/, glm::value_ptr(trs->GetModelToNDC())/*실제로 전달할 변수의 포인터(적용될 행렬)*/);				
-			}
-			if (comp.first == "Sprite")
-			{
-				Sprite* spr = static_cast<Sprite*>(comp.second);
-				if (spr->GetTexture())
-				{
-					GLint Color_Location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "ourTexture");
-					float red(spr->GetColor()[0]), blue(spr->GetColor()[1]), green(spr->GetColor()[2]), alpha(spr->GetColor()[3]);
-					if (Color_Location <= -1)
-						std::cerr << "Failed to get uOurColor uniform location" << std::endl;
-					else
-						glUniform4f(Color_Location, red, blue, green, alpha);
-				}
-				else
-				{
-					GLint Color_Location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "uOutColor");
-					float red(spr->GetColor()[0]), blue(spr->GetColor()[1]), green(spr->GetColor()[2]), alpha(spr->GetColor()[3]);
-					if (Color_Location <= -1)
-						std::cerr << "Failed to get uOurColor uniform location" << std::endl;
-					else
-						glUniform4f(Color_Location, red, blue, green, alpha);
-				}
-			}
-		}
-		if (obj->GetModel())
-			obj->Draw();
-	}
+    for (auto obj : objects)
+    {                
+        auto shader_ref = obj->GetShaderRef();                
+        shaders[shader_ref].Use();                
+        
+        auto obj_comps = obj->GetAllComponentOfObj();
 
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        for (auto comp : obj_comps)
+        {
+            if (comp.first == "Transform")
+            {
+                Transform* trs = static_cast<Transform*>(comp.second);
+                GLint Model_To_NDC_Location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "uModelToNDC");
+                if (Model_To_NDC_Location <= -1)
+                    std::cerr << "Failed to get uModelToNDC uniform location" << std::endl;
+                else
+                    glUniformMatrix3fv(Model_To_NDC_Location, 1, GL_FALSE, glm::value_ptr(trs->GetModelToNDC()));
+            }
+
+            if (comp.first == "Sprite")
+            {
+                Sprite* spr = static_cast<Sprite*>(comp.second);
+                if (spr->GetTexture()) // 텍스처가 있는 경우
+                {
+                    // 텍스처 유니폼 처리
+                    GLint Texture_Location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "ourTexture");
+                    GLint Has_Texture_Location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "hasTexture");
+                    
+                    if (Texture_Location <= -1 || Has_Texture_Location <= -1)
+                    {
+                        std::cerr << "Failed to get uniform location" << std::endl;
+                    }
+                    else
+                    {
+                        glUniform1i(Texture_Location, 0); // 텍스처 슬롯 0 사용
+                        glUniform1i(Has_Texture_Location, true); // 텍스처가 있음
+                    }
+                }
+                else // 텍스처가 없는 경우
+                {
+                    // RGB 색상 유니폼 처리
+                    GLint Color_Location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "uOutColor");
+                    GLint Has_Texture_Location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "hasTexture");
+
+                    if (Color_Location <= -1 || Has_Texture_Location <= -1)
+                    {
+                        std::cerr << "Failed to get uniform location" << std::endl;
+                    }
+                    else
+                    {
+                        float red = spr->GetColor()[0];
+                        float green = spr->GetColor()[1];
+                        float blue = spr->GetColor()[2];
+                        float alpha = spr->GetColor()[3];
+                        glUniform4f(Color_Location, red, green, blue, alpha); // 색상 유니폼 설정
+                        glUniform1i(Has_Texture_Location, false); // 텍스처가 없음
+                    }
+                }
+            }
+        }
+        if (obj->GetModel())
+            obj->Draw();
+    }
+
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     return true;
 }
