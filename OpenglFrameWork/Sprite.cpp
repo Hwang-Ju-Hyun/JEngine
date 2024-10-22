@@ -73,8 +73,8 @@ void Sprite::LoadFromJson(const json& str)
 		if (texture_name != comp_data->end() && texture_path != comp_data->end())
 		{
 			auto resource = ResourceManager::GetInstance()->GetAndLoad(texture_name.value(), texture_path.value());
-			//resource = static_cast<TextureResource*>(resource);
-			//SetTexture((TextureResource*)resource);
+			resource = static_cast<TextureResource*>(resource);
+			SetTexture((TextureResource*)resource);
 		}
 	}
 }
