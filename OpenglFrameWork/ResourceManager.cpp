@@ -16,11 +16,10 @@ ResourceManager::~ResourceManager()
 
 void ResourceManager::RemoveAllRes()
 {
-	for (auto iter = m_mapResource.begin(); iter != m_mapResource.end(); iter++)
+	for (auto iter = m_mapResource.begin(); iter != m_mapResource.end();)
 	{
 		if (iter->second != nullptr)
-		{
-			iter->second->UnLoad();
+		{			
 			delete iter->second;
 			iter = m_mapResource.erase(iter++);
 		}

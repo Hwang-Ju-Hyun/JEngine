@@ -89,9 +89,11 @@ json Sprite::SaveToJson(const json& str)
 	compData["GREEN"] = m_vColor[1];
 	compData["BLUE"] =  m_vColor[2];
 	compData["ALPHA"] = m_vColor[3];
-	compData["TextureName"] = m_pTexture->GetName();
-	compData["TexturePath"]=m_pTexture->GetPath();
-
+	if (m_pTexture != nullptr)
+	{
+		compData["TextureName"] = m_pTexture->GetName();
+		compData["TexturePath"] = m_pTexture->GetPath();
+	}	
 	data["CompData"] = compData;
 	return data;
 }

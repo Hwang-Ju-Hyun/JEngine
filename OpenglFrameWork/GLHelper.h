@@ -47,8 +47,31 @@ private:
 	//Keyboard Info
 	static GLboolean m_bLeftControlKeyPressed;
 	static GLboolean m_bLeftControlKeyReleased;
+
+	static GLboolean m_bUpArrowKeyPressed;
+	static GLboolean m_bUpArrowKeyReleased;
+	static GLboolean m_bDownArrowKeyPressed;
+	static GLboolean m_bDownArrowKeyReleased;
+	static GLboolean m_bLeftArrowKeyPressed;
+	static GLboolean m_bLeftArrowKeyReleased;
+	static GLboolean m_bRightArrowKeyPressed;
+	static GLboolean m_bRightArrowKeyReleased;
+	static GLboolean m_bSpaceKeyPressed;
+	static GLboolean m_bSpaceKeyReleased;
 public:
 	GLboolean GetLeftControlPressed()const;
+	GLboolean GetLeftControlReleased()const;
+	GLboolean GetUpArrowKeyPressed()const;
+	GLboolean GetUpArrowKeyReleased()const;
+	GLboolean GetDownArrowKeyPressed()const;
+	GLboolean GetDownArrowKeyReleased()const;
+	GLboolean GetLeftArrowKeyPressed()const;
+	GLboolean GetLeftArrowKeyReleased()const;
+	GLboolean GetRightArrowKeyPressed()const;
+	GLboolean GetRightArrowKeyReleased()const;
+	GLboolean GetSpaceKeyPressed()const;
+	GLboolean GetSpaceKeyReleased()const;
+
 public:
 	glm::mat3 GetScreenToWorldMatFromMouse();	
 	glm::mat3 GetScreenToWorldMat(glm::vec2 _pos);

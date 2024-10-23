@@ -89,6 +89,7 @@
     <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="BaseLevel.cpp" />
     <ClCompile Include="BaseRTTI.cpp" />
+    <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="ComponentManager.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -109,22 +110,27 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainEditor.cpp" />
     <ClCompile Include="ModelManager.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Registry.cpp" />
     <ClCompile Include="RenderManager.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="Serializer.cpp" />
     <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Stage01_Lvl.cpp" />
+    <ClCompile Include="Stage02_Lvl.cpp" />
     <ClCompile Include="TextureResource.cpp" />
     <ClCompile Include="TileEditor.cpp" />
+    <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="BaseLevel.h" />
     <ClInclude Include="BaseRTTI.h" />
+    <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="ComponentManager.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="GameObject.h" />
@@ -135,8 +141,10 @@
     <ClInclude Include="GLModel.h" />
     <ClInclude Include="GLShader.h" />
     <ClInclude Include="header.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceManager.h" />
+    <ClInclude Include="RigidBody.h" />
     <ClInclude Include="single.h" />
     <ClInclude Include="IMGUI\imconfig.h" />
     <ClInclude Include="IMGUI\imgui.h" />
@@ -156,14 +164,18 @@
     <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Stage01_Lvl.h" />
+    <ClInclude Include="Stage02_Lvl.h" />
     <ClInclude Include="TextureResource.h" />
     <ClInclude Include="TileEditor.h" />
+    <ClInclude Include="TimeManager.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMGUI\imgui.ini" />
-    <None Include="json\GameObject\GameObject.json" />
-    <None Include="json\GameObject\Wall.json" />
+    <None Include="json\Stage01_Lvl\GameObject.json" />
+    <None Include="json\Stage01_Lvl\Wall.json" />
+    <None Include="json\stage02_Lvl\GameObject.json" />
+    <None Include="json\stage02_Lvl\Wall.json" />
     <None Include="shader.frag" />
     <None Include="shader.vert" />
   </ItemGroup>

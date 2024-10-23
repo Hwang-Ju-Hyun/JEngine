@@ -3,8 +3,7 @@
 #include <iostream>
 
 GameStateManager::GameStateManager()
-{
-
+{    
 }
 
 GameStateManager::~GameStateManager()
@@ -62,4 +61,9 @@ bool GameStateManager::ChangeLevel(BaseLevel* _newLevel)
     m_pCurrentLevel = _newLevel;
     m_pCurrentLevel->Init();
     return true;
+}
+
+BaseLevel* GameStateManager::GetCurrentLevel() const
+{
+    return m_pCurrentLevel;
 }

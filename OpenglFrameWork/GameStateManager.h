@@ -1,6 +1,6 @@
 #pragma once
 #include "single.h"
-
+#include <vector>
 class BaseLevel;
 
 class GameStateManager
@@ -16,5 +16,6 @@ public:
 	bool Exit();
 public:
 	bool ChangeLevel(BaseLevel* _newLevel);
+	BaseLevel* GetCurrentLevel()const;
 };
 

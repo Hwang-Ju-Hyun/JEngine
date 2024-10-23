@@ -1,6 +1,7 @@
 #include "BaseLevel.h"
 
-BaseLevel::BaseLevel()
+BaseLevel::BaseLevel(const std::string _name)
+	:m_strName(_name)
 {
 }
 
@@ -21,5 +22,15 @@ bool BaseLevel::Update()
 bool BaseLevel::Exit()
 {
 	return true;
+}
+
+void BaseLevel::SetName(const std::string& _name)
+{
+	m_strName = _name;
+}
+
+const std::string& BaseLevel::GetName() const
+{
+	return m_strName;
 }
 

@@ -32,9 +32,6 @@
     <Filter Include="Manager\ModelMgr">
       <UniqueIdentifier>{29ee4950-9064-4965-9bc4-845625e16b41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Manager\GoMgr">
-      <UniqueIdentifier>{61b0c015-6538-49ef-a5c0-e26c1cb9489c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GL\GLApp">
       <UniqueIdentifier>{f008b5e3-1d09-484b-b08a-b548474ab612}</UniqueIdentifier>
     </Filter>
@@ -99,6 +96,30 @@
     <Filter Include="Resource\Texture">
       <UniqueIdentifier>{1dd20298-de76-41fc-b526-8dbbe4b73f4f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Level\Stage02">
+      <UniqueIdentifier>{9415fb23-819d-465f-8dd0-30afac5b2371}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="JSON\stage01_Lvl">
+      <UniqueIdentifier>{4f6f5439-db11-4fed-8f20-1f3da957bda4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="JSON\stage02_Lvl">
+      <UniqueIdentifier>{c92c64ec-a754-4f74-a538-27747d5ad514}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\GameObjectMgr">
+      <UniqueIdentifier>{61b0c015-6538-49ef-a5c0-e26c1cb9489c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Player">
+      <UniqueIdentifier>{2ad6efe2-7812-4c4f-afe9-a7576d117117}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\TimeMgr">
+      <UniqueIdentifier>{6ab34dd3-614e-4492-9205-fd0f628875dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\RigidBody">
+      <UniqueIdentifier>{6950e22f-c0ae-4474-a3c8-61d31b5af30a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\CollisionMgr">
+      <UniqueIdentifier>{3bb592be-09a2-44d0-8426-cc4b8ea302dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -141,7 +162,7 @@
       <Filter>Manager\ModelMgr</Filter>
     </ClCompile>
     <ClCompile Include="GameObjectManager.cpp">
-      <Filter>Manager\GoMgr</Filter>
+      <Filter>Manager\GameObjectMgr</Filter>
     </ClCompile>
     <ClCompile Include="GameStateManager.cpp">
       <Filter>Manager\GameStateMgr</Filter>
@@ -202,6 +223,21 @@
     </ClCompile>
     <ClCompile Include="TextureResource.cpp">
       <Filter>Resource\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage02_Lvl.cpp">
+      <Filter>Level\Stage02</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Component\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>Manager\TimeMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBody.cpp">
+      <Filter>Component\RigidBody</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionManager.cpp">
+      <Filter>Manager\CollisionMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -299,7 +335,7 @@
       <Filter>Component\Transform</Filter>
     </ClInclude>
     <ClInclude Include="GameObjectManager.h">
-      <Filter>Manager\GoMgr</Filter>
+      <Filter>Manager\GameObjectMgr</Filter>
     </ClInclude>
     <ClInclude Include="header.h">
       <Filter>header</Filter>
@@ -316,6 +352,21 @@
     <ClInclude Include="TextureResource.h">
       <Filter>Resource\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="Stage02_Lvl.h">
+      <Filter>Level\Stage02</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Component\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeManager.h">
+      <Filter>Manager\TimeMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody.h">
+      <Filter>Component\RigidBody</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionManager.h">
+      <Filter>Manager\CollisionMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="IMGUI\imgui.ini">
@@ -327,11 +378,17 @@
     <None Include="shader.vert">
       <Filter>Shader</Filter>
     </None>
-    <None Include="json\GameObject\GameObject.json">
-      <Filter>JSON</Filter>
+    <None Include="json\stage02_Lvl\GameObject.json">
+      <Filter>JSON\stage02_Lvl</Filter>
     </None>
-    <None Include="json\GameObject\Wall.json">
-      <Filter>JSON</Filter>
+    <None Include="json\stage02_Lvl\Wall.json">
+      <Filter>JSON\stage02_Lvl</Filter>
+    </None>
+    <None Include="json\Stage01_Lvl\GameObject.json">
+      <Filter>JSON\stage01_Lvl</Filter>
+    </None>
+    <None Include="json\Stage01_Lvl\Wall.json">
+      <Filter>JSON\stage01_Lvl</Filter>
     </None>
   </ItemGroup>
 </Project>

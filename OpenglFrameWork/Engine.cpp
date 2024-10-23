@@ -11,7 +11,8 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
-
+#include "Stage02_Lvl.h"
+#include "TimeManager.h"
 
 
 Engine::Engine()
@@ -34,7 +35,7 @@ bool Engine::Init(GLint _width, GLint _height, const std::string& _title)
 		return false;
 	if (!RenderManager::GetInstance()->Init())
 		return false;
-	if (!GameStateManager::GetInstance()->ChangeLevel(new Stage01_Lvl))
+	if (!GameStateManager::GetInstance()->ChangeLevel(new Stage02_Lvl("Stage02_Lvl")))
 		return false;
 	return true;
 }
@@ -50,6 +51,10 @@ bool Engine::Update()
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 	ImGui::ShowDemoWindow(); // Show demo window! :)
+
+	//TimeManager Udpate
+	if (!TimeManager::GetInstance()->Update())
+		return false;
 
 	//GoManager Update
 	if (!GameObjectManager::GetInstance()->Update())

@@ -8,11 +8,22 @@
 //#define _KEY_PRESSED
 
 glm::vec2 GLHelper::m_vMouseCursorPosition = { 0.f,0.f };
-GLboolean GLHelper::m_bLeftMouseTriggered = false;
-GLboolean GLHelper::m_bLeftMouseReleased = false;
-GLboolean GLHelper::m_bRightMouseTriggered = false;
-GLboolean GLHelper::m_bLeftControlKeyPressed = false;
-GLboolean GLHelper::m_bLeftControlKeyReleased = false;
+GLboolean GLHelper::m_bLeftMouseTriggered       = false;
+GLboolean GLHelper::m_bLeftMouseReleased        = false;
+GLboolean GLHelper::m_bRightMouseTriggered      = false;
+
+GLboolean GLHelper::m_bLeftControlKeyPressed    = false;
+GLboolean GLHelper::m_bLeftControlKeyReleased   = false;
+GLboolean GLHelper::m_bUpArrowKeyPressed        = false;
+GLboolean GLHelper::m_bUpArrowKeyReleased       = false;
+GLboolean GLHelper::m_bDownArrowKeyPressed      = false;
+GLboolean GLHelper::m_bDownArrowKeyReleased     = false;
+GLboolean GLHelper::m_bLeftArrowKeyPressed      = false;
+GLboolean GLHelper::m_bLeftArrowKeyReleased     = false;
+GLboolean GLHelper::m_bRightArrowKeyPressed     = false;
+GLboolean GLHelper::m_bRightArrowKeyReleased    = false;
+GLboolean GLHelper::m_bSpaceKeyPressed          = false;
+GLboolean GLHelper::m_bSpaceKeyReleased         = false;
 
 GLHelper::GLHelper()
 {
@@ -47,42 +58,48 @@ std::string GLHelper::GetWindowTitleName() const
 
 void GLHelper::KeyCallBack(GLFWwindow* _window, int _key, int _scancod, int _action, int _mod)
 {    
-    if (_action == GLFW_PRESS && _key == GLFW_KEY_LEFT_CONTROL)
+    //This code looks like yandere simulator?!
+    if (_action == GLFW_PRESS)
     {     
-        m_bLeftControlKeyPressed = true;
-    }
-    if (m_bLeftControlKeyPressed && _action == GLFW_RELEASE)
-    {        
-        m_bLeftControlKeyPressed = false;
-    }        
-   
-    /*if (GLFW_PRESS == _action) 
+        switch (_key)
+        {
+        case GLFW_KEY_UP:
+            m_bUpArrowKeyPressed = true;
+        case GLFW_KEY_DOWN:
+            m_bDownArrowKeyPressed = true;
+        case GLFW_KEY_LEFT:
+            m_bLeftArrowKeyPressed = true;
+        case GLFW_KEY_RIGHT:
+            m_bRightArrowKeyPressed = true;
+        case GLFW_KEY_SPACE:
+            m_bSpaceKeyPressed = true;
+        default:
+            break;
+        }
+    }    
+    else if(_action==GLFW_RELEASE)
     {
-#ifdef _DEBUG
-#ifdef _KEY_PRESSED        
-        std::cout << "Key pressed" << std::endl;    
-#endif
-#endif
+        if (m_bUpArrowKeyPressed)
+        {
+            m_bUpArrowKeyPressed = false;
+            m_bUpArrowKeyReleased = true;
+        }            
+        if (m_bDownArrowKeyPressed)
+        {
+            m_bDownArrowKeyPressed = false;
+            m_bDownArrowKeyReleased = true;
+        }            
+        if (m_bLeftArrowKeyPressed)
+        {
+            m_bLeftArrowKeyPressed = false;
+            m_bLeftArrowKeyReleased = true;
+        }            
+        if (m_bSpaceKeyPressed)
+        {
+            m_bSpaceKeyPressed = false;
+            m_bSpaceKeyReleased = true;
+        }            
     }
-    else if (GLFW_REPEAT == _action) 
-    {
-#ifdef _DEBUG     
-#ifdef _KEY_PRESSED
-        std::cout << "Key repeatedly pressed" << std::endl;    
-#endif
-#endif
-    }
-    else if (GLFW_RELEASE == _action)
-    {
-#ifdef _DEBUG    
-#ifdef _KEY_PRESSED
-
-        std::cout << "Key released" << std::endl;    
-#endif
-#endif
-        if (GLFW_KEY_ESCAPE == _key && GLFW_PRESS == _action)
-            glfwSetWindowShouldClose(_window, GLFW_TRUE);
-    }    */
 }
 
 void GLHelper::MousePositionCallBack(GLFWwindow* _window, double _xpos, double _ypos)
@@ -154,8 +171,6 @@ GLboolean GLHelper::GetLeftMouseReleased() const
     return m_bLeftMouseReleased;
 }
 
-
-
 GLboolean GLHelper::GetRightMouseTriggered() const
 {
     return m_bRightMouseTriggered;
@@ -169,6 +184,61 @@ void GLHelper::ResetLeftMouseTriggered() const
 GLboolean GLHelper::GetLeftControlPressed() const
 {
     return m_bLeftControlKeyPressed;
+}
+
+GLboolean GLHelper::GetLeftControlReleased() const
+{
+    return m_bLeftControlKeyReleased;
+}
+
+GLboolean GLHelper::GetUpArrowKeyPressed() const
+{
+    return m_bUpArrowKeyPressed;
+}
+
+GLboolean GLHelper::GetUpArrowKeyReleased() const
+{
+    return m_bUpArrowKeyReleased;
+}
+
+GLboolean GLHelper::GetDownArrowKeyPressed() const
+{
+    return m_bDownArrowKeyPressed;
+}
+
+GLboolean GLHelper::GetDownArrowKeyReleased() const
+{
+    return m_bDownArrowKeyReleased;
+}
+
+GLboolean GLHelper::GetLeftArrowKeyPressed() const
+{
+    return m_bLeftArrowKeyPressed;
+}
+
+GLboolean GLHelper::GetLeftArrowKeyReleased() const
+{
+    return m_bLeftArrowKeyReleased;
+}
+
+GLboolean GLHelper::GetRightArrowKeyPressed() const
+{
+    return m_bRightArrowKeyPressed;
+}
+
+GLboolean GLHelper::GetRightArrowKeyReleased() const
+{
+    return m_bRightArrowKeyReleased;
+}
+
+GLboolean GLHelper::GetSpaceKeyPressed() const
+{
+    return m_bSpaceKeyPressed;
+}
+
+GLboolean GLHelper::GetSpaceKeyReleased() const
+{
+    return m_bSpaceKeyReleased;
 }
 
 glm::mat3 GLHelper::GetScreenToWorldMatFromMouse()

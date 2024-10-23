@@ -1,6 +1,7 @@
 #include "MainEditor.h"
 #include "GameObjectManager.h"
 #include "GameObject.h"
+#include "GameStateManager.h"
 #include <iostream>
 #include "GLHelper.h"
 #include "BaseComponent.h"
@@ -8,6 +9,8 @@
 #include "Transform.h"
 #include "ModelManager.h"
 #include "single.h"
+#include "Stage01_Lvl.h"
+#include "Stage02_Lvl.h"
 #include "Serializer.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -113,7 +116,21 @@ void MainEditor::TopBar_GameObject()
 
     if (ImGui::BeginMenu("Load Level"))
     {
-        ImGui::MenuItem("Load Level");
+        if (ImGui::TreeNode("Change Level"))
+        {
+            auto cur_level = GameStateManager::GetInstance()->GetCurrentLevel();
+            if (ImGui::Button("Stage01_Lvl"))
+            {                
+                if (cur_level->GetName() != "Stage01_Lvl")
+                    GameStateManager::GetInstance()->ChangeLevel(new Stage01_Lvl("Stage01_Lvl"));
+            }
+            if (ImGui::Button("Stage02_Lvl"))
+            {
+                if (cur_level->GetName() != "Stage01_Lv2")
+                    GameStateManager::GetInstance()->ChangeLevel(new Stage02_Lvl("Stage02_Lvl"));
+            }
+            ImGui::TreePop();
+        }
         ImGui::EndMenu();
     }
 
@@ -123,6 +140,7 @@ void MainEditor::TopBar_GameObject()
 void MainEditor::TopBar_Save()
 {
     auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
+    
     if (ImGui::BeginMainMenuBar())
     {
 
@@ -159,8 +177,12 @@ void MainEditor::TopBar_Save()
                             all_objs[i]->SetID(wall_id++);
                         }
                     }
-                    Serializer::GetInstance()->SaveGameObject("json/GameObject/GameObject.json");
-                    Serializer::GetInstance()->SaveWall("json/GameObject/Wall.json");
+                    auto current_level=GameStateManager::GetInstance()->GetCurrentLevel();
+                    std::string cur_level_str=current_level->GetName();
+                    std::string s1 = "json/" + cur_level_str + "/GameObject.json";
+                    std::string s2 = "json/" + cur_level_str + "/Wall.json";
+                    Serializer::GetInstance()->SaveGameObject(s1);
+                    Serializer::GetInstance()->SaveWall(s2);
                     m_bShowSaveConf = false;
                     ImGui::CloseCurrentPopup();
                 }
