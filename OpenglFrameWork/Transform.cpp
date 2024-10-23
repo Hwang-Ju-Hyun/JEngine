@@ -120,14 +120,6 @@ void Transform::Update()
 	};	
 	m_mModelToWorld = (Transform * Rot * Scale);
 	m_mModelToNDC = H * m_mModelToWorld;	
-
-
-	RigidBody* rigid = (RigidBody*)m_pOwner->FindComponent("Rigid");
-	glm::vec2 velocity = rigid->GetVelocity();
-	glm::vec2 accelation = rigid->GetAccelation();
-
-	m_vPosition.x = (velocity.x * dt) + (0.5 * accelation.x * (dt * dt));
-	m_vPosition.x = (velocity.y * dt) + (0.5 * accelation.y * (dt * dt));
 }
 
 BaseRTTI* Transform::CreateTransformComponent()

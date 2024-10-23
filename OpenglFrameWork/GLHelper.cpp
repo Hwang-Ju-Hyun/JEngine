@@ -65,14 +65,19 @@ void GLHelper::KeyCallBack(GLFWwindow* _window, int _key, int _scancod, int _act
         {
         case GLFW_KEY_UP:
             m_bUpArrowKeyPressed = true;
+            break;
         case GLFW_KEY_DOWN:
             m_bDownArrowKeyPressed = true;
+            break;
         case GLFW_KEY_LEFT:
             m_bLeftArrowKeyPressed = true;
+            break;
         case GLFW_KEY_RIGHT:
             m_bRightArrowKeyPressed = true;
+            break;
         case GLFW_KEY_SPACE:
             m_bSpaceKeyPressed = true;
+            break;
         default:
             break;
         }

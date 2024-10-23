@@ -116,7 +116,7 @@ BaseComponent* GameObject::FindComponent(const std::string& _name)
 		if (m_vecComponentOfObj[i].first == _name)
 			return m_vecComponentOfObj[i].second;
 	}
-	std::cerr << "Error : Can't find component - GameObject::FindComponent" << std::endl;
+	//std::cerr << "Error : Can't find component - GameObject::FindComponent" << std::endl;
 	return nullptr;	
 }
 

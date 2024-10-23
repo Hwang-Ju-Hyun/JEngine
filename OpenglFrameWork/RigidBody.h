@@ -6,6 +6,7 @@
 class RigidBody :
     public BaseComponent
 {    
+public:
     RigidBody(GameObject* _owner);
     virtual ~RigidBody()override;
 private:
@@ -17,5 +18,10 @@ public:
     glm::vec2 GetAccelation()const;
 public:
     virtual void Update()override;
+public:
+    virtual void LoadFromJson(const json& _str);
+    virtual json SaveToJson(const json& _str);
+public:
+    static constexpr const char* RigidBodyTypeName = "Rigid";
 };
 

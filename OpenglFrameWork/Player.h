@@ -10,10 +10,20 @@ class Player :
 public:
     Player(GameObject* _owner);
     virtual ~Player()override;
+private:
+    glm::vec2 m_vDirection = { 0.f,0.f };
 public:
-    int m_iHP = 0;
+    void SetDirection(glm::vec2 _dir);
+    glm::vec2 GetDirection()const;
+private:
+    int m_iHP = 0;    
 public:
-    virtual void Update()override;
     void MoveMent();
+    virtual void Update()override;
+public:
+    static constexpr const char* PlayerTypeName = "Player";
+public:
+    virtual void LoadFromJson(const json& _str);
+    virtual json SaveToJson(const json& _str);
 };
 
