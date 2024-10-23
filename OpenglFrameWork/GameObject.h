@@ -8,6 +8,7 @@
 
 class BaseComponent;
 class GLModel;
+class TextureResource;
 
 class GameObject
 {
@@ -45,9 +46,12 @@ public:
 	std::vector<std::pair<std::string, BaseComponent*>> m_vecComponentOfObj;
 public:
 	BaseComponent* AddComponent(const std::string _compName, BaseComponent* _comp);
-	BaseComponent* FindComponent(const std::string& _name);
+	BaseComponent* FindComponent(const std::string& _name);	
 	std::vector<std::pair<std::string, BaseComponent*>> GetAllComponentOfObj()const;
 	void DeleteComponent(const std::string& _name);
+public:
+	void SetTexture(TextureResource* _res);
+	TextureResource* GetTexture();
 public:
 	friend class BaseComponent;
 };

@@ -52,7 +52,7 @@ void TextureResource::Load(const std::string& _path)
 		std::cout << "Failed to load texture" << std::endl;
 	}	
 	stbi_image_free(m_cData);
-	
+	SetPath(_path);
 	
 	//glBindTexture(GL_TEXTURE_2D, m_iTextureID);
 }

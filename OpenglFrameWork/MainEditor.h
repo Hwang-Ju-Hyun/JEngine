@@ -29,7 +29,7 @@ private:
 public:	
 	void TopBar_GameObject();
 	void TopBar_Save();
-	void TopBar_TileEdit();
+	void TopBar_ChangeEditMode();
 	void SelectedObjectWindow();
 private:
 	WorldMouseCursor m_vWorldMousePos = {};

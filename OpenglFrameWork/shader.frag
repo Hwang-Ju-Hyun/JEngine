@@ -3,18 +3,18 @@
 out vec4 color;
 in vec2 TexCoord;
 
-uniform vec4 uOutColor;          // 색상
-uniform sampler2D ourTexture;    // 텍스처
-uniform bool hasTexture;         // 텍스처가 있는지 여부를 나타내는 변수
+uniform vec4 uOutColor;          
+uniform sampler2D uOutTexture;    
+uniform bool uHasTexture;         
 
 void main()
 {
-    if (hasTexture) // 텍스처가 있는 경우
+    if (uHasTexture) 
     {
-        color = texture(ourTexture, TexCoord);
+        color = texture(uOutTexture, TexCoord);
     }
-    else // 텍스처가 없는 경우
+    else 
     {
-        color = uOutColor; // RGB 색상 사용
+        color = uOutColor;
     }
 }

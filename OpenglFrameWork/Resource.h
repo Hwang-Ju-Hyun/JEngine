@@ -8,6 +8,7 @@ public:
 	virtual ~Resource();
 private:
 	std::string m_sResName;	
+	std::string m_sPath;
 public:
 	unsigned char* m_cData=nullptr;
 public:
@@ -18,5 +19,7 @@ public:
 public:
 	void SetName(const std::string& _strName);
 	const std::string& GetName()const;
+	void SetPath(const std::string& _strPath);
+	const std::string& GetPath()const;
 };
 

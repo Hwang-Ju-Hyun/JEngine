@@ -37,8 +37,10 @@ public:
     static constexpr const char* SpriteTypeName = "Sprite";
 public:
     virtual void LoadFromJson(const json& str)override;
-    virtual json SaveToJson(const json& str)override;
+    virtual json SaveToJson(const json& str)override;    
+private:
+    bool m_bCurTextureWindowConf=true;   
 public:
-    TextureResource* GetTextureFromImGui()const;
+    TextureResource* GetTextureFromImGui();
     bool EditFromImgui()override;
 };

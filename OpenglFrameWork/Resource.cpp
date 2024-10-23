@@ -23,3 +23,13 @@ const std::string& Resource::GetName() const
 {
 	return m_sResName;
 }
+
+void Resource::SetPath(const std::string& _strPath)
+{	
+	m_sPath = _strPath;
+}
+
+const std::string& Resource::GetPath() const
+{
+	return m_sPath;
+}

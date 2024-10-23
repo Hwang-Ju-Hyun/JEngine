@@ -5,7 +5,9 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "GameObjectManager.h"
+#include "ResourceManager.h"
 #include "Sprite.h"
+#include "Resource.h"
 
 TileEditor::TileEditor()
 {
@@ -17,9 +19,37 @@ TileEditor::~TileEditor()
 
 }
 
-
+    
+void TileEditor::ShowAndSetCurrentTileTexture()
+{   
+    bool show_cur_tile_confirm = false;
+    ImGui::Begin("Texture");    
+    auto all_resources = ResourceManager::GetInstance()->GetAllResources();
+    if (ImGui::TreeNode("TILE"))
+    {
+        for (auto iter = all_resources.begin(); iter != all_resources.end(); iter++)
+        {
+            if (ImGui::Button(iter->first.c_str()))
+            {
+                show_cur_tile_confirm = true;
+                m_pCurrentTileTexture = (TextureResource*)iter->second;
+                ImGui::TreePop();            
+            }            
+        }
+        if (ImGui::Button("No Texture"))
+        {
+            show_cur_tile_confirm = true;
+            m_pCurrentTileTexture = nullptr;
+            ImGui::TreePop();
+        }
+        if(!show_cur_tile_confirm)
+            ImGui::TreePop();
+    }    
+    ImGui::End();
+}   
+    
 glm::vec2 TileEditor::GetWorldPosbyScreenGrid(int _width, int _height, int _gridX, int _gridY)
-{
+{   
     int w = window_width;
     int h = window_height;
 
@@ -33,6 +63,7 @@ glm::vec2 TileEditor::GetWorldPosbyScreenGrid(int _width, int _height, int _grid
 
 void TileEditor::Update()
 {    
+    ShowAndSetCurrentTileTexture();
     auto L_mouse_Trigger = GLHelper::GetInstance()->GetLeftMouseTriggered();    
     
     glm::vec2 ScreenToMousePos = GLHelper::GetInstance()->GetMouseCursorPosition();    
@@ -65,8 +96,10 @@ void TileEditor::Update()
             
             wall_obj = new GameObject("WALL", wall_last_id++);
             wall_obj->AddComponent("Transform", new Transform(wall_obj));
-            wall_obj->AddComponent("Sprite", new Sprite(wall_obj));
-            
+            wall_obj->AddComponent("Sprite", new Sprite(wall_obj));            
+            wall_obj->SetTexture(m_pCurrentTileTexture);
+
+
             Transform* trans = static_cast<Transform*>(wall_obj->FindComponent("Transform"));
             
             glm::vec2 wall;

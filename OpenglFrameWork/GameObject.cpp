@@ -6,6 +6,8 @@
 #include "BaseComponent.h"
 #include "ModelManager.h"
 #include "GLModel.h"
+#include "TextureResource.h"
+#include "Sprite.h"
 #include "GLApp.h"
 #include <iostream>
 
@@ -139,4 +141,24 @@ void GameObject::DeleteComponent(const std::string& _name)
 			comps.erase(comps.begin()+i);
 		}
 	}	
+}
+
+void GameObject::SetTexture(TextureResource* _res)
+{
+	Sprite* spr = (Sprite*)FindComponent("Sprite");
+	if (spr != nullptr)
+	{
+		spr->SetTexture(_res);
+	}
+	else
+		spr->SetTexture(nullptr);
+}
+
+TextureResource* GameObject::GetTexture()
+{
+	Sprite* spr=(Sprite*)FindComponent("Sprite");	
+	TextureResource* texture = spr->GetTexture();
+	if (texture != nullptr)
+		return 	texture;
+	return nullptr;		
 }

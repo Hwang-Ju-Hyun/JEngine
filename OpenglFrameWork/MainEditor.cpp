@@ -239,7 +239,7 @@ void MainEditor::SelectedObjectWindow()
     ImGui::End();
 }
 
-void MainEditor::TopBar_TileEdit()
+void MainEditor::TopBar_ChangeEditMode()
 {
     if (ImGui::BeginMainMenuBar())
     {
@@ -379,7 +379,7 @@ void MainEditor::Update()
     }
 
     TopBar_GameObject();
-    TopBar_TileEdit();
+    TopBar_ChangeEditMode();
     TopBar_Save();
     SelectedObjectWindow();
 }

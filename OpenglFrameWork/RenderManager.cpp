@@ -69,28 +69,27 @@ bool RenderManager::Draw()
             {
                 Sprite* spr = static_cast<Sprite*>(comp.second);
                 if (spr->GetTexture()) // 텍스처가 있는 경우
-                {
-                    // 텍스처 유니폼 처리
-                    GLint Texture_Location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "ourTexture");
-                    GLint Has_Texture_Location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "hasTexture");
+                {           
+                    GLint texture_location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "uOutTexture");
+                    GLint has_texture_location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "uHasTexture");
                     
-                    if (Texture_Location <= -1 || Has_Texture_Location <= -1)
+                    if (texture_location <= -1 || has_texture_location <= -1)
                     {
                         std::cerr << "Failed to get uniform location" << std::endl;
                     }
                     else
                     {
-                        glUniform1i(Texture_Location, 0); // 텍스처 슬롯 0 사용
-                        glUniform1i(Has_Texture_Location, true); // 텍스처가 있음
+                        glUniform1i(texture_location, 0); 
+                        glUniform1i(has_texture_location, true); 
                     }
                 }
-                else // 텍스처가 없는 경우
+                else 
                 {
-                    // RGB 색상 유니폼 처리
-                    GLint Color_Location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "uOutColor");
-                    GLint Has_Texture_Location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "hasTexture");
+                    
+                    GLint color_location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "uOutColor");
+                    GLint has_texture_location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "uHasTexture");
 
-                    if (Color_Location <= -1 || Has_Texture_Location <= -1)
+                    if (color_location <= -1 || has_texture_location <= -1)
                     {
                         std::cerr << "Failed to get uniform location" << std::endl;
                     }
@@ -100,8 +99,8 @@ bool RenderManager::Draw()
                         float green = spr->GetColor()[1];
                         float blue = spr->GetColor()[2];
                         float alpha = spr->GetColor()[3];
-                        glUniform4f(Color_Location, red, green, blue, alpha); // 색상 유니폼 설정
-                        glUniform1i(Has_Texture_Location, false); // 텍스처가 없음
+                        glUniform4f(color_location, red, green, blue, alpha); 
+                        glUniform1i(has_texture_location, false); 
                     }
                 }
             }

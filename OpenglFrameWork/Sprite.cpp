@@ -51,7 +51,7 @@ BaseRTTI* Sprite::CreateSpriteComponent()
 }
 
 void Sprite::LoadFromJson(const json& str)
-{
+{	
 	auto comp_data = str.find("CompData");
 	if (comp_data != str.end())
 	{
@@ -89,39 +89,46 @@ json Sprite::SaveToJson(const json& str)
 	compData["GREEN"] = m_vColor[1];
 	compData["BLUE"] =  m_vColor[2];
 	compData["ALPHA"] = m_vColor[3];
+	compData["TextureName"] = m_pTexture->GetName();
+	compData["TexturePath"]=m_pTexture->GetPath();
 
 	data["CompData"] = compData;
 	return data;
 }
 
-TextureResource* Sprite::GetTextureFromImGui() const
-{		
+TextureResource* Sprite::GetTextureFromImGui() 
+{	
 	auto resources = ResourceManager::GetInstance()->GetAllResources();	
-	std::string str=m_pOwner->GetName() + std::to_string(m_pOwner->GetID());
-	if (ImGui::Begin(str.c_str()))
-	{
+	std::string str=m_pOwner->GetName() + std::to_string(m_pOwner->GetID());	
+	if (ImGui::Begin(str.c_str()),m_bCurTextureWindowConf)
+	{				
 		if (ImGui::TreeNode("Texture"))
 		{
 			for (auto iter = resources.begin(); iter != resources.end(); iter++)
 			{
 				if (ImGui::Button(iter->second->GetName().c_str()))
-				{										
+				{														
 					ImGui::TreePop();
 					ImGui::End();
-					return (TextureResource*)iter->second;
-				}
+					return (TextureResource*)iter->second;				
+				}				
 			}
 			if (ImGui::Button("No Texture"))
-			{
+			{								
 				ImGui::TreePop();
 				ImGui::End();
 				return nullptr;
-			}
+			}	
 			ImGui::TreePop();
-		}
-		ImGui::End();
+		}		
 	}
-	return nullptr;
+	else
+	{		
+		m_bCurTextureWindowConf = false;		
+		ImGui::End();
+	}	
+	ImGui::End();
+	return m_pTexture;
 }
 
 bool Sprite::EditFromImgui()
@@ -130,7 +137,7 @@ bool Sprite::EditFromImgui()
 	{
 		ImGui::InputFloat4("Color", &m_vColor[0]);		
 		ImGui::ColorEdit3("Color", (float*)&m_vColor);	
-		m_pTexture=GetTextureFromImGui();
+		m_pTexture=GetTextureFromImGui();		
 	}
 	return true;
 }
