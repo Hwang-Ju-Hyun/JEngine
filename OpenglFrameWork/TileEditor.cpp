@@ -11,7 +11,7 @@
 
 TileEditor::TileEditor()
 {
-
+    m_iNumberOfWalls = 30;
 }
 
 TileEditor::~TileEditor()
@@ -20,6 +20,11 @@ TileEditor::~TileEditor()
 }
 
     
+int TileEditor::GetNumberOfWalls() const
+{
+    return m_iNumberOfWalls;
+}
+
 void TileEditor::ShowAndSetCurrentTileTexture()
 {   
     bool show_cur_tile_confirm = false;
@@ -61,25 +66,39 @@ glm::vec2 TileEditor::GetWorldPosbyScreenGrid(int _width, int _height, int _grid
     return wall;
 }
 
+glm::vec2 TileEditor::GetScreenGridByMousePos(glm::vec2 _mousePos)
+{        
+    int WallWidth = window_width / m_iNumberOfWalls;
+    int WallHeight = window_height / m_iNumberOfWalls;
+
+    int ScreenGridX = _mousePos.x / WallWidth;
+    int ScreenGridY = _mousePos.y / WallHeight;
+
+    return glm::vec2{ ScreenGridX,ScreenGridY };
+}
+
+void TileEditor::SetWallGridCoord(int x, int y,bool _flag)
+{
+    m_bWallGridCoord[x][y] = _flag;
+}
+
 void TileEditor::Update()
 {    
     ShowAndSetCurrentTileTexture();
     auto L_mouse_Trigger = GLHelper::GetInstance()->GetLeftMouseTriggered();    
     
-    glm::vec2 ScreenToMousePos = GLHelper::GetInstance()->GetMouseCursorPosition();    
-
-    int NumberOfWalls = 30;
-
-    int WallWidth = window_width / NumberOfWalls;
-    int WallHeight = window_height / NumberOfWalls;
+    glm::vec2 mouse_pos_screen = GLHelper::GetInstance()->GetMouseCursorPosition();    
+    
+    int WallWidth = window_width / m_iNumberOfWalls;
+    int WallHeight = window_height / m_iNumberOfWalls;
 
 
-    int ScreenGridX = ScreenToMousePos.x / WallWidth;
-    int ScreenGridY = ScreenToMousePos.y / WallHeight;
+    int ScreenGridX = mouse_pos_screen.x / WallWidth;
+    int ScreenGridY = mouse_pos_screen.y / WallHeight;
 
     if (L_mouse_Trigger)
     {
-        if (!m_aWallGridCord[ScreenGridX][ScreenGridY])
+        if (!m_bWallGridCoord[ScreenGridX][ScreenGridY])
         {                  
             auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
 
@@ -111,7 +130,7 @@ void TileEditor::Update()
             wall_obj->SetModelType(MODEL_TYPE::RECTANGLE);
 
             GLHelper::GetInstance()->ResetLeftMouseTriggered();            
-            m_aWallGridCord[(int)ScreenGridX][(int)ScreenGridY] = true;
+            m_bWallGridCoord[(int)ScreenGridX][(int)ScreenGridY] = true;
         }
     }
 }

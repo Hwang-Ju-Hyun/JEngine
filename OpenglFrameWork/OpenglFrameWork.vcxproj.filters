@@ -120,6 +120,9 @@
     <Filter Include="Manager\CollisionMgr">
       <UniqueIdentifier>{3bb592be-09a2-44d0-8426-cc4b8ea302dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Profiler">
+      <UniqueIdentifier>{31dca166-e806-48eb-8ad9-1c1d66d56ed7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -238,6 +241,9 @@
     </ClCompile>
     <ClCompile Include="CollisionManager.cpp">
       <Filter>Manager\CollisionMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Profiler.cpp">
+      <Filter>Profiler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -367,6 +373,9 @@
     <ClInclude Include="CollisionManager.h">
       <Filter>Manager\CollisionMgr</Filter>
     </ClInclude>
+    <ClInclude Include="Profiler.h">
+      <Filter>Profiler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="IMGUI\imgui.ini">
@@ -389,6 +398,9 @@
     </None>
     <None Include="json\Stage01_Lvl\Wall.json">
       <Filter>JSON\stage01_Lvl</Filter>
+    </None>
+    <None Include="json\Stage01_Lvl\Player.json">
+      <Filter>JSON</Filter>
     </None>
   </ItemGroup>
 </Project>

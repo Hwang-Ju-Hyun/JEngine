@@ -1,11 +1,15 @@
 #include "Registry.h"
 #include "Transform.h"
 #include "Sprite.h"
+#include "RigidBody.h"
+#include "Player.h"
 
 Registry::Registry()
 {
-    m_mapRttiMap.insert({ "Transform",&Transform::CreateTransformComponent });
-    m_mapRttiMap.insert({ "Sprite",&Sprite::CreateSpriteComponent });
+    m_mapRttiMap.insert({ Transform::TransformTypeName,&Transform::CreateTransformComponent });
+    m_mapRttiMap.insert({ Sprite::SpriteTypeName,&Sprite::CreateSpriteComponent });
+    m_mapRttiMap.insert({ RigidBody::RigidBodyTypeName,&RigidBody::CreateRigidBodyComponent });
+    m_mapRttiMap.insert({ Player::PlayerTypeName,&Player::CreatePlayerComponent });
 }
 
 Registry::~Registry()

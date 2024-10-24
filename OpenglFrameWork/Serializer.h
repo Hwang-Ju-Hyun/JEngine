@@ -16,5 +16,8 @@ public:
 	GameObject* LoadWall(const std::string& _path, unsigned int _id);//TODO: 나중에 함수이름 더 clear하게 봐꾸자
 	void SaveWall(const std::string& _path);
 	int GetWallSize(const std::string& _path);
+public:
+	GameObject* LoadPlayer(const std::string& _path, unsigned int _id);
+	void SavePlayer(const std::string& _path);	
 };
 

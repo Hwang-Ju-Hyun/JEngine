@@ -42,7 +42,7 @@ public:
 	void Init();
 	void Update(GLdouble _dt);
 	void Draw();
-public:
+private:
 	std::vector<std::pair<std::string, BaseComponent*>> m_vecComponentOfObj;
 public:
 	BaseComponent* AddComponent(const std::string _compName, BaseComponent* _comp);

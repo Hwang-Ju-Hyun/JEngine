@@ -13,7 +13,7 @@
 #include "imgui_impl_opengl3.h"
 #include "Stage02_Lvl.h"
 #include "TimeManager.h"
-
+#include "CollisionManager.h"
 
 Engine::Engine()
 {
@@ -30,12 +30,14 @@ bool Engine::Init(GLint _width, GLint _height, const std::string& _title)
 	if (!GLHelper::GetInstance()->Init(_width, _height, _title))
 		return false;
 	if (!GLApp::GetInstance()->Init())
-		return false;
+		return false;	
 	if (!ModelManager::GetInstance()->Init())
 		return false;
 	if (!RenderManager::GetInstance()->Init())
 		return false;
 	if (!GameStateManager::GetInstance()->ChangeLevel(new Stage01_Lvl("Stage01_Lvl")))
+		return false;
+	if (!CollisionManager::GetInstance()->Init())
 		return false;
 	return true;
 }
@@ -66,6 +68,10 @@ bool Engine::Update()
 	
 	//ComponentManager Udpate
 	if (!ComponentManager::GetInstance()->Update())
+		return false;
+
+	//CollisionManager Update
+	if (!CollisionManager::GetInstance()->Update())
 		return false;
 
 #ifndef _EDITOR

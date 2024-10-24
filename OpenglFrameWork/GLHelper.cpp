@@ -78,6 +78,8 @@ void GLHelper::KeyCallBack(GLFWwindow* _window, int _key, int _scancod, int _act
         case GLFW_KEY_SPACE:
             m_bSpaceKeyPressed = true;
             break;
+        case GLFW_KEY_LEFT_CONTROL:
+            m_bLeftControlKeyPressed = true;
         default:
             break;
         }
@@ -98,12 +100,22 @@ void GLHelper::KeyCallBack(GLFWwindow* _window, int _key, int _scancod, int _act
         {
             m_bLeftArrowKeyPressed = false;
             m_bLeftArrowKeyReleased = true;
-        }            
+        }
+        if (m_bRightArrowKeyPressed)
+        {
+            m_bRightArrowKeyPressed = false;
+            m_bRightArrowKeyReleased = true;
+        }
         if (m_bSpaceKeyPressed)
         {
             m_bSpaceKeyPressed = false;
             m_bSpaceKeyReleased = true;
         }            
+        if (m_bLeftControlKeyPressed)
+        {
+            m_bLeftControlKeyPressed = false;
+            m_bLeftControlKeyReleased = true;
+        }
     }
 }
 

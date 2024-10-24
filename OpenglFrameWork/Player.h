@@ -3,6 +3,7 @@
 #include <glm.hpp>
 
 class GameObject;
+class BaseLevel;
 
 class Player :
     public BaseComponent
@@ -16,7 +17,12 @@ public:
     void SetDirection(glm::vec2 _dir);
     glm::vec2 GetDirection()const;
 private:
-    int m_iHP = 0;    
+    int m_iHP = 0;      
+    BaseLevel* m_pCurrentLevel = nullptr;
+    std::string m_sCurrentLevelName = "";
+public:
+    void SetCurrentLevel(BaseLevel* _level);
+    BaseLevel* GetCurrentLevel()const;
 public:
     void MoveMent();
     virtual void Update()override;
@@ -25,5 +31,7 @@ public:
 public:
     virtual void LoadFromJson(const json& _str);
     virtual json SaveToJson(const json& _str);
+public:
+    static BaseRTTI* CreatePlayerComponent();
 };
 

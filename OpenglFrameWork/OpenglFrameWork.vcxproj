@@ -111,6 +111,7 @@
     <ClCompile Include="MainEditor.cpp" />
     <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Profiler.cpp" />
     <ClCompile Include="Registry.cpp" />
     <ClCompile Include="RenderManager.cpp" />
     <ClCompile Include="Resource.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="GLShader.h" />
     <ClInclude Include="header.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Profiler.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="RigidBody.h" />
@@ -173,6 +175,7 @@
   <ItemGroup>
     <None Include="IMGUI\imgui.ini" />
     <None Include="json\Stage01_Lvl\GameObject.json" />
+    <None Include="json\Stage01_Lvl\Player.json" />
     <None Include="json\Stage01_Lvl\Wall.json" />
     <None Include="json\stage02_Lvl\GameObject.json" />
     <None Include="json\stage02_Lvl\Wall.json" />

@@ -179,10 +179,12 @@ void MainEditor::TopBar_Save()
                     }
                     auto current_level=GameStateManager::GetInstance()->GetCurrentLevel();
                     std::string cur_level_str=current_level->GetName();
-                    std::string s1 = "json/" + cur_level_str + "/GameObject.json";
-                    std::string s2 = "json/" + cur_level_str + "/Wall.json";
-                    Serializer::GetInstance()->SaveGameObject(s1);
-                    Serializer::GetInstance()->SaveWall(s2);
+                    std::string object_path = "json/" + cur_level_str + "/GameObject.json";
+                    std::string wall_path = "json/" + cur_level_str + "/Wall.json";
+                    std::string player_path = "json/" + cur_level_str + "/Player.json";
+                    Serializer::GetInstance()->SaveGameObject(object_path);
+                    Serializer::GetInstance()->SaveWall(wall_path);
+                    Serializer::GetInstance()->SavePlayer(player_path);
                     m_bShowSaveConf = false;
                     ImGui::CloseCurrentPopup();
                 }
@@ -304,8 +306,7 @@ void MainEditor::SelectedObjectByMouse()
     //auto a =GLHelper::GetInstance()->GetScreenToWorldMat(screen_mouse_pos);
     //glm::vec2 temp = { a[2][0],a[2][1] };
     //std::cout << temp.x << " , " << temp.y << std::endl;
-    
-    
+        
     auto HelperInst = GLHelper::GetInstance();
     for (const auto& obj : all_objs)
     {       
@@ -362,8 +363,21 @@ void MainEditor::SelectedObjectByMouse()
         }                
     }           
     if (m_bSelectedObjByMouse)
-    {                     
-        m_pTransByMouseSelect->SetPosition({ m_vWorldMousePos.x,m_vWorldMousePos.y });
+    {              
+        if(GetCurrentEditMode()==EDIT_MODE::NORMAL)
+            m_pTransByMouseSelect->SetPosition({ m_vWorldMousePos.x,m_vWorldMousePos.y });
+        else if (GetCurrentEditMode() == EDIT_MODE::TILE)
+        {
+            if (HelperInst->GetLeftMouseTriggered() && HelperInst->GetLeftControlPressed())
+            {
+            auto obj_id = m_pTransByMouseSelect->GetOwner()->GetID();
+            GameObjectManager::GetInstance()->RemoveObject(obj_id);
+            glm::vec2 grid = TileEditor::GetInstance()->GetScreenGridByMousePos(screen_mouse_pos);
+            TileEditor::GetInstance()->SetWallGridCoord(grid.x, grid.y, false);
+            HelperInst->ResetLeftMouseTriggered();
+            }
+        }
+        
     }    
     if (!L_mouse_trigger)
     {                        
@@ -385,21 +399,13 @@ void MainEditor::Update()
 {
     auto ScreenToWorld = GLHelper::GetInstance()->GetScreenToWorldMatFromMouse();
     m_vWorldMousePos = { ScreenToWorld[2][0],ScreenToWorld[2][1] };            
-
-    switch (GetCurrentEditMode())
-    {
-    case EDIT_MODE::NORMAL:
-        if(!m_bCurWindowObjectList)
-            SelectedObjectByMouse();
-        break;
-    case EDIT_MODE::TILE:
-        if(!m_bCurWindowObjectList)
-            TileEditor::GetInstance()->Update();
-        break;
-    default:
-        break;
-    }
-
+    
+    if (!m_bCurWindowObjectList)
+        SelectedObjectByMouse();
+    if (GetCurrentEditMode() == EDIT_MODE::TILE&& !m_bCurWindowObjectList)
+    {        
+        TileEditor::GetInstance()->Update();
+    }        
     TopBar_GameObject();
     TopBar_ChangeEditMode();
     TopBar_Save();
