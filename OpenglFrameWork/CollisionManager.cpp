@@ -58,15 +58,28 @@ bool CollisionManager::IsCollisionRectAndTri(GameObject* _obj1, GameObject* _obj
 
 bool CollisionManager::Init()
 {	
+	auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
+	for (auto obj : all_objs)
+	{
+		auto player_comp = obj->FindComponent(Player::PlayerTypeName);
+		if (player_comp != nullptr)
+			m_pPlayer = player_comp->GetOwner();
+	}
 	return true;
 }
 
 bool CollisionManager::Update()
-{	
+{		
 	auto all_objs = GameObjectManager::GetInstance()->GetAllObject();	
 	for (auto obj : all_objs)
 	{
-		IsCollisionRectAndRect()
+		if (obj->GetName() == "WALL")
+		{
+			if (IsCollisionRectAndRect(m_pPlayer, obj))
+			{
+				int a = 0;
+			}
+		}		
 	}
 	return true;
 }
