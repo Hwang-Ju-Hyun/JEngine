@@ -62,9 +62,19 @@ void GLModel::SetVertices(const std::vector<glm::vec3> _vertices)
 		m_vVertices.push_back(_vertices[i]);
 }
 
+void GLModel::SetEdges(const std::vector<glm::vec3> _edges)
+{
+	m_vEdges = _edges;
+}
+
 std::vector<glm::vec3> GLModel::GetVertices() const
 {
 	return m_vVertices;
+}
+
+std::vector<glm::vec3> GLModel::GetEdges() const
+{
+	return m_vEdges;
 }
 
 void GLModel::SetIndices(std::vector<unsigned int> _indices)

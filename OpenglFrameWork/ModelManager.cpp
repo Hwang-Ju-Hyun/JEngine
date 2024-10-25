@@ -85,6 +85,7 @@ bool ModelManager::InitCircle()
 	return true;
 }
 
+//TODO : 나중에 정점도 입력받아서 봐꿀 수 있게 끔 해주자
 bool ModelManager::InitTriangle()
 {
 	std::string name = "Triangle";
@@ -100,7 +101,7 @@ bool ModelManager::InitTriangle()
 		glm::vec3{ 0.5f,-0.5f,0.0f },//Bottom Right
 		glm::vec3{1.f,0.f,0.f},//Bottom Right - texture
 
-		glm::vec3{0.5f,0.5f,0.0f},//Top Right
+		//glm::vec3{0.5f,0.5f,0.0f},//Top Right
 		glm::vec3{1.f,1.f,0.f} //Top Right - texture
 	};	
 

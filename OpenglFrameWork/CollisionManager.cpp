@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "GameObjectManager.h"
 #include "Player.h"
+#include "GLModel.h"
 #include "Transform.h"
 #include "Player.h"
 #include "Serializer.h"
@@ -52,9 +53,41 @@ bool CollisionManager::IsCollisionRectAndRect(GameObject* _obj1, GameObject* _ob
     return false;
 }
 
-bool CollisionManager::IsRectangleInsideTriangle(GameObject* _obj1, GameObject* _obj2)
+bool CollisionManager::IsCollisionConvexAndConvex(GameObject* _obj1, GameObject* _obj2)
 {
+
+	Transform* obj_trs1 = (Transform*)_obj1->FindComponent("Transform");
+	Transform* obj_trs2 = (Transform*)_obj2->FindComponent("Transform");
+
+	glm::vec2 obj1_Pos = static_cast<Transform*>(obj_trs1)->GetPosition();
+	glm::vec2 obj2_Pos = static_cast<Transform*>(obj_trs2)->GetPosition();
 	
+	std::vector<glm::vec3> vertices1 = obj_trs1->GetOwner()->GetModel()->GetVertices();
+	std::vector<glm::vec3> vertices2 = obj_trs2->GetOwner()->GetModel()->GetVertices();
+	
+	std::vector<glm::vec3> edges1= obj_trs1->GetOwner()->GetModel()->GetEdges();
+	std::vector<glm::vec3> edges2 = obj_trs2->GetOwner()->GetModel()->GetEdges();
+
+	std::vector<glm::vec3> ortho_vector;
+	
+	for (const auto& edge : edges1)	
+		ortho_vector.push_back({ -edge.y, edge.x,0.f });
+
+	for (const auto& edge : edges2)	
+		ortho_vector.push_back({ -edge.y, edge.x,0.f });
+	
+	for (const auto& axis : ortho_vector)
+	{
+		float amin = 1e9;
+		float amax = -1e9;
+		float bmin = 1e9;
+		float bmax = -1e9;
+
+		for(int )
+	}
+
+
+	return false;
 }
 
 bool CollisionManager::IsCollisionRectAndTri(GameObject* _obj1, GameObject* _obj2)

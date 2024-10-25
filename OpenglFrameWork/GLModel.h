@@ -32,8 +32,8 @@ private:
 	enum MODEL_TYPE m_eModelType = TRIANGLE;
 private:
 	std::vector<glm::vec3> m_vVertices;
+	std::vector<glm::vec3> m_vEdges;
 	std::vector<unsigned int> m_vIndices;
-
 public:
 	void SetModelType(enum MODEL_TYPE _eModelType);
 	MODEL_TYPE GetModelType()const;
@@ -44,8 +44,10 @@ public:
 	int GetIndicesCnt()const;
 public:
 	void SetVertices(const std::vector<glm::vec3> _vertices);
-	std::vector<glm::vec3>GetVertices()const;
+	void SetEdges(const std::vector<glm::vec3> _edges);
 	void SetIndices(std::vector<unsigned int> _indices);
+	std::vector<glm::vec3>GetVertices()const;
+	std::vector<glm::vec3>GetEdges()const;
 	std::vector<unsigned int>GetIndices()const;
 public:
 	void SetPrimitiveType(GLenum _PrimitiveType);

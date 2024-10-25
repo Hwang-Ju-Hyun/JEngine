@@ -17,7 +17,7 @@ public:
 	bool IsCollisionRectAndTri(GameObject* _obj1, GameObject* _obj2);
 private:
 	//나중에 GLHelper로 옮기자
-	bool IsRectangleInsideTriangle(GameObject* _obj1, GameObject* _obj2);
+	bool IsCollisionConvexAndConvex(GameObject* _obj1, GameObject* _obj2);
 public:
 	bool Init();
 	bool Update();
