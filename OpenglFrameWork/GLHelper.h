@@ -83,6 +83,6 @@ public:
 public:
 	bool IsPointInsideRectangle(glm::vec2 _pos, float _RecLeft, float _RecRight, float _RecTop, float _RecBottom, bool _IsWorldCord = true);
 	bool IsPointInsideTriangle(glm::vec2 _pos, glm::vec2 _top,glm::vec2 _Lbottom,glm::vec2 _Rbottom, bool _IsWorldCord = true);
-	bool IsPointInsideCircle(glm::vec2 _pointPos, glm::vec2 _circlePos, float _radius, bool _IsWorldCord);
+	bool IsPointInsideCircle(glm::vec2 _pointPos, glm::vec2 _circlePos, float _radius, bool _IsWorldCord);			
 };
 

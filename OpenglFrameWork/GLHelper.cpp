@@ -389,6 +389,8 @@ bool GLHelper::IsPointInsideCircle(glm::vec2 _pointPos, glm::vec2 _circlePos, fl
 }
 
 
+
+
 bool GLHelper::Init(GLint _width, GLint _height, const std::string& _title)
 {
     m_giWidth = _width; 

@@ -6,6 +6,7 @@
 #include "Transform.h"
 #include "Player.h"
 #include "Serializer.h"
+#include <iostream>
 
 CollisionManager::CollisionManager()
 {
@@ -43,18 +44,24 @@ bool CollisionManager::IsCollisionRectAndRect(GameObject* _obj1, GameObject* _ob
 
 	float obj2Left  = obj2_Pos.x - obj2_Scale.x / 2.f;
 	float obj2Right = obj2_Pos.x + obj2_Scale.x / 2.f;
-	float obj2TopY  = obj2_Pos.y - obj2_Scale.y / 2.f;
-	float obj2BotY  = obj2_Pos.y + obj2_Scale.y / 2.f;
+	float obj2TopY  = obj2_Pos.y + obj2_Scale.y / 2.f;
+	float obj2BotY  = obj2_Pos.y - obj2_Scale.y / 2.f;
 
 	if (IsOverLapRectAndRect(obj1Left, obj1Right, obj1Top, obj1Bot, obj2Left, obj2Right, obj2TopY, obj2BotY))
 		return true;
     return false;
 }
 
+bool CollisionManager::IsRectangleInsideTriangle(GameObject* _obj1, GameObject* _obj2)
+{
+	
+}
+
 bool CollisionManager::IsCollisionRectAndTri(GameObject* _obj1, GameObject* _obj2)
 {
     return false;
 }
+
 
 bool CollisionManager::Init()
 {	
@@ -73,11 +80,15 @@ bool CollisionManager::Update()
 	auto all_objs = GameObjectManager::GetInstance()->GetAllObject();	
 	for (auto obj : all_objs)
 	{
-		if (obj->GetName() == "WALL")
+		if (obj->GetName() == "WALL"&&obj->GetID()==47)
 		{
 			if (IsCollisionRectAndRect(m_pPlayer, obj))
 			{
-				int a = 0;
+				std::cout << "Collision" << std::endl;
+			}
+			else
+			{
+				std::cout << "Not Collision" << std::endl;
 			}
 		}		
 	}

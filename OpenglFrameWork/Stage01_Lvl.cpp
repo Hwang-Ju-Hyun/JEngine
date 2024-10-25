@@ -10,12 +10,12 @@
 #include "RigidBody.h"
 #include "Serializer.h"
 #include "ResourceManager.h"
-
+	
 Stage01_Lvl::Stage01_Lvl(std::string _name)	
 	:BaseLevel(_name)
 {	
-}
-
+}	
+	
 Stage01_Lvl::~Stage01_Lvl()
 {
 }
@@ -41,16 +41,17 @@ bool Stage01_Lvl::Init()
 		m_pPlayer=Serializer::GetInstance()->LoadPlayer(player_path, 1);
 
     return true;
-}
-
+}	
+		
 bool Stage01_Lvl::Update()
 {			
 	return true;
-}
-
+}	
+	
 bool Stage01_Lvl::Exit()
-{
+{	
 	ResourceManager::GetInstance()->RemoveAllRes();
 	GameObjectManager::GetInstance()->RemoveAllObjects();			
     return true;
-}
+}	
+	
