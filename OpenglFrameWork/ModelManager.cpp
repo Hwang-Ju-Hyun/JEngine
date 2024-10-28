@@ -54,23 +54,6 @@ GLModel* ModelManager::FindModel(MODEL_TYPE _eModelType)
 	}
 }
 
-
-std::vector<glm::vec3> ModelManager::GetAndCaculateVertexEdges(std::vector<glm::vec3> _vertices)
-{
-	std::vector<glm::vec3> edges;
-
-	int vec_size = _vertices.size();
-	if (vec_size <= 0)
-	{
-		std::cerr << "vertex size is " << vec_size << ": Can't get edges" << std::endl;
-		return edges;
-	}
-	
-		
-	return edges;
-}
-
-
 bool ModelManager::Init()
 {	
 	if(!InitTriangle()||!InitRectangle()||!InitCircle())
@@ -85,7 +68,7 @@ bool ModelManager::InitCircle()
 	std::vector<glm::vec3> vertices;
 	vertices.push_back({ glm::vec3{0.f,0.f,0.f} });//pivot
 	float angle = (2.0f * 3.141592f) / slice;
-	for (int i = 1; i < slice + 2; i++)
+	for (int i = 1; i < slice + 3; i++)
 	{
 		vertices.push_back({ glm::vec2{ cos(angle * (i - 1)),sin(angle * (i - 1))},0.f });
 	}

@@ -6,8 +6,8 @@
         "Type": "Transform",
         "CompData": {
           "Pos": [
-            0,
-            150
+            0.0,
+            150.0
           ],
           "sca": [
             100.0,
@@ -48,7 +48,7 @@
       {
         "Type": "Player",
         "CompData": {
-          "Current Level" :"Stage01_Lvl",
+          "Current Level": "Stage02_Lvl",
           "HP": 0
         }
       }

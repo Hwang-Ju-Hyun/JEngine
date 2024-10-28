@@ -7,6 +7,7 @@
 #include "Transform.h"
 #include "Player.h"
 #include "Serializer.h"
+#include "MathManager.h"
 #include <iostream>
 
 CollisionManager::CollisionManager()
@@ -28,7 +29,6 @@ bool CollisionManager::IsOverLapRectAndRect(float _left1, float _right1, float _
 
 bool CollisionManager::IsCollisionRectAndRect(GameObject* _obj1, GameObject* _obj2)
 {	
-
 	Transform* obj_trs1 = (Transform*)_obj1->FindComponent("Transform");
 	Transform* obj_trs2 = (Transform*)_obj2->FindComponent("Transform");	
 	
@@ -55,7 +55,6 @@ bool CollisionManager::IsCollisionRectAndRect(GameObject* _obj1, GameObject* _ob
 
 bool CollisionManager::IsCollisionConvexAndConvex(GameObject* _obj1, GameObject* _obj2)
 {
-
 	Transform* obj_trs1 = (Transform*)_obj1->FindComponent("Transform");
 	Transform* obj_trs2 = (Transform*)_obj2->FindComponent("Transform");
 
@@ -111,11 +110,27 @@ bool CollisionManager::IsCollisionConvexAndConvex(GameObject* _obj1, GameObject*
 	return true;
 }
 
-bool CollisionManager::IsCollisionRectAndTri(GameObject* _obj1, GameObject* _obj2)
+bool CollisionManager::IsCollisionCirlceAndCircle(GameObject* _obj1, GameObject* _obj2)
 {
-    return false;
-}
+	Transform* obj1_trs = static_cast<Transform*>(_obj1->FindComponent(Transform::TransformTypeName));
+	Transform* obj2_trs = static_cast<Transform*>(_obj2->FindComponent(Transform::TransformTypeName));
 
+	auto obj1_pos = obj1_trs->GetPosition();
+	auto obj2_pos = obj2_trs->GetPosition();
+
+	auto obj1_scale = obj1_trs->GetScale();
+	auto obj2_scale = obj2_trs->GetScale();	
+	
+	int obj1_model_radius = obj1_scale.x;
+	int obj2_model_radius = obj2_scale.y;
+	
+	auto math = MathManager::GetInstance();
+
+	float dist = math->GetDistBetweenVectors(glm::vec3{ obj1_pos,0.f }, glm::vec3{ obj2_pos,0.f });
+	if (dist >= obj1_model_radius + obj2_model_radius)	
+		return false;
+	return true;
+}
 
 bool CollisionManager::Init()
 {	
@@ -131,20 +146,9 @@ bool CollisionManager::Init()
 
 bool CollisionManager::Update()
 {		
-	auto all_objs = GameObjectManager::GetInstance()->GetAllObject();	
+	auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
 	for (auto obj : all_objs)
-	{
-		if (obj->GetName() == "WALL")
-		{
-			if (IsCollisionConvexAndConvex(m_pPlayer, obj))
-			{
-				std::cout << "Collision" << std::endl;
-			}
-			else
-			{
-				std::cout << "Not Collision" << std::endl;
-			}
-		}		
+	{		
 	}
 	return true;
 }

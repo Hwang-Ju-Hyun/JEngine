@@ -1,8 +1,9 @@
 #include "Player.h"
 #include "GLHelper.h"
 #include "Transform.h"
+#include "BaseLevel.h"
 #include "GameObject.h"
-#include "GameObject.h"
+#include "GameStateManager.h"
 #include "RigidBody.h"
 #include "BaseLevel.h"
 #include "GameObjectManager.h"
@@ -34,7 +35,7 @@ void Player::SetCurrentLevel(BaseLevel* _level)
 
 BaseLevel* Player::GetCurrentLevel() const
 {
-    return m_pCurrentLevel;
+    return GameStateManager::GetInstance()->GetCurrentLevel();
 }
 
 void Player::MoveMent()
