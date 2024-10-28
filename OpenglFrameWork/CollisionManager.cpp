@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Serializer.h"
 #include "MathManager.h"
+#include <algorithm>
 #include <iostream>
 
 CollisionManager::CollisionManager()
@@ -27,10 +28,69 @@ bool CollisionManager::IsOverLapRectAndRect(float _left1, float _right1, float _
 	return false;
 }
 
+bool CollisionManager::IsOverLapConvexsOfProj(float _amax, float _bmax, float _amin, float _bmin)
+{
+	if ((_amin<_bmax && _amax>_bmin) || (_amax > _bmin && _amin < _bmax)
+		|| (_amin == _bmin && _amax == _bmax))
+	{
+		return true;
+	}
+	return false;
+}
+
+void CollisionManager::HandlePosOnCollision(GameObject* _obj1, GameObject* _obj2)
+{
+	Transform* wall_trs = (Transform*)_obj1->FindComponent("Transform");
+	Transform* obj_trs = (Transform*)_obj2->FindComponent("Transform");
+
+	glm::vec2 wall_pos = wall_trs->GetPosition();
+	glm::vec2 obj_pos = obj_trs->GetPosition();
+
+	glm::vec2 wall_scale = wall_trs->GetScale();
+	glm::vec2 obj_scale = obj_trs->GetScale();
+		
+	float upper_distance = std::fabs((wall_pos.y - (wall_scale.y / 2.f)) - (obj_pos.y + obj_scale.y/2.f));
+	float down_distance = std::fabs((wall_pos.y  + (wall_scale.y / 2.f)) - (obj_pos.y - obj_scale.y / 2.f));
+	float right_distance = std::fabs((wall_pos.x + (wall_scale.x / 2.f)) - (obj_pos.x - obj_scale.x / 2.f));
+	float left_distance = std::fabs((wall_pos.x  - (wall_scale.x / 2.f)) - (obj_pos.x + obj_scale.x / 2.f));
+
+	float arr_distance[4] = { upper_distance,down_distance,right_distance,left_distance };
+	float min_distance = arr_distance[0];
+	int direction = 0;
+	for (int i = 0; i < 4; i++)
+	{
+		if (min_distance > arr_distance[i])
+		{
+			min_distance = arr_distance[i];
+			direction = i;
+		}
+	}
+
+	switch (direction)
+	{
+	case 0:
+		obj_trs->AddPosition({ 0.f,-min_distance });
+		break;
+	case 1:
+		obj_trs->AddPosition({ 0.f,min_distance });
+		break;
+	case 2:
+		obj_trs->AddPosition({ min_distance,0.f});
+		break;
+	case 3:
+		obj_trs->AddPosition({ -min_distance,0.f });
+		break;
+	default:
+		break;
+	}
+
+}
+
+
 bool CollisionManager::IsCollisionRectAndRect(GameObject* _obj1, GameObject* _obj2)
 {	
-	Transform* obj_trs1 = (Transform*)_obj1->FindComponent("Transform");
-	Transform* obj_trs2 = (Transform*)_obj2->FindComponent("Transform");	
+	Transform* obj_trs1 = static_cast<Transform*>(_obj1->FindComponent("Transform"));
+	Transform* obj_trs2 = static_cast<Transform*>(_obj2->FindComponent("Transform"));
 	
 	glm::vec2 obj1_Pos = static_cast<Transform*>(obj_trs1)->GetPosition();
 	glm::vec2 obj2_Pos = static_cast<Transform*>(obj_trs2)->GetPosition();	
@@ -78,36 +138,55 @@ bool CollisionManager::IsCollisionConvexAndConvex(GameObject* _obj1, GameObject*
 
 	for (const auto& edge : edges2)	
 		ortho_vector.push_back({ -edge.y, edge.x,0.f });
-	
-	for (const auto& axis : ortho_vector)
-	{
+			
+	std::vector<float> invade_dist_vector;
+
+	for(int i=0;i<ortho_vector.size();i++)
+	{	
 		float amin = 1e9;
 		float amax = -1e9;
 		float bmin = 1e9;
 		float bmax = -1e9;
 
-		for (const auto& vertex : vertices1)
+		for(int j=0;j<vertices1.size();j++)
 		{
-			float dot = ((obj1_pos.x+obj1_scale.x*vertex.x) * axis.x) + ((obj1_pos.y+obj1_scale.y*vertex.y) * axis.y);
-			amin=std::fmin(amin, dot);
-			amax=std::fmax(amax, dot);
+			//내적의 결과는 투영이다 왜냐하면 현재 vertex는 단위벡터로 정규화 되어있기 때문
+			float dot = ((obj1_pos.x + obj1_scale.x * vertices1[j].x) * ortho_vector[i].x) + ((obj1_pos.y + obj1_scale.y * vertices1[j].y) * ortho_vector[i].y);
+			if (amin > dot)
+			{
+				amin = dot;
+			}			
+			if (amax < dot)
+			{				
+				amax = dot;
+			}
 		}
-		for (const auto& vertex : vertices2)
+		for(int j=0;j<vertices2.size();j++)
 		{
-			float dot = ((obj2_pos.x+obj2_scale.x * vertex.x) * axis.x) + ((obj2_pos.y+obj2_scale.y * vertex.y) * axis.y);
-			bmin=std::fmin(bmin, dot);
-			bmax=std::fmax(bmax, dot);
+			float dot = ((obj2_pos.x + obj2_scale.x * vertices2[j].x) * ortho_vector[i].x) + ((obj2_pos.y + obj2_scale.y * vertices2[j].y) * ortho_vector[i].y);
+			if (bmin > dot)
+			{
+				bmin = dot;
+			}
+			if (bmax < dot)
+			{
+				bmax = dot;
+			}
 		}
-
-		if ((amin<bmax && amax>bmin) || (amax > bmin && amin < bmax) ||
-			(amin == bmin && amax == bmax))
+		if(IsOverLapConvexsOfProj(amax,bmax,amin,bmin))
 		{
 			continue;
 		}			
 		else
-			return false;
+			return false;		
 	}
 	return true;
+}
+
+
+void CollisionManager::HandlePosOnCollision2(GameObject* _triangle, GameObject* _rectangle)
+{
+
 }
 
 bool CollisionManager::IsCollisionCirlceAndCircle(GameObject* _obj1, GameObject* _obj2)
@@ -147,8 +226,22 @@ bool CollisionManager::Init()
 bool CollisionManager::Update()
 {		
 	auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
+	Transform* player_trs = static_cast<Transform*>(m_pPlayer->FindComponent(Transform::TransformTypeName));
+	//std::cout << player_trs->GetPosition().x << "," << player_trs->GetPosition().y << std::endl;
 	for (auto obj : all_objs)
 	{		
+		if (obj->GetName() == "WALL")
+		{
+			if (IsCollisionConvexAndConvex(obj, m_pPlayer))
+			{
+				HandlePosOnCollision2(m_pPlayer,obj);
+				std::cout << "Collision" << std::endl;
+			}
+			else
+			{
+				std::cout << "Not Collision" << std::endl;
+			}
+		}
 	}
 	return true;
 }
