@@ -17,9 +17,9 @@ public:
 	GLModel* FindModel(const std::string& _ModelName);
 	GLModel* FindModel(MODEL_TYPE _eModelType);
 public:
-	bool Init();	
+	bool Init();
 public:
 	bool InitCircle();
 	bool InitTriangle();
-	bool InitRectangle();
+	bool InitRectangle();		
 };

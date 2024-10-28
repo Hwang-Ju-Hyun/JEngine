@@ -109,6 +109,7 @@
     <ClCompile Include="IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainEditor.cpp" />
+    <ClCompile Include="MathManager.cpp" />
     <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Profiler.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="GLModel.h" />
     <ClInclude Include="GLShader.h" />
     <ClInclude Include="header.h" />
+    <ClInclude Include="MathManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Profiler.h" />
     <ClInclude Include="Resource.h" />
@@ -174,8 +176,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="IMGUI\imgui.ini" />
+    <None Include="json\Player\Player.json" />
     <None Include="json\Stage01_Lvl\GameObject.json" />
-    <None Include="json\Stage01_Lvl\Player.json" />
     <None Include="json\Stage01_Lvl\Wall.json" />
     <None Include="json\stage02_Lvl\GameObject.json" />
     <None Include="json\stage02_Lvl\Wall.json" />

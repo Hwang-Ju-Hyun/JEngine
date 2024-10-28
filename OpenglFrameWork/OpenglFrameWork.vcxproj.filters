@@ -123,6 +123,12 @@
     <Filter Include="Profiler">
       <UniqueIdentifier>{31dca166-e806-48eb-8ad9-1c1d66d56ed7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{b2465fc9-38f0-412a-837a-691c88f66639}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\MathMgr">
+      <UniqueIdentifier>{d66fd375-f03d-4caf-8f7d-01c99644fcb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -244,6 +250,9 @@
     </ClCompile>
     <ClCompile Include="Profiler.cpp">
       <Filter>Profiler</Filter>
+    </ClCompile>
+    <ClCompile Include="MathManager.cpp">
+      <Filter>Manager\MathMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -376,6 +385,9 @@
     <ClInclude Include="Profiler.h">
       <Filter>Profiler</Filter>
     </ClInclude>
+    <ClInclude Include="MathManager.h">
+      <Filter>Manager\MathMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="IMGUI\imgui.ini">
@@ -399,7 +411,7 @@
     <None Include="json\Stage01_Lvl\Wall.json">
       <Filter>JSON\stage01_Lvl</Filter>
     </None>
-    <None Include="json\Stage01_Lvl\Player.json">
+    <None Include="json\Player\Player.json">
       <Filter>JSON</Filter>
     </None>
   </ItemGroup>

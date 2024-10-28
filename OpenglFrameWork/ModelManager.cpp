@@ -2,6 +2,7 @@
 #include "GLModel.h"
 #include "GLApp.h"
 #include <iostream>
+#include "MathManager.h"
 #include "header.h"
 
 ModelManager::ModelManager()
@@ -53,6 +54,23 @@ GLModel* ModelManager::FindModel(MODEL_TYPE _eModelType)
 	}
 }
 
+
+std::vector<glm::vec3> ModelManager::GetAndCaculateVertexEdges(std::vector<glm::vec3> _vertices)
+{
+	std::vector<glm::vec3> edges;
+
+	int vec_size = _vertices.size();
+	if (vec_size <= 0)
+	{
+		std::cerr << "vertex size is " << vec_size << ": Can't get edges" << std::endl;
+		return edges;
+	}
+	
+		
+	return edges;
+}
+
+
 bool ModelManager::Init()
 {	
 	if(!InitTriangle()||!InitRectangle()||!InitCircle())
@@ -100,16 +118,18 @@ bool ModelManager::InitTriangle()
 
 		glm::vec3{ 0.5f,-0.5f,0.0f },//Bottom Right
 		glm::vec3{1.f,0.f,0.f},//Bottom Right - texture
-
-		//glm::vec3{0.5f,0.5f,0.0f},//Top Right
-		glm::vec3{1.f,1.f,0.f} //Top Right - texture
 	};	
-
-
+	
+	std::vector<glm::vec3> edges;	
+	
+	edges.push_back(glm::vec3{1.f,0.f,0.f});
+	edges.push_back(glm::vec3{-1.f,1.f,0.f});
+	edges.push_back(glm::vec3{ 1.f,0.f,0.f });
 
 	GLenum type = GL_TRIANGLES;	
 
-	GLModel* model = new GLModel;
+	GLModel* model = new GLModel;	
+	model->SetEdges(edges);
 	model->CreateModel(type, vertices, name,MODEL_TYPE::TRIANGLE);
 	if (model == nullptr)
 	{
@@ -146,9 +166,16 @@ bool ModelManager::InitRectangle()
 		1,2,3   //Second Triangle
 	};
 
+	std::vector<glm::vec3> edges;	
+	edges.push_back(glm::vec3{ 1.f,0.f,0.f });//bottom
+	edges.push_back(glm::vec3{ 0.f,1.f,0.f });//right
+	edges.push_back(glm::vec3{ -1.f,0.f,0.f });//top
+	edges.push_back(glm::vec3{ 0.f,-1.f,0.f });//left
+
 	GLenum type = GL_TRIANGLES;
 	
 	GLModel* model = new GLModel;
+	model->SetEdges(edges);
 	model->CreateModel(type, vertices, name,MODEL_TYPE::RECTANGLE, GL_TRUE, indices);
 	if (model == nullptr)
 	{

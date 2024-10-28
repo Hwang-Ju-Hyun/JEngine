@@ -399,7 +399,7 @@ void MainEditor::Update()
 {
     auto ScreenToWorld = GLHelper::GetInstance()->GetScreenToWorldMatFromMouse();
     m_vWorldMousePos = { ScreenToWorld[2][0],ScreenToWorld[2][1] };            
-    
+    std::cout << m_vWorldMousePos.x << "," << m_vWorldMousePos.y << std::endl;
     if (!m_bCurWindowObjectList)
         SelectedObjectByMouse();
     if (GetCurrentEditMode() == EDIT_MODE::TILE&& !m_bCurWindowObjectList)

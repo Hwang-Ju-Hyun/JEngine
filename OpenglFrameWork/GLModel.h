@@ -61,6 +61,7 @@ public:
 	GLuint GetVAO()const;	
 	GLuint GetVBO()const;
 	GLuint GetEBO()const;
+	std::vector<glm::vec3> GetEachVertexPosition()const;
 public:
 	void CreateModel(GLenum _PrimitiveType, std::vector<glm::vec3> _vertices, const std::string& _name,enum MODEL_TYPE _eModelType,GLboolean _ebo = GL_FALSE, std::vector<unsigned int>_indices = {});
 public:

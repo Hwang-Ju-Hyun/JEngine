@@ -15,6 +15,7 @@ public:
     virtual bool Update() override;
     virtual bool Exit() override;
 private:
+    GameObject* m_pPlayer = nullptr;
     std::vector<GameObject*> m_vecGameObject_Lvl02 = {};
     std::vector<GameObject*> m_vecWall_Lv02 = {};
 };

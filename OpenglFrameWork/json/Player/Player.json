@@ -6,8 +6,8 @@
         "Type": "Transform",
         "CompData": {
           "Pos": [
-            46.344200134277344,
-            14.12379264831543
+            0,
+            150
           ],
           "sca": [
             100.0,
@@ -54,6 +54,6 @@
       }
     ],
     "Shader_Ref": 0,
-    "Model_Type": 2
+    "Model_Type": 1
   }
 ]

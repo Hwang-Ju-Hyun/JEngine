@@ -59,11 +59,15 @@ bool CollisionManager::IsCollisionConvexAndConvex(GameObject* _obj1, GameObject*
 	Transform* obj_trs1 = (Transform*)_obj1->FindComponent("Transform");
 	Transform* obj_trs2 = (Transform*)_obj2->FindComponent("Transform");
 
-	glm::vec2 obj1_Pos = static_cast<Transform*>(obj_trs1)->GetPosition();
-	glm::vec2 obj2_Pos = static_cast<Transform*>(obj_trs2)->GetPosition();
+	glm::vec2 obj1_pos = static_cast<Transform*>(obj_trs1)->GetPosition();
+	glm::vec2 obj2_pos = static_cast<Transform*>(obj_trs2)->GetPosition();
 	
-	std::vector<glm::vec3> vertices1 = obj_trs1->GetOwner()->GetModel()->GetVertices();
-	std::vector<glm::vec3> vertices2 = obj_trs2->GetOwner()->GetModel()->GetVertices();
+	glm::vec2 obj1_scale= static_cast<Transform*>(obj_trs1)->GetScale();
+	glm::vec2 obj2_scale = static_cast<Transform*>(obj_trs1)->GetScale();
+
+
+	std::vector<glm::vec3> vertices1 = obj_trs1->GetOwner()->GetModel()->GetEachVertexPosition();
+	std::vector<glm::vec3> vertices2 = obj_trs2->GetOwner()->GetModel()->GetEachVertexPosition();
 	
 	std::vector<glm::vec3> edges1= obj_trs1->GetOwner()->GetModel()->GetEdges();
 	std::vector<glm::vec3> edges2 = obj_trs2->GetOwner()->GetModel()->GetEdges();
@@ -83,11 +87,28 @@ bool CollisionManager::IsCollisionConvexAndConvex(GameObject* _obj1, GameObject*
 		float bmin = 1e9;
 		float bmax = -1e9;
 
-		for(int )
+		for (const auto& vertex : vertices1)
+		{
+			float dot = ((obj1_pos.x+obj1_scale.x*vertex.x) * axis.x) + ((obj1_pos.y+obj1_scale.y*vertex.y) * axis.y);
+			amin=std::fmin(amin, dot);
+			amax=std::fmax(amax, dot);
+		}
+		for (const auto& vertex : vertices2)
+		{
+			float dot = ((obj2_pos.x+obj2_scale.x * vertex.x) * axis.x) + ((obj2_pos.y+obj2_scale.y * vertex.y) * axis.y);
+			bmin=std::fmin(bmin, dot);
+			bmax=std::fmax(bmax, dot);
+		}
+
+		if ((amin<bmax && amax>bmin) || (amax > bmin && amin < bmax) ||
+			(amin == bmin && amax == bmax))
+		{
+			continue;
+		}			
+		else
+			return false;
 	}
-
-
-	return false;
+	return true;
 }
 
 bool CollisionManager::IsCollisionRectAndTri(GameObject* _obj1, GameObject* _obj2)
@@ -113,9 +134,9 @@ bool CollisionManager::Update()
 	auto all_objs = GameObjectManager::GetInstance()->GetAllObject();	
 	for (auto obj : all_objs)
 	{
-		if (obj->GetName() == "WALL"&&obj->GetID()==47)
+		if (obj->GetName() == "WALL")
 		{
-			if (IsCollisionRectAndRect(m_pPlayer, obj))
+			if (IsCollisionConvexAndConvex(m_pPlayer, obj))
 			{
 				std::cout << "Collision" << std::endl;
 			}

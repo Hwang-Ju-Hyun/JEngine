@@ -137,6 +137,21 @@ GLuint GLModel::GetEBO() const
 	return m_iEBO;
 }
 
+std::vector<glm::vec3> GLModel::GetEachVertexPosition() const
+{
+	std::vector<glm::vec3> result;
+	std::vector<glm::vec3> vertices = GetVertices();
+	int size = vertices.size();
+	for (int i = 0; i < size; i++)
+	{
+		if (i % 2 == 0)
+		{
+			result.push_back({ vertices[i] });
+		}
+	}
+	return result;
+}
+
 void GLModel::CreateModel(GLenum _PrimitveType, std::vector<glm::vec3> _vertices, const std::string& _name, enum MODEL_TYPE _eModelType,GLboolean _ebo, std::vector<unsigned int>_indices)
 {
 	SetName(_name);	
