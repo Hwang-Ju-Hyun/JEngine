@@ -9,6 +9,7 @@
 #include "ShaderManager.h"
 #include "GLShader.h"
 #include "header.h"
+#include "GLModel.h"
 #include <../GLM/gtc/type_ptr.hpp>
 #include "RigidBody.h"
 #include "TimeManager.h"

@@ -15,7 +15,9 @@ class MainEditor
 {
 public:
 	SINGLE(MainEditor);
-private:
+private:	
+	bool m_bShowGrid = false;
+	bool m_bShowObjectWindowByClick = false;
 	bool m_bShowObjectWindow = false;
 	bool m_bCheckBoxTransform = false;
 	bool m_bCheckBoxSprite = false;
@@ -26,7 +28,9 @@ private:
 	bool m_bCurWindowObjectList = false;
 private:
 	GameObject* m_pSelectedGameObject = nullptr;
+	GameObject* m_pSelectedGoByMouse = nullptr;
 public:	
+	void TopBar_ShowGrid();
 	void TopBar_GameObject();
 	void TopBar_Save();
 	void TopBar_ChangeEditMode();
@@ -34,7 +38,7 @@ public:
 private:
 	WorldMouseCursor m_vWorldMousePos = {};
 	bool m_bSelectedObjByMouse = false;
-	Transform* m_pTransByMouseSelect = nullptr;
+	Transform* m_pTransByMouseSelect = nullptr;	
 public:
 	void SelectedObjectByMouse();
 private:

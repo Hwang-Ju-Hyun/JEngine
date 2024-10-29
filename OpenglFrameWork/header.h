@@ -7,11 +7,12 @@ enum MODEL_TYPE
 {
 	TRIANGLE = 0,
 	RECTANGLE = 1,
-	CIRCLE = 2
+	CIRCLE = 2,
+	GRID_LINE=3,
 };
 
 typedef struct WorldMouseCursor
 {
 	float x;
-	float y;	
+	float y;
 };

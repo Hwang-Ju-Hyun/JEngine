@@ -4,6 +4,7 @@
 #include <iostream>
 #include "MathManager.h"
 #include "header.h"
+#include "TileEditor.h"
 
 ModelManager::ModelManager()
 {
@@ -45,7 +46,7 @@ GLModel* ModelManager::FindModel(const std::string& _ModelName)
 
 GLModel* ModelManager::FindModel(MODEL_TYPE _eModelType)
 {
-	for (int i = 0; i <= MODEL_TYPE::CIRCLE; i++)
+	for (int i = 0; i <= MODEL_TYPE::GRID_LINE; i++)
 	{
 		if (m_vecModel[i]->GetModelType() == _eModelType)
 		{
@@ -56,9 +57,51 @@ GLModel* ModelManager::FindModel(MODEL_TYPE _eModelType)
 
 bool ModelManager::Init()
 {	
-	if(!InitTriangle()||!InitRectangle()||!InitCircle())
+	if(!InitTriangle()||!InitRectangle()||!InitCircle()||!InitGrid())
 		return false;	
 	return true;
+}
+
+bool ModelManager::InitGrid()
+{
+	std::string name = "GridLine";	
+	std::vector<glm::vec3> vertices;
+		
+	int slices = TileEditor::GetInstance()->GetNumberOfWallHeight()*2;
+	int stacks = TileEditor::GetInstance()->GetNumberOfWallWidth() *2;
+	
+	GLfloat const u { 2.f / static_cast<GLfloat>(slices) };
+	GLfloat const v { 2.f / static_cast<GLfloat>(stacks) };
+
+	for (GLint col=0; col <= slices; ++col)
+	{
+		GLfloat x{ u * static_cast<GLfloat>(col) - 1.f };
+		vertices.emplace_back(glm::vec2(x, -1.f),0.f); 
+		vertices.push_back(glm::vec3{ 0.f,0.f,0.f });  //texture
+		vertices.emplace_back(glm::vec2(x, 1.f),0.f);  
+		vertices.push_back(glm::vec3{ 0.f,0.f,0.f });  //texture
+	}
+	for (GLint row=0; row <= stacks; ++row)
+	{
+		GLfloat y{ v * static_cast<GLfloat>(row) - 1.f };
+		vertices.emplace_back(glm::vec2(-1.f, y), 0.f);
+		vertices.push_back(glm::vec3{ 0.f,0.f,0.f });  //texture
+		vertices.emplace_back(glm::vec2(1.f, y), 0.f);
+		vertices.push_back(glm::vec3{ 0.f,0.f,0.f });  //texture
+	}
+	
+	GLenum type = GL_LINES;
+	
+	GLModel* model = new GLModel;
+
+	model->CreateModel(type, vertices, name, MODEL_TYPE::GRID_LINE);
+	
+	if (model == nullptr)
+	{
+		std::cerr << "Error : model is nulltpr - ModelManager::InitGrid_Line" << std::endl;
+		return false;
+	}		
+	AddModel(model);
 }
 
 bool ModelManager::InitCircle()

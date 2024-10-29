@@ -39,7 +39,7 @@ bool CollisionManager::IsOverLapConvexsOfProj(float _amax, float _bmax, float _a
 	return false;
 }
 
-void CollisionManager::HandlePosOnCollision(GameObject* _obj1, GameObject* _obj2)
+void CollisionManager::HandlePosOnCollision_Rect(GameObject* _obj1, GameObject* _obj2)
 {
 	Transform* wall_trs = (Transform*)_obj1->FindComponent("Transform");
 	Transform* obj_trs = (Transform*)_obj2->FindComponent("Transform");
@@ -184,11 +184,24 @@ bool CollisionManager::IsCollisionConvexAndConvex(GameObject* _obj1, GameObject*
 	return true;
 }
 
-
-void CollisionManager::HandlePosOnCollision2(GameObject* _triangle, GameObject* _rectangle)
+void CollisionManager::HandlePosByCollisionCheck_Convex(GameObject* _obj1, GameObject* _obj2)
 {
-	Transform* obj_trs1 = static_cast<Transform*>(_triangle->FindComponent("Transform"));
-	Transform* obj_trs2 = static_cast<Transform*>(_rectangle->FindComponent("Transform"));
+	GameObject* obj1 = nullptr;
+	GameObject* obj2 = nullptr;	
+
+	if (_obj1->GetName() == "WALL")
+	{
+		obj1 = _obj2;
+		obj2 = _obj1;
+	}
+	else if (_obj2->GetName() == "WALL")
+	{
+		obj1 = _obj1;
+		obj2 = _obj2;
+	}
+
+	Transform* obj_trs1 = static_cast<Transform*>(obj1->FindComponent("Transform"));
+	Transform* obj_trs2 = static_cast<Transform*>(obj2->FindComponent("Transform"));
 
 	glm::vec2 obj1_pos = obj_trs1->GetPosition();
 	glm::vec2 obj2_pos = obj_trs2->GetPosition();
@@ -214,7 +227,7 @@ void CollisionManager::HandlePosOnCollision2(GameObject* _triangle, GameObject* 
 	}
 
 	float min_overlap = 1e9;
-	glm::vec2 mtv_axis(0.f, 0.f);  
+	glm::vec2 minimum_trans_vector_axis = { 0.f, 0.f };
 	
 	for (int i = 0; i < ortho_vector.size(); i++) 
 	{
@@ -241,6 +254,7 @@ void CollisionManager::HandlePosOnCollision2(GameObject* _triangle, GameObject* 
 
 		
 		float overlap_distance = std::min(amax, bmax) - std::max(amin, bmin);
+
 		if (overlap_distance <= 0)
 		{		
 			return;
@@ -248,19 +262,19 @@ void CollisionManager::HandlePosOnCollision2(GameObject* _triangle, GameObject* 
 		if (overlap_distance < min_overlap) 
 		{
 			min_overlap = overlap_distance;
-			mtv_axis = glm::vec2(ortho_vector[i].x, ortho_vector[i].y);
+			minimum_trans_vector_axis = ortho_vector[i];
 		}
 	}
 	
-	glm::vec2 minimum_trans_vector = { mtv_axis.x * min_overlap , mtv_axis.y * min_overlap };
+	glm::vec2 minimum_trans_vector = { minimum_trans_vector_axis.x * min_overlap , minimum_trans_vector_axis.y * min_overlap };
 
 	glm::vec2 direction = obj2_pos - obj1_pos;
+
 	//내적이 0보다 작으면	
 	if (glm::dot(direction, minimum_trans_vector) < 0) 
 	{
 		minimum_trans_vector*=-1;
-	}
-	
+	}	
 	obj_trs1->AddPosition(-minimum_trans_vector);
 }
 
@@ -309,7 +323,7 @@ bool CollisionManager::Update()
 	{		
 		if (obj->GetName() == "WALL")
 		{
-			HandlePosOnCollision2(m_pPlayer, obj);
+			HandlePosByCollisionCheck_Convex(obj, m_pPlayer);
 		}
 	}
 	return true;

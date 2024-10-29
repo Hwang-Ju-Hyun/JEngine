@@ -33,6 +33,26 @@ MainEditor::~MainEditor()
 }
 
 
+void MainEditor::TopBar_ShowGrid()
+{
+    if (ImGui::BeginMenu("Show Grid"))
+    {
+        ImGui::Checkbox("Grid", &m_bShowGrid);
+        GameObject* grid_obj= new GameObject("GridObject",0);
+        grid_obj->AddComponent(Transform::TransformTypeName, new Transform(grid_obj));
+        grid_obj->AddComponent(Sprite::SpriteTypeName, new Sprite(grid_obj));
+        grid_obj->SetModelType(MODEL_TYPE::GRID_LINE);        
+        Transform* grid_trs = static_cast<Transform*>(grid_obj->FindComponent(Transform::TransformTypeName));
+        grid_trs->SetPosition({ 0.f,0.f });
+        grid_trs->SetScale({ window_width,window_height });
+        if (!m_bShowGrid)
+        {
+            GameObjectManager::GetInstance()->RemoveObjectsByName(grid_obj->GetName());
+        }
+        ImGui::EndMenu();
+    }
+}
+
 void MainEditor::TopBar_GameObject()
 {
     ImGui::BeginMainMenuBar();
@@ -133,7 +153,7 @@ void MainEditor::TopBar_GameObject()
         }
         ImGui::EndMenu();
     }
-
+    TopBar_ShowGrid();
     ImGui::EndMainMenuBar();
 }
 
@@ -301,22 +321,17 @@ void MainEditor::SelectedObjectByMouse()
     auto all_objs = GameObjectManager::GetInstance()->GetAllObject();    
     auto L_mouse_trigger = GLHelper::GetInstance()->GetLeftMouseTriggered();
     auto screen_mouse_pos = GLHelper::GetInstance()->GetMouseCursorPosition();
-
-
-    //auto a =GLHelper::GetInstance()->GetScreenToWorldMat(screen_mouse_pos);
-    //glm::vec2 temp = { a[2][0],a[2][1] };
-    //std::cout << temp.x << " , " << temp.y << std::endl;
-        
+   
     auto HelperInst = GLHelper::GetInstance();
+    m_pSelectedGoByMouse = nullptr;
     for (const auto& obj : all_objs)
-    {       
+    {               
         Transform* trans = dynamic_cast<Transform*>(obj->FindComponent("Transform"));
         if (trans!=nullptr)
         {                                                                   
             if(!m_bSelectedObjByMouse)
             {   
-                bool mouse_inside_obj = false;
-
+                bool mouse_inside_obj = false;                
                 switch (obj->GetModelType())
                 {
                 case MODEL_TYPE::TRIANGLE:
@@ -324,7 +339,7 @@ void MainEditor::SelectedObjectByMouse()
                     glm::vec2 tri_top = { trans->GetPosition().x - (trans->GetScale().x / 2.f), trans->GetPosition().y + (trans->GetScale().y / 2.f) };
                     glm::vec2 tri_bottom_left = { trans->GetPosition().x - (trans->GetScale().x / 2.f) ,trans->GetPosition().y - (trans->GetScale().y / 2.f) };
                     glm::vec2 tri_bottom_right = { trans->GetPosition().x + (trans->GetScale().x / 2.f) ,trans->GetPosition().y - (trans->GetScale().y / 2.f) };                    
-                    mouse_inside_obj = HelperInst->IsPointInsideTriangle(screen_mouse_pos, tri_top, tri_bottom_left, tri_bottom_right, false);
+                    mouse_inside_obj = HelperInst->IsPointInsideTriangle(screen_mouse_pos, tri_top, tri_bottom_left, tri_bottom_right, false);                    
                     break;
                 }                    
                 case MODEL_TYPE::RECTANGLE:
@@ -333,14 +348,14 @@ void MainEditor::SelectedObjectByMouse()
                     float rec_right = trans->GetPosition().x + trans->GetScale().x / 2.f;
                     float rec_top = trans->GetPosition().y + trans->GetScale().y / 2.f;
                     float rec_bottom = trans->GetPosition().y - trans->GetScale().y / 2.f;
-                    mouse_inside_obj = HelperInst->IsPointInsideRectangle(screen_mouse_pos, rec_left, rec_right, rec_top, rec_bottom, false);
+                    mouse_inside_obj = HelperInst->IsPointInsideRectangle(screen_mouse_pos, rec_left, rec_right, rec_top, rec_bottom, false); 
                     break;
                 }
                 case MODEL_TYPE::CIRCLE:
                 {
                     glm::vec2 circle_pos = trans->GetPosition();
                     float radius = trans->GetScale().x;
-                    mouse_inside_obj = HelperInst->IsPointInsideCircle(screen_mouse_pos,circle_pos,radius, false);
+                    mouse_inside_obj = HelperInst->IsPointInsideCircle(screen_mouse_pos,circle_pos,radius, false);                    
                 }
                 default:
                     break;
@@ -357,12 +372,74 @@ void MainEditor::SelectedObjectByMouse()
                             return;
                         }
                         m_bSelectedObjByMouse = true;
+                        m_pSelectedGoByMouse = obj;
+                        m_bShowObjectWindowByClick = true;
                     }
-                }                
-            }   
-        }                
-    }           
-    if (m_bSelectedObjByMouse)
+                }
+            }
+        }
+    }
+    if (m_pSelectedGoByMouse!=nullptr&&m_pSelectedGoByMouse->GetID() >= 30000)
+    {
+        auto b= GameObjectManager::GetInstance()->GetAllObject();
+        b;
+        int a = 0;
+    }
+    if (m_pSelectedGoByMouse!=nullptr&&m_bShowObjectWindowByClick&&!GLHelper::GetInstance()->GetLeftControlPressed())
+    {        
+        ImGui::Begin((m_pSelectedGoByMouse->GetName() + std::to_string(m_pSelectedGoByMouse->GetID())).c_str(), &m_bShowObjectWindowByClick);
+        GLModel* model = m_pSelectedGoByMouse->GetModel();
+        GLModel* NewModel = nullptr;
+        Transform* transform = static_cast<Transform*>(m_pSelectedGoByMouse->FindComponent("Transform"));
+        Sprite* sprite = static_cast<Sprite*>(m_pSelectedGoByMouse->FindComponent("Sprite"));
+        if (transform)
+        {
+            transform->EditFromImgui();
+        }
+        if (sprite)
+        {
+            sprite->EditFromImgui();
+        }
+        if (model)
+        {
+            NewModel = model->GetModelFromImgui();
+            if (NewModel != nullptr)
+            {
+                m_pSelectedGoByMouse->SetModelType(NewModel->GetModelType());
+            }
+        }
+        if (ImGui::Button("DeleteObject"))
+        {
+            m_bShowDeleteConf = true;
+        }
+        if (m_bShowDeleteConf)
+        {
+            ImGui::Begin("Are you sure to delete?");
+            if (ImGui::Button("YES"))
+            {
+                auto obj_id = m_pSelectedGoByMouse->GetID();
+                std::string name = m_pSelectedGoByMouse->GetName();
+                GameObjectManager::GetInstance()->RemoveObject(obj_id,name);
+                m_pSelectedGoByMouse = nullptr;
+                m_bShowDeleteConf = false;
+                m_bShowObjectWindowByClick = false;
+            }
+            else if (ImGui::Button("No"))
+            {
+                m_pSelectedGoByMouse = nullptr;
+                m_bShowDeleteConf = false;
+                m_bShowObjectWindowByClick = false;
+            }
+            ImGui::End();
+        }
+        if (ImGui::Button("Close Me"))
+        {
+            m_pSelectedGoByMouse = nullptr;
+            m_bShowObjectWindowByClick = false;
+        }        
+        ImGui::End();
+    }    
+    if (m_bSelectedObjByMouse/*&& !m_bShowObjectWindowByClick*/)
     {              
         if(GetCurrentEditMode()==EDIT_MODE::NORMAL)
             m_pTransByMouseSelect->SetPosition({ m_vWorldMousePos.x,m_vWorldMousePos.y });
@@ -370,11 +447,16 @@ void MainEditor::SelectedObjectByMouse()
         {
             if (HelperInst->GetLeftMouseTriggered() && HelperInst->GetLeftControlPressed())
             {
-            auto obj_id = m_pTransByMouseSelect->GetOwner()->GetID();
-            GameObjectManager::GetInstance()->RemoveObject(obj_id);
-            glm::vec2 grid = TileEditor::GetInstance()->GetScreenGridByMousePos(screen_mouse_pos);
-            TileEditor::GetInstance()->SetWallGridCoord(grid.x, grid.y, false);
-            HelperInst->ResetLeftMouseTriggered();
+                if (m_pTransByMouseSelect->GetOwner() != nullptr)
+                {
+                    auto obj_id = m_pTransByMouseSelect->GetOwner()->GetID();
+                    std::string name = m_pTransByMouseSelect->GetOwner()->GetName();
+                    GameObjectManager::GetInstance()->RemoveObject(obj_id, name);
+                    m_pTransByMouseSelect = nullptr;
+                    glm::vec2 grid = TileEditor::GetInstance()->GetScreenGridByMousePos(screen_mouse_pos);
+                    TileEditor::GetInstance()->SetWallGridCoord(grid.x, grid.y, false);
+                    HelperInst->ResetLeftMouseTriggered();                    
+                }                
             }
         }
         
@@ -398,8 +480,7 @@ int MainEditor::GetCurrentEditMode() const
 void MainEditor::Update()
 {
     auto ScreenToWorld = GLHelper::GetInstance()->GetScreenToWorldMatFromMouse();
-    m_vWorldMousePos = { ScreenToWorld[2][0],ScreenToWorld[2][1] };            
-    std::cout << m_vWorldMousePos.x << "," << m_vWorldMousePos.y << std::endl;
+    m_vWorldMousePos = { ScreenToWorld[2][0],ScreenToWorld[2][1] };                
     if (!m_bCurWindowObjectList)
         SelectedObjectByMouse();
     if (GetCurrentEditMode() == EDIT_MODE::TILE&& !m_bCurWindowObjectList)
@@ -410,4 +491,5 @@ void MainEditor::Update()
     TopBar_ChangeEditMode();
     TopBar_Save();
     SelectedObjectWindow();
+    TopBar_ShowGrid();
 }

@@ -93,6 +93,39 @@ void GameObjectManager::RemoveObject(unsigned int _id)
     }
 }
 
+void GameObjectManager::RemoveObject(unsigned int _id, std::string _name)
+{
+    for (auto iter = m_vecGameObject.begin(); iter != m_vecGameObject.end();)
+    {
+        if ((*iter)->GetID() == _id&&(*iter)->GetName()==_name)
+        {
+            delete* iter;            
+            iter = m_vecGameObject.erase(iter);
+            return;
+        }
+        else
+        {
+            iter++;
+        }
+    }
+}
+
+void GameObjectManager::RemoveObjectsByName(std::string _name)
+{
+    for (auto iter = m_vecGameObject.begin(); iter != m_vecGameObject.end();)
+    {
+        if ((*iter)->GetName() == _name)
+        {
+            delete* iter;
+            iter = m_vecGameObject.erase(iter);            
+        }
+        else
+        {
+            iter++;
+        }
+    }
+}
+
 bool GameObjectManager::Init()
 {
     for (int i = 0; i < m_vecGameObject.size(); i++)    

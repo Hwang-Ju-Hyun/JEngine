@@ -11,20 +11,14 @@
 
 TileEditor::TileEditor()
 {
-    m_iNumberOfWalls = 30;
+    
 }
 
 TileEditor::~TileEditor()
 {
 
 }
-
-    
-int TileEditor::GetNumberOfWalls() const
-{
-    return m_iNumberOfWalls;
-}
-
+   
 void TileEditor::ShowAndSetCurrentTileTexture()
 {   
     bool show_cur_tile_confirm = false;
@@ -68,8 +62,8 @@ glm::vec2 TileEditor::GetWorldPosbyScreenGrid(int _width, int _height, int _grid
 
 glm::vec2 TileEditor::GetScreenGridByMousePos(glm::vec2 _mousePos)
 {        
-    int WallWidth = window_width / m_iNumberOfWalls;
-    int WallHeight = window_height / m_iNumberOfWalls;
+    int WallWidth = window_width / m_iNumberOfWallsWidth;
+    int WallHeight = window_height / m_iNumberOfWallsHeight;
 
     int ScreenGridX = _mousePos.x / WallWidth;
     int ScreenGridY = _mousePos.y / WallHeight;
@@ -82,21 +76,55 @@ void TileEditor::SetWallGridCoord(int x, int y,bool _flag)
     m_bWallGridCoord[x][y] = _flag;
 }
 
+int TileEditor::GetNumberOfWallWidth() const
+{
+    return m_iNumberOfWallsWidth;
+}
+
+int TileEditor::GetNumberOfWallHeight() const
+{
+    return m_iNumberOfWallsHeight;
+}
+
+void TileEditor::SetWallWidth(int _width)
+{
+    m_iWallWidth = _width;
+}
+
+void TileEditor::SetWallHeight(int _height)
+{
+    m_iWallHeight = _height;
+}
+
+int TileEditor::GetWallWidth() const
+{
+    return m_iWallWidth;
+}
+
+int TileEditor::GetWallHeight() const
+{
+    return m_iWallHeight;
+}
+
+void TileEditor::Init()
+{
+    m_iNumberOfWallsWidth  = 30;
+    m_iNumberOfWallsHeight = 30;
+    m_iWallWidth = window_width / m_iNumberOfWallsWidth;
+    m_iWallHeight = window_height / m_iNumberOfWallsHeight;
+}
+
 void TileEditor::Update()
-{    
+{       
     ShowAndSetCurrentTileTexture();
     auto L_mouse_Trigger = GLHelper::GetInstance()->GetLeftMouseTriggered();    
     
-    glm::vec2 mouse_pos_screen = GLHelper::GetInstance()->GetMouseCursorPosition();    
-    
-    int WallWidth = window_width / m_iNumberOfWalls;
-    int WallHeight = window_height / m_iNumberOfWalls;
+    glm::vec2 mouse_pos_screen = GLHelper::GetInstance()->GetMouseCursorPosition();        
 
+    int ScreenGridX = mouse_pos_screen.x / m_iWallWidth;
+    int ScreenGridY = mouse_pos_screen.y / m_iWallHeight;
 
-    int ScreenGridX = mouse_pos_screen.x / WallWidth;
-    int ScreenGridY = mouse_pos_screen.y / WallHeight;
-
-    if (L_mouse_Trigger)
+    if (L_mouse_Trigger&& !MainEditor::GetInstance()->m_bShowObjectWindowByClick)
     {
         if (!m_bWallGridCoord[ScreenGridX][ScreenGridY])
         {                  
@@ -123,10 +151,10 @@ void TileEditor::Update()
             
             glm::vec2 wall;
 
-            wall=GetWorldPosbyScreenGrid(WallWidth,WallHeight,ScreenGridX,ScreenGridY);
+            wall=GetWorldPosbyScreenGrid(m_iWallWidth, m_iWallHeight,ScreenGridX,ScreenGridY);
 
             trans->SetPosition({ wall.x,wall.y });
-            trans->SetScale({ WallWidth, WallHeight });
+            trans->SetScale({ m_iWallWidth, m_iWallHeight });
             wall_obj->SetModelType(MODEL_TYPE::RECTANGLE);
 
             GLHelper::GetInstance()->ResetLeftMouseTriggered();            
