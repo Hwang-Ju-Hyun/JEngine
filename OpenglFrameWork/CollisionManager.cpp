@@ -203,64 +203,65 @@ void CollisionManager::HandlePosOnCollision2(GameObject* _triangle, GameObject* 
 	std::vector<glm::vec3> edges2 = obj_trs2->GetOwner()->GetModel()->GetEdges();
 
 	std::vector<glm::vec3> ortho_vector;
-
-	// Calculate all the edge normals (perpendicular vectors)
-	for (const auto& edge : edges1) {
+	
+	for (const auto& edge : edges1) 
+	{
 		ortho_vector.push_back(glm::vec3(-edge.y, edge.x, 0.f));
 	}
-	for (const auto& edge : edges2) {
+	for (const auto& edge : edges2) 
+	{
 		ortho_vector.push_back(glm::vec3(-edge.y, edge.x, 0.f));
 	}
 
 	float min_overlap = 1e9;
-	glm::vec2 mtv_axis(0.f, 0.f);  // Minimum Translation Vector axis
-
-	// Loop through each orthogonal vector (separating axis)
-	for (int i = 0; i < ortho_vector.size(); i++) {
+	glm::vec2 mtv_axis(0.f, 0.f);  
+	
+	for (int i = 0; i < ortho_vector.size(); i++) 
+	{
 		float amin = 1e9, amax = -1e9;
 		float bmin = 1e9, bmax = -1e9;
 
-		// Project vertices of object 1 onto the axis
-		for (int j = 0; j < vertices1.size(); j++) {
+
+		for (int j = 0; j < vertices1.size(); j++) 
+		{
 			float dot = ((obj1_pos.x + obj1_scale.x * vertices1[j].x) * ortho_vector[i].x) +
 				((obj1_pos.y + obj1_scale.y * vertices1[j].y) * ortho_vector[i].y);
 			amin = std::min(amin, dot);
 			amax = std::max(amax, dot);
 		}
 
-		// Project vertices of object 2 onto the axis
-		for (int j = 0; j < vertices2.size(); j++) {
+
+		for (int j = 0; j < vertices2.size(); j++) 
+		{
 			float dot = ((obj2_pos.x + obj2_scale.x * vertices2[j].x) * ortho_vector[i].x) +
 				((obj2_pos.y + obj2_scale.y * vertices2[j].y) * ortho_vector[i].y);
 			bmin = std::min(bmin, dot);
 			bmax = std::max(bmax, dot);
 		}
 
-		// Check for overlap
-		float overlap = std::min(amax, bmax) - std::max(amin, bmin);
-		if (overlap <= 0) {
-			// No collision, exit
+		
+		float overlap_distance = std::min(amax, bmax) - std::max(amin, bmin);
+		if (overlap_distance <= 0)
+		{		
 			return;
-		}
-
-		// Update the MTV if the overlap is smaller
-		if (overlap < min_overlap) {
-			min_overlap = overlap;
+		}		
+		if (overlap_distance < min_overlap) 
+		{
+			min_overlap = overlap_distance;
 			mtv_axis = glm::vec2(ortho_vector[i].x, ortho_vector[i].y);
 		}
 	}
+	
+	glm::vec2 minimum_trans_vector = { mtv_axis.x * min_overlap , mtv_axis.y * min_overlap };
 
-	// Move the second object out of collision along the MTV
-	glm::vec2 mtv = mtv_axis * min_overlap;
-
-	// Decide which direction to move based on the positions of the two objects
 	glm::vec2 direction = obj2_pos - obj1_pos;
-	if (glm::dot(direction, mtv) < 0) {
-		mtv = -mtv; // Ensure correct direction
+	//내적이 0보다 작으면	
+	if (glm::dot(direction, minimum_trans_vector) < 0) 
+	{
+		minimum_trans_vector*=-1;
 	}
-
-	// Adjust position of the second object
-	obj_trs2->AddPosition(mtv);
+	
+	obj_trs1->AddPosition(-minimum_trans_vector);
 }
 
 
@@ -308,15 +309,7 @@ bool CollisionManager::Update()
 	{		
 		if (obj->GetName() == "WALL")
 		{
-			if (IsCollisionConvexAndConvex(m_pPlayer, obj))
-			{
-				HandlePosOnCollision2(m_pPlayer,obj);
-				std::cout << "Collision" << std::endl;
-			}
-			else
-			{
-				std::cout << "Not Collision" << std::endl;
-			}
+			HandlePosOnCollision2(m_pPlayer, obj);
 		}
 	}
 	return true;
