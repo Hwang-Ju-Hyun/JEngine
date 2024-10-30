@@ -2,6 +2,7 @@
 #include "BaseComponent.h"
 #include "GameObject.h"
 #include "GameObjectManager.h"
+#include "GLHelper.h"
 #include "Player.h"
 #include "GLModel.h"
 #include "Transform.h"
@@ -39,7 +40,7 @@ bool CollisionManager::IsOverLapConvexsOfProj(float _amax, float _bmax, float _a
 	return false;
 }
 
-void CollisionManager::HandlePosOnCollision_Rect(GameObject* _obj1, GameObject* _obj2)
+void CollisionManager::HandlePosOnCollision_Rect_Rect(GameObject* _obj1, GameObject* _obj2)
 {
 	Transform* wall_trs = (Transform*)_obj1->FindComponent("Transform");
 	Transform* obj_trs = (Transform*)_obj2->FindComponent("Transform");
@@ -84,6 +85,44 @@ void CollisionManager::HandlePosOnCollision_Rect(GameObject* _obj1, GameObject* 
 	default:
 		break;
 	}
+
+}
+
+void CollisionManager::HandlePosOnCollision_Rect_Circle(GameObject* _obj1, GameObject* _obj2)
+{
+	GameObject* circle = nullptr;
+	GameObject* rectangle = nullptr;
+	auto helper = GLHelper::GetInstance();
+
+	if (_obj2->GetModel()->GetName() == "Circle" && _obj1->GetModel()->GetName() == "Rectanlge")
+	{
+		circle = _obj2;
+		rectangle = _obj1;
+	}
+	else
+	{
+		circle = _obj1;
+		rectangle = _obj2;
+	}
+
+	Transform* circle_trs = static_cast<Transform*>(circle->FindComponent(Transform::TransformTypeName));
+	Transform* rectangle_trs = static_cast<Transform*>(rectangle->FindComponent(Transform::TransformTypeName));
+
+	glm::vec2 circle_pos = circle_trs->GetPosition();
+	glm::vec2 rectangle_pos = rectangle_trs->GetPosition();
+
+	glm::vec2 circle_scale = circle_trs->GetScale();
+	glm::vec2 rectangle_scale = rectangle_trs->GetScale();
+
+	//Todo : 이상함
+	glm::vec2 closest_point_rect = helper->GetClosestPointRectangle(circle_pos, _obj2);
+	float distance_two_obj = helper->GetDistanceFromTwoVertex(circle_pos, closest_point_rect);
+	glm::vec2 direction = helper->GetDirectionFromTwoVector(circle_pos, rectangle_pos,true);
+	
+	glm::vec2 addpos = direction * distance_two_obj;
+		
+
+	rectangle_trs->AddPosition(addpos);
 
 }
 
@@ -184,7 +223,7 @@ bool CollisionManager::IsCollisionConvexAndConvex(GameObject* _obj1, GameObject*
 	return true;
 }
 
-void CollisionManager::HandlePosByCollisionCheck_Convex(GameObject* _obj1, GameObject* _obj2)
+void CollisionManager::HandlePosByCollisionCheck_Convex_Convex(GameObject* _obj1, GameObject* _obj2)
 {
 	GameObject* obj1 = nullptr;
 	GameObject* obj2 = nullptr;	
@@ -302,6 +341,44 @@ bool CollisionManager::IsCollisionCirlceAndCircle(GameObject* _obj1, GameObject*
 	return true;
 }
 
+bool CollisionManager::IsCollisionCircleAndRect(GameObject* _obj1, GameObject* _obj2)
+{
+	//_obj1 원,_obj2 사각형
+	GameObject* circle=nullptr;
+	GameObject* rectangle=nullptr;
+	auto helper = GLHelper::GetInstance();
+
+	if (_obj2->GetModel()->GetName() == "Circle"&&_obj1->GetModel()->GetName()=="Rectanlge")
+	{		
+		circle = _obj2;
+		rectangle = _obj1;
+	}
+	else
+	{
+		circle = _obj1;
+		rectangle = _obj2;
+	}
+
+
+	Transform* circle_trs = static_cast<Transform*>(circle->FindComponent(Transform::TransformTypeName));
+	Transform* rectangle_trs = static_cast<Transform*>(rectangle->FindComponent(Transform::TransformTypeName));
+
+	glm::vec2 circle_pos = circle_trs->GetPosition();
+	glm::vec2 rectangle_pos = rectangle_trs->GetPosition();
+
+	glm::vec2 circle_scale = circle_trs->GetScale();
+	glm::vec2 rectangle_scale = rectangle_trs->GetScale();
+	
+
+	glm::vec2 closest_point_rect = helper->GetClosestPointRectangle(circle_pos, _obj2);
+	float distance_two_obj = helper->GetDistanceFromTwoVertex(circle_pos, closest_point_rect);
+	
+	float radius = circle_scale.y/2.f;
+	if (radius > distance_two_obj)
+		return true;
+	return false;
+}
+
 bool CollisionManager::Init()
 {	
 	auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
@@ -323,7 +400,12 @@ bool CollisionManager::Update()
 	{		
 		if (obj->GetName() == "WALL")
 		{
-			HandlePosByCollisionCheck_Convex(obj, m_pPlayer);
+			HandlePosByCollisionCheck_Convex_Convex(obj, m_pPlayer);
+
+			if (IsCollisionCircleAndRect(obj, m_pPlayer))
+			{
+				HandlePosOnCollision_Rect_Circle(obj, m_pPlayer);				
+			}
 		}
 	}
 	return true;

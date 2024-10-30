@@ -105,23 +105,23 @@ void MainEditor::TopBar_GameObject()
                             object_last_id = all_objs[i]->GetID() + 1;
                         }
                     }                                 
-                    m_pSelectedGameObject = new GameObject("tempObject", object_last_id++);
+                    m_pNewObject = new GameObject("tempObject", object_last_id++);
                     if (m_bCheckBoxTransform)
                     {
-                        m_pSelectedGameObject->AddComponent("Transform", new Transform(m_pSelectedGameObject));
-                        Transform* trans = static_cast<Transform*>(m_pSelectedGameObject->FindComponent("Transform"));
+                        m_pNewObject->AddComponent("Transform", new Transform(m_pNewObject));
+                        Transform* trans = static_cast<Transform*>(m_pNewObject->FindComponent("Transform"));
                         trans->SetPosition({ position.x, position.y });
                         trans->SetScale({ scale.x, scale.y });
                     }
                     if (m_bCheckBoxSprite)
                     {
-                        m_pSelectedGameObject->AddComponent("Sprite", new Sprite(m_pSelectedGameObject));
-                        Sprite* sprite = static_cast<Sprite*>(m_pSelectedGameObject->FindComponent("Sprite"));
+                        m_pNewObject->AddComponent("Sprite", new Sprite(m_pNewObject));
+                        Sprite* sprite = static_cast<Sprite*>(m_pNewObject->FindComponent("Sprite"));
                         sprite->SetColor(color);
                     }
 
                     GLModel* model = ModelManager::GetInstance()->FindModel(MODEL_TYPE::TRIANGLE);
-                    m_pSelectedGameObject->SetModelType(model->GetModelType());
+                    m_pNewObject->SetModelType(model->GetModelType());
                     
                     std::cout << "GameObject created!" << std::endl;                    
                 }
@@ -138,16 +138,22 @@ void MainEditor::TopBar_GameObject()
     {
         if (ImGui::TreeNode("Change Level"))
         {
-            auto cur_level = GameStateManager::GetInstance()->GetCurrentLevel();
+            auto cur_level = GameStateManager::GetInstance()->GetCurrentLevel();            
             if (ImGui::Button("Stage01_Lvl"))
             {                
                 if (cur_level->GetName() != "Stage01_Lvl")
+                {                    
                     GameStateManager::GetInstance()->ChangeLevel(new Stage01_Lvl("Stage01_Lvl"));
+                }
+                    
             }
             if (ImGui::Button("Stage02_Lvl"))
             {
                 if (cur_level->GetName() != "Stage01_Lv2")
+                {
+                    TileEditor::GetInstance()->Init();
                     GameStateManager::GetInstance()->ChangeLevel(new Stage02_Lvl("Stage02_Lvl"));
+                }                    
             }
             ImGui::TreePop();
         }
@@ -220,7 +226,7 @@ void MainEditor::TopBar_Save()
     }
 }
 
-void MainEditor::SelectedObjectWindow()
+void MainEditor::ShowObjectList()
 {
     auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
     if(ImGui::Begin("Object List"))
@@ -232,16 +238,16 @@ void MainEditor::SelectedObjectWindow()
     {        
         if (ImGui::Button((obj->GetName()+std::to_string(obj->GetID())).c_str()))
         {                       
-            m_pSelectedGameObject = obj;
+            m_pNewObject = obj;
         }
     }
     
-    if (m_pSelectedGameObject)
+    if (m_pNewObject)
     {        
-        GLModel* model= m_pSelectedGameObject->GetModel();
+        GLModel* model= m_pNewObject->GetModel();
         GLModel* NewModel = nullptr;
-        Transform* transform = static_cast<Transform*>(m_pSelectedGameObject->FindComponent("Transform"));
-        Sprite* sprite = static_cast<Sprite*>(m_pSelectedGameObject->FindComponent("Sprite"));        
+        Transform* transform = static_cast<Transform*>(m_pNewObject->FindComponent("Transform"));
+        Sprite* sprite = static_cast<Sprite*>(m_pNewObject->FindComponent("Sprite"));        
         if (transform)
         {
             transform->EditFromImgui();            
@@ -255,7 +261,7 @@ void MainEditor::SelectedObjectWindow()
             NewModel = model->GetModelFromImgui();
             if (NewModel != nullptr)
             {
-                m_pSelectedGameObject->SetModelType(NewModel->GetModelType());                
+                m_pNewObject->SetModelType(NewModel->GetModelType());                
             }
         }  
 
@@ -268,9 +274,9 @@ void MainEditor::SelectedObjectWindow()
             ImGui::Begin("Are you sure to delete?");
             if (ImGui::Button("YES"))
             {
-                auto obj_id = m_pSelectedGameObject->GetID();
+                auto obj_id = m_pNewObject->GetID();
                 GameObjectManager::GetInstance()->RemoveObject(obj_id);                
-                m_pSelectedGameObject = nullptr;
+                m_pNewObject = nullptr;
                 m_bShowDeleteConf = false;
             }
             else if (ImGui::Button("No"))
@@ -302,6 +308,7 @@ void MainEditor::TopBar_ChangeEditMode()
                     else if (ImGui::Button("TileEdit"))
                     {                        
                         ChangeCurrentEditMode(EDIT_MODE::TILE);
+                        
                         ImGui::CloseCurrentPopup();                        
                     }
                     m_bShowChangeEditModeConf = false;
@@ -315,21 +322,29 @@ void MainEditor::TopBar_ChangeEditMode()
     
 }
 
+// a. m_bSelectedObjByMouse -- true means an object is selected by mouse
+// b. m_pTransByMouseSelect -- c가 있을 때만 유효해야 함
+// c. m_pSelectedGoByMouse  -- a-c랑 동기화 필요
+// d. m_bShowObjectWindowByClick -- 현재는 a랑 항상 값이 같아야 함
+// e. m_bShowDeleteConf 
 
-void MainEditor::SelectedObjectByMouse()
+// 1. 모든 오브젝트와 마우스 좌표를 비교하여 충돌한 오브젝트가 있는지 없는지 판단하고 ... 등등
+// 2. 선택된 오브젝트의 에디터 윈도우 보여주기
+// 3-1. 일반모드: 선택된 오브젝트의 위치를 마우스와 동기화
+// 3-2. 타일모드: 선택된 오브젝트를 삭제 할지 말지 판단하는 코드 실행 후 .. 삭제까지
+void MainEditor::CheckSelecetedObjByMouse()
 {    
     auto all_objs = GameObjectManager::GetInstance()->GetAllObject();    
     auto L_mouse_trigger = GLHelper::GetInstance()->GetLeftMouseTriggered();
-    auto screen_mouse_pos = GLHelper::GetInstance()->GetMouseCursorPosition();
-   
+    auto screen_mouse_pos = GLHelper::GetInstance()->GetMouseCursorPosition();   
     auto HelperInst = GLHelper::GetInstance();
-    m_pSelectedGoByMouse = nullptr;
+    
     for (const auto& obj : all_objs)
     {               
         Transform* trans = dynamic_cast<Transform*>(obj->FindComponent("Transform"));
         if (trans!=nullptr)
         {                                                                   
-            if(!m_bSelectedObjByMouse)
+            if(!m_bSelectedObjByClick)
             {   
                 bool mouse_inside_obj = false;                
                 switch (obj->GetModelType())
@@ -370,28 +385,58 @@ void MainEditor::SelectedObjectByMouse()
                         {
                             std::cerr << "Error : Object Can't find Transform Component - MainEditor:: SelectedObjectByMouse" << std::endl;
                             return;
-                        }
-                        m_bSelectedObjByMouse = true;
-                        m_pSelectedGoByMouse = obj;
-                        m_bShowObjectWindowByClick = true;
+                        }                        
+                        m_pSelectedObjByMouse = obj;
+                        m_bSelectedObjByClick = true;                        
                     }
                 }
             }
         }
+    }          
+    if (!L_mouse_trigger)
+    {                        
+        m_bSelectedObjByClick = false;
     }
-    if (m_pSelectedGoByMouse!=nullptr&&m_pSelectedGoByMouse->GetID() >= 30000)
+}
+
+void MainEditor::UniqueFunctionEachMode()
+{
+    auto HelperInst = GLHelper::GetInstance();
+    auto screen_mouse_pos = GLHelper::GetInstance()->GetMouseCursorPosition();
+    if (m_bSelectedObjByClick)
     {
-        auto b= GameObjectManager::GetInstance()->GetAllObject();
-        b;
-        int a = 0;
+        if (GetCurrentEditMode() == EDIT_MODE::NORMAL)
+            m_pTransByMouseSelect->SetPosition({ m_vWorldMousePos.x,m_vWorldMousePos.y });
+        else if (GetCurrentEditMode() == EDIT_MODE::TILE)
+        {
+            if (HelperInst->GetLeftMouseTriggered() && HelperInst->GetLeftControlPressed())
+            {
+                if (m_pTransByMouseSelect->GetOwner() != nullptr)
+                {
+                    auto obj_id = m_pTransByMouseSelect->GetOwner()->GetID();
+                    std::string name = m_pTransByMouseSelect->GetOwner()->GetName();
+                    GameObjectManager::GetInstance()->RemoveObject(obj_id, name);
+                    m_pTransByMouseSelect = nullptr;
+                    m_pSelectedObjByMouse = nullptr;
+                    m_bSelectedObjByClick = false;
+                    glm::vec2 grid = TileEditor::GetInstance()->GetScreenGridByPoint(screen_mouse_pos);
+                    TileEditor::GetInstance()->SetWallGridCoord(grid.x, grid.y, false);
+                    HelperInst->ResetLeftMouseTriggered();
+                }
+            }
+        }
     }
-    if (m_pSelectedGoByMouse!=nullptr&&m_bShowObjectWindowByClick&&!GLHelper::GetInstance()->GetLeftControlPressed())
-    {        
-        ImGui::Begin((m_pSelectedGoByMouse->GetName() + std::to_string(m_pSelectedGoByMouse->GetID())).c_str(), &m_bShowObjectWindowByClick);
-        GLModel* model = m_pSelectedGoByMouse->GetModel();
+}
+
+void MainEditor::ShowObjectInfoWindow()
+{
+    if (m_bSelectedObjByClick && !GLHelper::GetInstance()->GetLeftControlPressed())
+    {
+        ImGui::Begin((m_pSelectedObjByMouse->GetName() + std::to_string(m_pSelectedObjByMouse->GetID())).c_str(), &m_bSelectedObjByClick);
+        GLModel* model = m_pSelectedObjByMouse->GetModel();
         GLModel* NewModel = nullptr;
-        Transform* transform = static_cast<Transform*>(m_pSelectedGoByMouse->FindComponent("Transform"));
-        Sprite* sprite = static_cast<Sprite*>(m_pSelectedGoByMouse->FindComponent("Sprite"));
+        Transform* transform = static_cast<Transform*>(m_pSelectedObjByMouse->FindComponent("Transform"));
+        Sprite* sprite = static_cast<Sprite*>(m_pSelectedObjByMouse->FindComponent("Sprite"));
         if (transform)
         {
             transform->EditFromImgui();
@@ -405,7 +450,7 @@ void MainEditor::SelectedObjectByMouse()
             NewModel = model->GetModelFromImgui();
             if (NewModel != nullptr)
             {
-                m_pSelectedGoByMouse->SetModelType(NewModel->GetModelType());
+                m_pSelectedObjByMouse->SetModelType(NewModel->GetModelType());
             }
         }
         if (ImGui::Button("DeleteObject"))
@@ -417,53 +462,27 @@ void MainEditor::SelectedObjectByMouse()
             ImGui::Begin("Are you sure to delete?");
             if (ImGui::Button("YES"))
             {
-                auto obj_id = m_pSelectedGoByMouse->GetID();
-                std::string name = m_pSelectedGoByMouse->GetName();
-                GameObjectManager::GetInstance()->RemoveObject(obj_id,name);
-                m_pSelectedGoByMouse = nullptr;
+                auto obj_id = m_pSelectedObjByMouse->GetID();
+                std::string name = m_pSelectedObjByMouse->GetName();
+                GameObjectManager::GetInstance()->RemoveObject(obj_id, name);
+                m_pSelectedObjByMouse = nullptr;
                 m_bShowDeleteConf = false;
-                m_bShowObjectWindowByClick = false;
+                m_bSelectedObjByClick = false;
             }
             else if (ImGui::Button("No"))
             {
-                m_pSelectedGoByMouse = nullptr;
+                m_pSelectedObjByMouse = nullptr;
                 m_bShowDeleteConf = false;
-                m_bShowObjectWindowByClick = false;
+                m_bSelectedObjByClick = false;
             }
             ImGui::End();
         }
         if (ImGui::Button("Close Me"))
         {
-            m_pSelectedGoByMouse = nullptr;
-            m_bShowObjectWindowByClick = false;
-        }        
-        ImGui::End();
-    }    
-    if (m_bSelectedObjByMouse/*&& !m_bShowObjectWindowByClick*/)
-    {              
-        if(GetCurrentEditMode()==EDIT_MODE::NORMAL)
-            m_pTransByMouseSelect->SetPosition({ m_vWorldMousePos.x,m_vWorldMousePos.y });
-        else if (GetCurrentEditMode() == EDIT_MODE::TILE)
-        {
-            if (HelperInst->GetLeftMouseTriggered() && HelperInst->GetLeftControlPressed())
-            {
-                if (m_pTransByMouseSelect->GetOwner() != nullptr)
-                {
-                    auto obj_id = m_pTransByMouseSelect->GetOwner()->GetID();
-                    std::string name = m_pTransByMouseSelect->GetOwner()->GetName();
-                    GameObjectManager::GetInstance()->RemoveObject(obj_id, name);
-                    m_pTransByMouseSelect = nullptr;
-                    glm::vec2 grid = TileEditor::GetInstance()->GetScreenGridByMousePos(screen_mouse_pos);
-                    TileEditor::GetInstance()->SetWallGridCoord(grid.x, grid.y, false);
-                    HelperInst->ResetLeftMouseTriggered();                    
-                }                
-            }
+            m_pSelectedObjByMouse = nullptr;
+            m_bSelectedObjByClick = false;
         }
-        
-    }    
-    if (!L_mouse_trigger)
-    {                        
-        m_bSelectedObjByMouse = false;        
+        ImGui::End();
     }
 }
 
@@ -481,15 +500,20 @@ void MainEditor::Update()
 {
     auto ScreenToWorld = GLHelper::GetInstance()->GetScreenToWorldMatFromMouse();
     m_vWorldMousePos = { ScreenToWorld[2][0],ScreenToWorld[2][1] };                
+
     if (!m_bCurWindowObjectList)
-        SelectedObjectByMouse();
+        CheckSelecetedObjByMouse();
     if (GetCurrentEditMode() == EDIT_MODE::TILE&& !m_bCurWindowObjectList)
     {        
         TileEditor::GetInstance()->Update();
     }        
+    
+    ShowObjectList();
+    UniqueFunctionEachMode();
+    ShowObjectInfoWindow();
+
     TopBar_GameObject();
     TopBar_ChangeEditMode();
     TopBar_Save();
-    SelectedObjectWindow();
     TopBar_ShowGrid();
 }

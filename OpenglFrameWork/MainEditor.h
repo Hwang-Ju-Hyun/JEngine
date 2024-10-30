@@ -17,7 +17,7 @@ public:
 	SINGLE(MainEditor);
 private:	
 	bool m_bShowGrid = false;
-	bool m_bShowObjectWindowByClick = false;
+	bool m_bSelectedObjByClick = false;
 	bool m_bShowObjectWindow = false;
 	bool m_bCheckBoxTransform = false;
 	bool m_bCheckBoxSprite = false;
@@ -27,22 +27,21 @@ private:
 	bool m_bShowChangeEditModeConf = false;
 	bool m_bCurWindowObjectList = false;
 private:
-	GameObject* m_pSelectedGameObject = nullptr;
-	GameObject* m_pSelectedGoByMouse = nullptr;
+	GameObject* m_pNewObject = nullptr;
+	GameObject* m_pSelectedObjByMouse = nullptr;
 public:	
 	void TopBar_ShowGrid();
 	void TopBar_GameObject();
 	void TopBar_Save();
 	void TopBar_ChangeEditMode();
-	void SelectedObjectWindow();
+	void ShowObjectList();
+	void ShowObjectInfoWindow();
+	void CheckSelecetedObjByMouse();
+	void UniqueFunctionEachMode();
 private:
-	WorldMouseCursor m_vWorldMousePos = {};
-	bool m_bSelectedObjByMouse = false;
+	WorldMouseCursor m_vWorldMousePos = {};	
 	Transform* m_pTransByMouseSelect = nullptr;	
-public:
-	void SelectedObjectByMouse();
-private:
-	
+	BaseLevel* m_pCurLevel = nullptr;	
 private:	
 	glm::mat3 m_mScreenToWorldMat = {};
 	glm::vec2 m_mScreenToMousePos = {};		

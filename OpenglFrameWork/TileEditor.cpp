@@ -9,6 +9,8 @@
 #include "Sprite.h"
 #include "Resource.h"
 
+bool TileEditor::m_sWallGridCoord[1000][1000] = { false, };
+
 TileEditor::TileEditor()
 {
     
@@ -60,20 +62,20 @@ glm::vec2 TileEditor::GetWorldPosbyScreenGrid(int _width, int _height, int _grid
     return wall;
 }
 
-glm::vec2 TileEditor::GetScreenGridByMousePos(glm::vec2 _mousePos)
+glm::vec2 TileEditor::GetScreenGridByPoint(glm::vec2 _pointPos)
 {        
     int WallWidth = window_width / m_iNumberOfWallsWidth;
     int WallHeight = window_height / m_iNumberOfWallsHeight;
 
-    int ScreenGridX = _mousePos.x / WallWidth;
-    int ScreenGridY = _mousePos.y / WallHeight;
+    int ScreenGridX = _pointPos.x / WallWidth;
+    int ScreenGridY = _pointPos.y / WallHeight;
 
     return glm::vec2{ ScreenGridX,ScreenGridY };
 }
 
 void TileEditor::SetWallGridCoord(int x, int y,bool _flag)
 {
-    m_bWallGridCoord[x][y] = _flag;
+    m_sWallGridCoord[x][y] = _flag;
 }
 
 int TileEditor::GetNumberOfWallWidth() const
@@ -111,11 +113,11 @@ void TileEditor::Init()
     m_iNumberOfWallsWidth  = 30;
     m_iNumberOfWallsHeight = 30;
     m_iWallWidth = window_width / m_iNumberOfWallsWidth;
-    m_iWallHeight = window_height / m_iNumberOfWallsHeight;
+    m_iWallHeight = window_height / m_iNumberOfWallsHeight;    
 }
 
 void TileEditor::Update()
-{       
+{
     ShowAndSetCurrentTileTexture();
     auto L_mouse_Trigger = GLHelper::GetInstance()->GetLeftMouseTriggered();    
     
@@ -123,10 +125,12 @@ void TileEditor::Update()
 
     int ScreenGridX = mouse_pos_screen.x / m_iWallWidth;
     int ScreenGridY = mouse_pos_screen.y / m_iWallHeight;
-
-    if (L_mouse_Trigger&& !MainEditor::GetInstance()->m_bShowObjectWindowByClick)
+    auto a = MainEditor::GetInstance()->m_bSelectedObjByClick;
+    if (L_mouse_Trigger)
     {
-        if (!m_bWallGridCoord[ScreenGridX][ScreenGridY])
+        L_mouse_Trigger;
+        MainEditor::GetInstance()->m_bSelectedObjByClick;
+        if (!m_sWallGridCoord[ScreenGridX][ScreenGridY])
         {                  
             auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
 
@@ -158,7 +162,7 @@ void TileEditor::Update()
             wall_obj->SetModelType(MODEL_TYPE::RECTANGLE);
 
             GLHelper::GetInstance()->ResetLeftMouseTriggered();            
-            m_bWallGridCoord[(int)ScreenGridX][(int)ScreenGridY] = true;
+            m_sWallGridCoord[(int)ScreenGridX][(int)ScreenGridY] = true;
         }
     }
 }

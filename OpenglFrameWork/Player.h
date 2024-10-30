@@ -4,6 +4,7 @@
 
 class GameObject;
 class BaseLevel;
+class Bomb;
 
 class Player :
     public BaseComponent
@@ -17,7 +18,7 @@ public:
     void SetDirection(glm::vec2 _dir);
     glm::vec2 GetDirection()const;
 private:
-    int m_iHP = 0;      
+    int m_iHP = 0;
     BaseLevel* m_pCurrentLevel = nullptr;
     std::string m_sCurrentLevelName = "";
 public:
@@ -33,5 +34,7 @@ public:
     virtual json SaveToJson(const json& _str);
 public:
     static BaseRTTI* CreatePlayerComponent();
+public:
+    void SpawBawn();
 };
 

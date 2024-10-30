@@ -113,7 +113,7 @@ bool ModelManager::InitCircle()
 	float angle = (2.0f * 3.141592f) / slice;
 	for (int i = 1; i < slice + 3; i++)
 	{
-		vertices.push_back({ glm::vec2{ cos(angle * (i - 1)),sin(angle * (i - 1))},0.f });
+		vertices.push_back({ glm::vec2{ cos(angle * (i - 1))/2.f,sin(angle * (i - 1)) / 2.f},0.f });
 	}
 	GLenum type = GL_TRIANGLE_FAN;
 

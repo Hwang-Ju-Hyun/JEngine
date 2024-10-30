@@ -28,9 +28,7 @@ bool Stage01_Lvl::Init()
 
 	int all_objs_size = Serializer::GetInstance()->GetObjectSize(go_path);
 	int all_walls_size = Serializer::GetInstance()->GetObjectSize(wall_path);
-	int all_player_size = Serializer::GetInstance()->GetObjectSize(player_path);
-	if (all_objs_size <= -1|| all_walls_size<=-1)
-		return false;
+	int all_player_size = Serializer::GetInstance()->GetObjectSize(player_path);	
 	
 	for (int i = 0; i < all_objs_size; i++)	
 		m_vecGameObject_Lvl01.push_back(Serializer::GetInstance()->LoadGameObject(go_path, i + 1));	

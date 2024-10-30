@@ -6,6 +6,8 @@
 #include "header.h"
 #include <string>
 
+class GameObject;
+
 class GLHelper
 {
 public:
@@ -76,13 +78,15 @@ public:
 	glm::mat3 GetScreenToWorldMatFromMouse();	
 	glm::mat3 GetScreenToWorldMat(glm::vec2 _pos);
 public:
+	float GetDistanceFromTwoVertex(glm::vec2 _vertex1, glm::vec2 _vertex2);
+	glm::vec2 GetDirectionFromTwoVector(glm::vec2 _vec1, glm::vec2 _vec2,bool _getNormalize=false);
 	float GetRadianFromTwoVectors(glm::vec2 _vec1, glm::vec2 _vec2);	
 	void NormalizeVector(glm::vec2* _vec);
-public:
-	float GetDistanceFromTwoVertex(glm::vec2 _vertex1, glm::vec2 _vertex2, bool _IsWorldCord=true);
 public:
 	bool IsPointInsideRectangle(glm::vec2 _pos, float _RecLeft, float _RecRight, float _RecTop, float _RecBottom, bool _IsWorldCord = true);
 	bool IsPointInsideTriangle(glm::vec2 _pos, glm::vec2 _top,glm::vec2 _Lbottom,glm::vec2 _Rbottom, bool _IsWorldCord = true);
 	bool IsPointInsideCircle(glm::vec2 _pointPos, glm::vec2 _circlePos, float _radius, bool _IsWorldCord);			
+public:
+	glm::vec2 GetClosestPointRectangle(glm::vec2 _pointPos, GameObject* _rec);
 };
 

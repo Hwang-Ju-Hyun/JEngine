@@ -3,6 +3,9 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "GameObject.h"
+#include "Transform.h"
+
 #define _MOUSE_CURSOR
 #define _KEY
 //#define _KEY_PRESSED
@@ -324,12 +327,17 @@ void GLHelper::NormalizeVector(glm::vec2* _vec)
     _vec->y /= length;
 }
 
-float GLHelper::GetDistanceFromTwoVertex(glm::vec2 _vertex1, glm::vec2 _vertex2,bool _IsWorldCord)
-{    
-    if(_IsWorldCord)
-        return std::sqrt(std::pow(std::fabs(_vertex2.x) - std::fabs(_vertex1.x), 2) + std::pow(std::fabs(_vertex2.y) - std::fabs(_vertex2.y), 2));
-    else    
-        return std::sqrt(std::pow(_vertex2.x - _vertex1.x, 2) + std::pow(_vertex2.y - _vertex1.y, 2));    
+float GLHelper::GetDistanceFromTwoVertex(glm::vec2 _vertex1, glm::vec2 _vertex2)
+{        
+    return std::sqrt(std::pow(_vertex2.x - _vertex1.x, 2) + std::pow(_vertex2.y - _vertex1.y, 2));    
+}
+
+glm::vec2 GLHelper::GetDirectionFromTwoVector(glm::vec2 _vec1, glm::vec2 _vec2, bool _getNormalize)
+{
+    glm::vec2 dir = _vec2 - _vec1;
+    if(_getNormalize)
+        NormalizeVector(&dir);
+    return dir;
 }
 
 bool GLHelper::IsPointInsideRectangle(glm::vec2 _pos, float _RecLeft, float _RecRight, float _RecTop, float _RecBottom, bool _IsWorldCord)
@@ -382,14 +390,43 @@ bool GLHelper::IsPointInsideCircle(glm::vec2 _pointPos, glm::vec2 _circlePos, fl
     glm::mat3 mat = GetScreenToWorldMat(_pointPos);
     glm::vec2 position = _IsWorldCord ? _pointPos : glm::vec2(mat[2][0], mat[2][1]);
 
-    if (_radius < GetDistanceFromTwoVertex(position,_circlePos, _IsWorldCord))
+    if (_radius < GetDistanceFromTwoVertex(position,_circlePos))
         return false;
 
     return true;
 }
 
+glm::vec2 GLHelper::GetClosestPointRectangle(glm::vec2 _pointPos, GameObject* _rec)
+{
+    Transform* rec_trs = static_cast<Transform*>(_rec->FindComponent(Transform::TransformTypeName));
+    glm::vec2 rec_pos = rec_trs->GetPosition();
+    glm::vec2 rec_scale = rec_trs->GetScale();
 
+    float left   = rec_pos.x - rec_scale.x / 2.f;
+    float right  = rec_pos.x + rec_scale.x / 2.f;
+    float top    = rec_pos.y + rec_scale.y / 2.f;
+    float bottom = rec_pos.y - rec_scale.y / 2.f;
 
+    float min_x_axis = left;
+    float max_x_axis = right;
+    float min_y_axis = bottom;
+    float max_y_axis = top;
+
+    if (_pointPos.x <= min_x_axis)    
+        _pointPos.x = min_x_axis;
+    else if(_pointPos.x >=max_x_axis)
+        _pointPos.x = max_x_axis;
+    
+    if(_pointPos.y <=min_y_axis)
+        _pointPos.y = min_y_axis;
+    else if (_pointPos.y >= max_y_axis)
+        _pointPos.y = max_y_axis;                
+
+    glm::vec2 ClosestPoint;
+    ClosestPoint = { _pointPos.x,_pointPos.y };
+
+    return ClosestPoint;
+}
 
 bool GLHelper::Init(GLint _width, GLint _height, const std::string& _title)
 {

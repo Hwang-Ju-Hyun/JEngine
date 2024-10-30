@@ -120,3 +120,8 @@ BaseRTTI* Player::CreatePlayerComponent()
     }
     return p;
 }
+
+void Player::SpawBawn()
+{
+
+}

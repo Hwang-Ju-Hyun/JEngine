@@ -129,6 +129,9 @@
     <Filter Include="Component\Bomb">
       <UniqueIdentifier>{10252d73-fb5f-4fc4-ad2f-67eaccf4eceb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GL\GLViewport">
+      <UniqueIdentifier>{74fccaea-1de1-4afa-a8b0-9acdd1fb8ff3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -253,6 +256,12 @@
     </ClCompile>
     <ClCompile Include="MathManager.cpp">
       <Filter>Manager\MathMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="GLViewport.cpp">
+      <Filter>GL\GLViewport</Filter>
+    </ClCompile>
+    <ClCompile Include="Bomb.cpp">
+      <Filter>Component\Bomb</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -387,6 +396,12 @@
     </ClInclude>
     <ClInclude Include="MathManager.h">
       <Filter>Manager\MathMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="GLViewport.h">
+      <Filter>GL\GLViewport</Filter>
+    </ClInclude>
+    <ClInclude Include="Bomb.h">
+      <Filter>Component\Bomb</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

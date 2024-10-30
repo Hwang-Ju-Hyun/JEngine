@@ -89,6 +89,7 @@
     <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="BaseLevel.cpp" />
     <ClCompile Include="BaseRTTI.cpp" />
+    <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="ComponentManager.cpp" />
     <ClCompile Include="Engine.cpp" />
@@ -99,6 +100,7 @@
     <ClCompile Include="GLHelper.cpp" />
     <ClCompile Include="GLModel.cpp" />
     <ClCompile Include="GLShader.cpp" />
+    <ClCompile Include="GLViewport.cpp" />
     <ClCompile Include="IMGUI\imgui.cpp" />
     <ClCompile Include="IMGUI\imgui_demo.cpp" />
     <ClCompile Include="IMGUI\imgui_draw.cpp" />
@@ -132,6 +134,7 @@
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="BaseLevel.h" />
     <ClInclude Include="BaseRTTI.h" />
+    <ClInclude Include="Bomb.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="ComponentManager.h" />
     <ClInclude Include="Engine.h" />
@@ -142,6 +145,7 @@
     <ClInclude Include="GLHelper.h" />
     <ClInclude Include="GLModel.h" />
     <ClInclude Include="GLShader.h" />
+    <ClInclude Include="GLViewport.h" />
     <ClInclude Include="header.h" />
     <ClInclude Include="MathManager.h" />
     <ClInclude Include="Player.h" />
