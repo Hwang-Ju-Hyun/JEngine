@@ -21,10 +21,7 @@ public:
 	void RemoveObject(unsigned int _id, std::string _name);
 	void RemoveObjectsByName(std::string _name);
 public:
-
-public:
 	bool Init();
 	bool Update();
 	bool Draw();
 };
-

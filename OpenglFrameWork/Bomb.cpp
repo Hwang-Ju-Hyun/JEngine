@@ -27,8 +27,8 @@ GameObject* Bomb::GetBombMaster() const
 	return m_pBombMaster;
 }
 
-void Bomb::SpawnBomb()
-{			
+void Bomb::SpawnBomb(GameObject* _bomb)
+{				
 	auto grid = TileEditor::GetInstance()->m_sWallGridCoord;	
 	Transform* master_trs = static_cast<Transform*>(m_pBombMaster->FindComponent(Transform::TransformTypeName));
 	for (int i = 0; i < 1000; i++)
@@ -36,15 +36,23 @@ void Bomb::SpawnBomb()
 		for (int j = 0; j < 1000; j++)
 		{
 			if (grid[i][j])
-			{
-				m_pBomb = new GameObject("Bomb", id);				
-				Transform* bomb_trs = (Transform*)m_pBomb->AddComponent(Transform::TransformTypeName, new Transform(m_pBomb));				
+			{				
+				Transform* bomb_trs = (Transform*)_bomb->AddComponent(Transform::TransformTypeName, new Transform(_bomb));				
 				TileEditor::GetInstance()->GetScreenGridByPoint(bomb_trs->GetPosition());
 				bomb_trs->SetPosition(master_trs->GetPosition());
-				m_pBomb->AddComponent(Sprite::SpriteTypeName, new Sprite(m_pBomb));
-				m_pBomb->SetModelType(MODEL_TYPE::CIRCLE);
+				_bomb->AddComponent(Sprite::SpriteTypeName, new Sprite(_bomb));
+				_bomb->SetModelType(MODEL_TYPE::CIRCLE);
 			}
 		}
 	}	
 		
+}
+
+void Bomb::LoadFromJson(const json& _str)
+{
+}
+
+json Bomb::SaveToJson(const json& _str)
+{
+	return json();
 }

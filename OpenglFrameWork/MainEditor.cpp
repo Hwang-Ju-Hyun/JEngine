@@ -204,13 +204,8 @@ void MainEditor::TopBar_Save()
                         }
                     }
                     auto current_level=GameStateManager::GetInstance()->GetCurrentLevel();
-                    std::string cur_level_str=current_level->GetName();
-                    std::string object_path = "json/" + cur_level_str + "/GameObject.json";
-                    std::string wall_path = "json/" + cur_level_str + "/Wall.json";
-                    std::string player_path = "json/" + cur_level_str + "/Player.json";
-                    Serializer::GetInstance()->SaveGameObject(object_path);
-                    Serializer::GetInstance()->SaveWall(wall_path);
-                    Serializer::GetInstance()->SavePlayer(player_path);
+                    std::string cur_level_str=current_level->GetName();                    
+                    Serializer::GetInstance()->SaveStage("json/" + cur_level_str + "/" + cur_level_str + ".txt");
                     m_bShowSaveConf = false;
                     ImGui::CloseCurrentPopup();
                 }

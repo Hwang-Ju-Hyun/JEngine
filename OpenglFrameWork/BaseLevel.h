@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <vector>
+#include "BaseRTTI.h"
 
 class BaseLevel
 {
@@ -13,7 +15,7 @@ public:
 	virtual bool Exit()=0;
 private:
 	std::string m_strName;
-public:
+public:	
 	void SetName(const std::string& _strName);
-	const std::string& GetName()const;
+	const std::string& GetName()const;	
 };

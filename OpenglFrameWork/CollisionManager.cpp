@@ -394,19 +394,21 @@ bool CollisionManager::Init()
 bool CollisionManager::Update()
 {		
 	auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
-	Transform* player_trs = static_cast<Transform*>(m_pPlayer->FindComponent(Transform::TransformTypeName));
-	//std::cout << player_trs->GetPosition().x << "," << player_trs->GetPosition().y << std::endl;
-	for (auto obj : all_objs)
-	{		
-		if (obj->GetName() == "WALL")
-		{
-			HandlePosByCollisionCheck_Convex_Convex(obj, m_pPlayer);
-
-			if (IsCollisionCircleAndRect(obj, m_pPlayer))
-			{
-				HandlePosOnCollision_Rect_Circle(obj, m_pPlayer);				
-			}
-		}
-	}
+	//Transform* player_trs = static_cast<Transform*>(m_pPlayer->FindComponent(Transform::TransformTypeName));
+	////std::cout << player_trs->GetPosition().x << "," << player_trs->GetPosition().y << std::endl;
+	//for (auto obj : all_objs)
+	//{		
+	//	if (obj->GetName() == "tempObject")
+	//	{
+	//		//HandlePosByCollisionCheck_Convex_Convex(obj, m_pPlayer);
+	//		if (m_pPlayer != nullptr)
+	//		{
+	//			if (IsCollisionCircleAndRect(obj, m_pPlayer))
+	//			{
+	//				HandlePosOnCollision_Rect_Circle(obj, m_pPlayer);
+	//			}
+	//		}		
+	//	}		
+	//}
 	return true;
 }

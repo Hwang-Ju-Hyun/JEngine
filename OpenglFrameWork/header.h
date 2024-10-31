@@ -16,4 +16,3 @@ typedef struct WorldMouseCursor
 	float x;
 	float y;
 };
-

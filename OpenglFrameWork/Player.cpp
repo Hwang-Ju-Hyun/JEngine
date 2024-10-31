@@ -7,6 +7,7 @@
 #include "RigidBody.h"
 #include "BaseLevel.h"
 #include "GameObjectManager.h"
+#include "Bomb.h"
 #include <iostream>
 
 Player::Player(GameObject* _owner)
@@ -73,7 +74,16 @@ void Player::MoveMent()
             player_rig->SetVelocity(glm::vec2{0.f,0.f});
         }
     }    
-}   
+}
+
+void Player::Attack()
+{
+    auto Helper = GLHelper::GetInstance();
+    if (Helper->GetSpaceKeyPressed())
+    {
+        //spawnbomb();
+    }
+}
 
 void Player::Update()
 {
@@ -122,6 +132,9 @@ BaseRTTI* Player::CreatePlayerComponent()
 }
 
 void Player::SpawBawn()
-{
-
+{    
+   /* m_pBomb = new GameObject("Bomb", 0);
+    Bomb* obj_bomb=static_cast<Bomb*>(m_pBomb->AddComponent("Bomb", new Bomb(m_pBomb)2));
+    obj_bomb->SetBombMaster(m_pBomb);
+    obj_bomb->SpawnBomb(m_pBomb);*/
 }

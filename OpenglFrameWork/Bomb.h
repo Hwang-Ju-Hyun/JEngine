@@ -18,7 +18,9 @@ private:
     GameObject* m_pBombMaster = nullptr;
     GameObject* m_pBomb=nullptr;
 public:
-    void SpawnBomb();
-    //void SpawnBomb(item,);
+    void SpawnBomb(GameObject* _bomb);
+public:
+    virtual void LoadFromJson(const json& _str)override;
+    virtual json SaveToJson(const json& _str)override;
 };
 

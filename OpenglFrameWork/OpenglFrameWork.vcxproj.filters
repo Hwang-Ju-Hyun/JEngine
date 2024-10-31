@@ -423,11 +423,11 @@
     <None Include="json\Stage01_Lvl\GameObject.json">
       <Filter>JSON\stage01_Lvl</Filter>
     </None>
-    <None Include="json\Stage01_Lvl\Wall.json">
+    <None Include="json\Stage01_Lvl\Player.json">
       <Filter>JSON\stage01_Lvl</Filter>
     </None>
-    <None Include="json\Player\Player.json">
-      <Filter>JSON</Filter>
+    <None Include="json\Stage01_Lvl\Wall.json">
+      <Filter>JSON\stage01_Lvl</Filter>
     </None>
   </ItemGroup>
 </Project>

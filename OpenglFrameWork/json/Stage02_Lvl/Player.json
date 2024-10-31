@@ -1,1 +1,59 @@
-null
+[
+  {
+    "Player": 1,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            0.0,
+            150.0
+          ],
+          "sca": [
+            100.0,
+            100.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0
+        }
+      },
+      {
+        "Type": "RigidBody",
+        "CompData": {
+          "Velocity": [
+            0.0,
+            0.0
+          ],
+          "Accelation": [
+            0.0,
+            0.0
+          ],
+          "Max Velocity": [
+            1000.0,
+            1000.0
+          ]
+        }
+      },
+      {
+        "Type": "Player",
+        "CompData": {
+          "Current Level": "Stage01_Lvl",
+          "HP": 0
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 0
+  }
+]

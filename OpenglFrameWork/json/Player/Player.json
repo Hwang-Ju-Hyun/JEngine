@@ -1,6 +1,7 @@
 [
   {
-    "Player": 1,
+    "Name": "Player",
+    "ID": 1,
     "Components": [
       {
         "Type": "Transform",
@@ -48,7 +49,7 @@
       {
         "Type": "Player",
         "CompData": {
-          "Current Level" :"Stage01_Lvl",
+          "Current Level": "Stage01_Lvl",
           "HP": 0
         }
       }

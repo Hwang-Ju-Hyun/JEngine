@@ -56,7 +56,7 @@
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GLFW\include\;$(ProjectDir)Dependencies\GLEW\include\;$(ProjectDir)Dependencies\GLM\;$(ProjectDir)IMGUI;$(ProjectDir)Dependencies\STB\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -73,7 +73,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\GLFW\include\;$(ProjectDir)Dependencies\GLEW\include\;$(ProjectDir)Dependencies\GLM\;$(ProjectDir)IMGUI;$(ProjectDir)Dependencies\STB\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -180,8 +180,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="IMGUI\imgui.ini" />
-    <None Include="json\Player\Player.json" />
     <None Include="json\Stage01_Lvl\GameObject.json" />
+    <None Include="json\Stage01_Lvl\Player.json" />
     <None Include="json\Stage01_Lvl\Wall.json" />
     <None Include="json\stage02_Lvl\GameObject.json" />
     <None Include="json\stage02_Lvl\Wall.json" />

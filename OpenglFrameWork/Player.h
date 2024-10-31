@@ -13,6 +13,8 @@ public:
     Player(GameObject* _owner);
     virtual ~Player()override;
 private:
+    GameObject* m_pBomb=nullptr;
+private:
     glm::vec2 m_vDirection = { 0.f,0.f };
 public:
     void SetDirection(glm::vec2 _dir);
@@ -26,6 +28,7 @@ public:
     BaseLevel* GetCurrentLevel()const;
 public:
     void MoveMent();
+    void Attack();
     virtual void Update()override;
 public:
     static constexpr const char* PlayerTypeName = "Player";

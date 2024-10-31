@@ -1,13 +1,82 @@
 [
   {
-    "WALL": 1,
+    "Name": "Wall",
+    "ID": 1,
     "Components": [
       {
         "Type": "Transform",
         "CompData": {
           "Pos": [
-            -231.0,
-            375.0
+            -134.0,
+            -97.0
+          ],
+          "sca": [
+            100.0,
+            100.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.0,
+          "GREEN": 0.0,
+          "BLUE": 0.0,
+          "ALPHA": 0.0
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 2
+  },
+  {
+    "Name": "Wall",
+    "ID": 2,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -63.0,
+            227.0
+          ],
+          "sca": [
+            100.0,
+            100.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 2
+  },
+  {
+    "Name": "Wall",
+    "ID": 3,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -26.0,
+            403.0
           ],
           "sca": [
             66.0,
