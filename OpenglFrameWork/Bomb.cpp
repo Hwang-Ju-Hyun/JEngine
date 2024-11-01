@@ -29,7 +29,7 @@ GameObject* Bomb::GetBombMaster() const
 
 void Bomb::SpawnBomb(GameObject* _bomb)
 {				
-	auto grid = TileEditor::GetInstance()->m_sWallGridCoord;	
+	auto grid = TileEditor::GetInstance()->GetWallGrid();
 	Transform* master_trs = static_cast<Transform*>(m_pBombMaster->FindComponent(Transform::TransformTypeName));
 	for (int i = 0; i < 1000; i++)
 	{

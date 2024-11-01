@@ -44,7 +44,7 @@ void MainEditor::TopBar_ShowGrid()
         grid_obj->SetModelType(MODEL_TYPE::GRID_LINE);        
         Transform* grid_trs = static_cast<Transform*>(grid_obj->FindComponent(Transform::TransformTypeName));
         grid_trs->SetPosition({ 0.f,0.f });
-        grid_trs->SetScale({ window_width,window_height });
+        grid_trs->SetScale({window_width/2.f,window_height/2.f});
         if (!m_bShowGrid)
         {
             GameObjectManager::GetInstance()->RemoveObjectsByName(grid_obj->GetName());
@@ -94,7 +94,7 @@ void MainEditor::TopBar_GameObject()
                     ImGui::InputFloat4("Color", &color[0]);                    
                 }
                 if (m_bObjectCreateBtn && ImGui::Button("Create GameObject"))
-                {                 
+                {
                     auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
 
                     int object_last_id = -1;
@@ -127,10 +127,8 @@ void MainEditor::TopBar_GameObject()
                 }
                 ImGui::TreePop();
             }
-                
             ImGui::End();
         }
-
         ImGui::EndMenu();
     }
 
@@ -146,15 +144,15 @@ void MainEditor::TopBar_GameObject()
                     GameStateManager::GetInstance()->ChangeLevel(new Stage01_Lvl("Stage01_Lvl"));
                 }
                     
-            }
+            }  
             if (ImGui::Button("Stage02_Lvl"))
-            {
+            {  
                 if (cur_level->GetName() != "Stage01_Lv2")
                 {
                     TileEditor::GetInstance()->Init();
                     GameStateManager::GetInstance()->ChangeLevel(new Stage02_Lvl("Stage02_Lvl"));
                 }                    
-            }
+            }  
             ImGui::TreePop();
         }
         ImGui::EndMenu();
@@ -173,7 +171,7 @@ void MainEditor::TopBar_Save()
         std::string s;
         s.reserve(200);
 
-        for (int i = 0; i < 230; i++)
+        for (int i = 0; i <180; i++)
             s.append(" ");
 
         ImGui::Text(s.c_str());
@@ -185,27 +183,11 @@ void MainEditor::TopBar_Save()
             {
                 ImGui::Text("Are you sure to save?");
                 if (ImGui::Button("YES"))
-                {                 
-                    for (int i = 0; i < all_objs.size(); i++)
-                    {
-                        if (all_objs[i]->GetName() == "tempObject")
-                        {
-                            static int object_id = 1;
-                            all_objs[i]->SetID(object_id++);
-                        }                        
-                    }
-                        
-                    for (int i = 0; i < all_objs.size(); i++)
-                    {
-                        if (all_objs[i]->GetName() == "WALL")
-                        {
-                            static int wall_id = 1;
-                            all_objs[i]->SetID(wall_id++);
-                        }
-                    }
+                {                                    
                     auto current_level=GameStateManager::GetInstance()->GetCurrentLevel();
                     std::string cur_level_str=current_level->GetName();                    
                     Serializer::GetInstance()->SaveStage("json/" + cur_level_str + "/" + cur_level_str + ".txt");
+                    
                     m_bShowSaveConf = false;
                     ImGui::CloseCurrentPopup();
                 }
@@ -295,15 +277,14 @@ void MainEditor::TopBar_ChangeEditMode()
             {                       
                 if (ImGui::TreeNode("MODE"))
                 {                    
-                    if (ImGui::Button("Normal"))
-                    {                        
+                    if (/*ImGui::Button("Normal")&& */GLHelper::GetInstance()->GetLeftControlPressed())
+                    {                                                
                         ChangeCurrentEditMode(EDIT_MODE::NORMAL);
                         ImGui::CloseCurrentPopup();
                     }
                     else if (ImGui::Button("TileEdit"))
                     {                        
-                        ChangeCurrentEditMode(EDIT_MODE::TILE);
-                        
+                        ChangeCurrentEditMode(EDIT_MODE::TILE);                        
                         ImGui::CloseCurrentPopup();                        
                     }
                     m_bShowChangeEditModeConf = false;
@@ -401,7 +382,9 @@ void MainEditor::UniqueFunctionEachMode()
     if (m_bSelectedObjByClick)
     {
         if (GetCurrentEditMode() == EDIT_MODE::NORMAL)
+        {            
             m_pTransByMouseSelect->SetPosition({ m_vWorldMousePos.x,m_vWorldMousePos.y });
+        }            
         else if (GetCurrentEditMode() == EDIT_MODE::TILE)
         {
             if (HelperInst->GetLeftMouseTriggered() && HelperInst->GetLeftControlPressed())
@@ -495,14 +478,14 @@ void MainEditor::Update()
 {
     auto ScreenToWorld = GLHelper::GetInstance()->GetScreenToWorldMatFromMouse();
     m_vWorldMousePos = { ScreenToWorld[2][0],ScreenToWorld[2][1] };                
-
+    std::cout << m_vWorldMousePos.x << "," << m_vWorldMousePos.y << std::endl;
     if (!m_bCurWindowObjectList)
         CheckSelecetedObjByMouse();
     if (GetCurrentEditMode() == EDIT_MODE::TILE&& !m_bCurWindowObjectList)
     {        
         TileEditor::GetInstance()->Update();
-    }        
-    
+    }
+
     ShowObjectList();
     UniqueFunctionEachMode();
     ShowObjectInfoWindow();

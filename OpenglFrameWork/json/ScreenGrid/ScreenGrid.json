@@ -1,18 +1,18 @@
 [
   {
-    "Name": "Wall",
+    "Name": "ScreenGrid",
     "ID": 1,
     "Components": [
       {
         "Type": "Transform",
         "CompData": {
           "Pos": [
-            -231.0,
-            375.0
+            -98.0,
+            153.0
           ],
           "sca": [
-            66.0,
-            30.0
+            100.0,
+            100.0
           ],
           "Rot": [
             0.0,
@@ -23,14 +23,17 @@
       {
         "Type": "Sprite",
         "CompData": {
-          "RED": 1.0,
-          "GREEN": 1.0,
-          "BLUE": 1.0,
-          "ALPHA": 1.0
+          "RED": 0.0,
+          "GREEN": 0.0,
+          "BLUE": 0.0,
+          "ALPHA": 0.0
         }
       }
     ],
     "Shader_Ref": 0,
-    "Model_Type": 1
+    "Model_Type": 0,
+    "GridX": 0,
+    "GridY": 0,
+    "Exist": false
   }
 ]

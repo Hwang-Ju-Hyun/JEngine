@@ -7,8 +7,8 @@
         "Type": "Transform",
         "CompData": {
           "Pos": [
-            282.0,
-            -83.0
+            -100.0,
+            300.0
           ],
           "sca": [
             100.0,
@@ -32,39 +32,5 @@
     ],
     "Shader_Ref": 0,
     "Model_Type": 0
-  },
-  {
-    "Name": "GameObject",
-    "ID": 2,
-    "Components": [
-      {
-        "Type": "Transform",
-        "CompData": {
-          "Pos": [
-            -522.0,
-            32.0
-          ],
-          "sca": [
-            100.0,
-            100.0
-          ],
-          "Rot": [
-            0.0,
-            0.0
-          ]
-        }
-      },
-      {
-        "Type": "Sprite",
-        "CompData": {
-          "RED": 0.0,
-          "GREEN": 0.0,
-          "BLUE": 0.0,
-          "ALPHA": 0.0
-        }
-      }
-    ],
-    "Shader_Ref": 0,
-    "Model_Type": 1
   }
 ]

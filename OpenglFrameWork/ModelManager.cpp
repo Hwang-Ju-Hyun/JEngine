@@ -67,15 +67,15 @@ bool ModelManager::InitGrid()
 	std::string name = "GridLine";	
 	std::vector<glm::vec3> vertices;
 		
-	int slices = TileEditor::GetInstance()->GetNumberOfWallHeight()*2;
-	int stacks = TileEditor::GetInstance()->GetNumberOfWallWidth() *2;
+	int stacks = TileEditor::GetInstance()->GetNumberOfWallHeight();
+	int slices = TileEditor::GetInstance()->GetNumberOfWallWidth();
 	
 	GLfloat const u { 2.f / static_cast<GLfloat>(slices) };
 	GLfloat const v { 2.f / static_cast<GLfloat>(stacks) };
 
 	for (GLint col=0; col <= slices; ++col)
 	{
-		GLfloat x{ u * static_cast<GLfloat>(col) - 1.f };
+		GLfloat x = (u * static_cast<GLfloat>(col)) - 1.f;
 		vertices.emplace_back(glm::vec2(x, -1.f),0.f); 
 		vertices.push_back(glm::vec3{ 0.f,0.f,0.f });  //texture
 		vertices.emplace_back(glm::vec2(x, 1.f),0.f);  
@@ -83,7 +83,7 @@ bool ModelManager::InitGrid()
 	}
 	for (GLint row=0; row <= stacks; ++row)
 	{
-		GLfloat y{ v * static_cast<GLfloat>(row) - 1.f };
+		GLfloat y =(v * static_cast<GLfloat>(row)) - 1.f;
 		vertices.emplace_back(glm::vec2(-1.f, y), 0.f);
 		vertices.push_back(glm::vec3{ 0.f,0.f,0.f });  //texture
 		vertices.emplace_back(glm::vec2(1.f, y), 0.f);

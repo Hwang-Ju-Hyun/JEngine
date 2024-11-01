@@ -193,7 +193,7 @@ void GLModel::CreateModel(GLenum _PrimitveType, std::vector<glm::vec3> _vertices
 
 
 	//texture vertex
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GL_FLOAT), (void*)(3 * sizeof(GL_FLOAT)));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GL_FLOAT), (void*)(3 * sizeof(GL_FLOAT)));
 	glEnableVertexAttribArray(2);
 
 
@@ -216,7 +216,8 @@ void GLModel::CreateModel(GLenum _PrimitveType, std::vector<glm::vec3> _vertices
 	SetPrimitiveType(_PrimitveType);
 	SetVAO(VAO);
 	SetVBO(VBO);
-	SetVerticesCnt(_vertices.size());
+
+	SetVerticesCnt(_vertices.size()/2);
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

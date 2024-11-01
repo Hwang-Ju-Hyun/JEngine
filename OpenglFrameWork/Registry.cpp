@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include "RigidBody.h"
 #include "Player.h"
+#include "Wall.h"
 
 Registry::Registry()
 {
@@ -10,6 +11,7 @@ Registry::Registry()
     m_mapRttiMap.insert({ Sprite::SpriteTypeName,&Sprite::CreateSpriteComponent });
     m_mapRttiMap.insert({ RigidBody::RigidBodyTypeName,&RigidBody::CreateRigidBodyComponent });
     m_mapRttiMap.insert({ Player::PlayerTypeName,&Player::CreatePlayerComponent });
+    m_mapRttiMap.insert({ Wall::WallTypeName,&Wall::CreateWallComponent });
 }
 
 Registry::~Registry()

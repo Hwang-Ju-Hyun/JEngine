@@ -228,12 +228,12 @@ void CollisionManager::HandlePosByCollisionCheck_Convex_Convex(GameObject* _obj1
 	GameObject* obj1 = nullptr;
 	GameObject* obj2 = nullptr;	
 
-	if (_obj1->GetName() == "WALL")
+	if (_obj1->GetName() == "Wall")
 	{
 		obj1 = _obj2;
 		obj2 = _obj1;
 	}
-	else if (_obj2->GetName() == "WALL")
+	else if (_obj2->GetName() == "Wall")
 	{
 		obj1 = _obj1;
 		obj2 = _obj2;
@@ -394,21 +394,17 @@ bool CollisionManager::Init()
 bool CollisionManager::Update()
 {		
 	auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
-	//Transform* player_trs = static_cast<Transform*>(m_pPlayer->FindComponent(Transform::TransformTypeName));
-	////std::cout << player_trs->GetPosition().x << "," << player_trs->GetPosition().y << std::endl;
-	//for (auto obj : all_objs)
-	//{		
-	//	if (obj->GetName() == "tempObject")
-	//	{
-	//		//HandlePosByCollisionCheck_Convex_Convex(obj, m_pPlayer);
-	//		if (m_pPlayer != nullptr)
-	//		{
-	//			if (IsCollisionCircleAndRect(obj, m_pPlayer))
-	//			{
-	//				HandlePosOnCollision_Rect_Circle(obj, m_pPlayer);
-	//			}
-	//		}		
-	//	}		
-	//}
+	Transform* player_trs = static_cast<Transform*>(m_pPlayer->FindComponent(Transform::TransformTypeName));
+	//std::cout << player_trs->GetPosition().x << "," << player_trs->GetPosition().y << std::endl;
+	for (auto obj : all_objs)
+	{		
+		if (obj->GetName() == "Wall")
+		{
+			if (IsCollisionRectAndRect(obj, m_pPlayer))
+			{
+				HandlePosOnCollision_Rect_Rect(obj,m_pPlayer );
+			}
+		}		
+	}
 	return true;
 }

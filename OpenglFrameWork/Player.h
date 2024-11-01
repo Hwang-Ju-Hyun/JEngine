@@ -5,6 +5,7 @@
 class GameObject;
 class BaseLevel;
 class Bomb;
+class Transform;
 
 class Player :
     public BaseComponent
@@ -13,7 +14,7 @@ public:
     Player(GameObject* _owner);
     virtual ~Player()override;
 private:
-    GameObject* m_pBomb=nullptr;
+    Transform* m_pPlayerTrs = nullptr;
 private:
     glm::vec2 m_vDirection = { 0.f,0.f };
 public:

@@ -8,11 +8,14 @@
 #include "BaseLevel.h"
 #include "GameObjectManager.h"
 #include "Bomb.h"
+#include "Serializer.h"
+#include "Sprite.h"
 #include <iostream>
 
 Player::Player(GameObject* _owner)
 	:BaseComponent(_owner)
 {
+    m_pPlayerTrs = static_cast<Transform*>(_owner->FindComponent(Transform::TransformTypeName));
 }
 
 Player::~Player()
@@ -75,20 +78,26 @@ void Player::MoveMent()
         }
     }    
 }
-
+    
 void Player::Attack()
-{
-    auto Helper = GLHelper::GetInstance();
+{   
+    auto Helper = GLHelper::GetInstance();    
     if (Helper->GetSpaceKeyPressed())
-    {
-        //spawnbomb();
+    {   
+        //Prefabs
+        GameObject* bomb_obj = Serializer::GetInstance()->LoadJson("json/Bomb/Bomb.json",true);
+        Transform* bomb_trs = static_cast<Transform*>(bomb_obj->FindComponent(Transform::TransformTypeName));
+        Sprite* bomb_spr = static_cast<Sprite*>(bomb_obj->FindComponent(Sprite::SpriteTypeName));
+        bomb_trs->SetPosition(m_pPlayerTrs->GetPosition());
+        bomb_trs->SetScale({ 50.f,50.f });
+        bomb_obj->SetModelType(MODEL_TYPE::CIRCLE);
     }
 }
 
 void Player::Update()
 {
-	MoveMent();
-	
+	MoveMent();	
+    Attack();
 }
 
 void Player::LoadFromJson(const json& _str)
@@ -132,8 +141,8 @@ BaseRTTI* Player::CreatePlayerComponent()
 }
 
 void Player::SpawBawn()
-{    
-   /* m_pBomb = new GameObject("Bomb", 0);
+{
+    /*m_pBomb = new GameObject("Bomb", 0);
     Bomb* obj_bomb=static_cast<Bomb*>(m_pBomb->AddComponent("Bomb", new Bomb(m_pBomb)2));
     obj_bomb->SetBombMaster(m_pBomb);
     obj_bomb->SpawnBomb(m_pBomb);*/

@@ -129,6 +129,7 @@
     <ClCompile Include="TileEditor.cpp" />
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseComponent.h" />
@@ -177,9 +178,12 @@
     <ClInclude Include="TileEditor.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="IMGUI\imgui.ini" />
+    <None Include="json\Bomb\Bomb.json" />
+    <None Include="json\ScreenGrid\ScreenGrid.json" />
     <None Include="json\Stage01_Lvl\GameObject.json" />
     <None Include="json\Stage01_Lvl\Player.json" />
     <None Include="json\Stage01_Lvl\Wall.json" />

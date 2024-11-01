@@ -3,9 +3,9 @@
 #include "GameObjectManager.h"
 #include "BaseComponent.h"
 #include "Registry.h"
+#include "TileEditor.h"
 #include <string>
 #include <sstream>
-#include "json.hpp"
 #include <iostream>
 #include <algorithm>
 
@@ -137,120 +137,6 @@ int Serializer::GetObjectSize(const std::string& _path)
 	return obj_count;
 }
 
-GameObject* Serializer::LoadWall(const std::string& _path)
-{
-	std::fstream file;
-	file.open(_path, std::fstream::in);
-	if (!file.is_open())
-	{
-		std::cerr << "Error : Can't open the file - Serializer::LoadWall" << std::endl;
-		return nullptr;
-	}
-
-	json js_all_data;
-	file >> js_all_data;
-	for (auto& item : js_all_data)
-	{
-		auto obj = item.find("WALL");
-		if (obj != item.end() )
-		{
-			//Create
-			GameObject* go_obj = new GameObject("WALL", obj->begin().value());
-
-			auto components = item.find("Components");
-
-			if (components == item.end())
-				continue;
-
-			auto comp = *components;
-			for (auto element : comp)
-			{
-				auto type = element.find("Type");
-				if (type == element.end())
-					continue;
-
-				std::string type_name = (*type);
-
-				BaseRTTI* p = Registry::GetInstance()->FindOrCreate(type_name);
-				if (p != nullptr)
-				{
-					p->LoadFromJson(element);
-				}
-			}
-			auto shader_ref = item.find("Shader_Ref");
-			go_obj->SetShaderRef(shader_ref->begin().value());
-			auto model_type = item.find("Model_Type");
-			go_obj->SetModelType(model_type->begin().value());
-
-			file.close();
-			return go_obj;
-		}
-	}
-	std::cerr << "Error : Can't find Object - Serializer::LoadWALL" << std::endl;
-	return nullptr;	
-}
-
-void Serializer::SaveWall(const std::string& _path)
-{
-	auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
-	json js_all_data;
-	for (const auto& go_obj : all_objs)
-	{
-		json js_components;
-		if (go_obj->GetName() == "WALL")
-		{
-			json js_obj;
-			js_obj["WALL"] = go_obj->GetID();;
-			for (auto comp : go_obj->GetAllComponentOfObj())
-			{
-				BaseComponent* c = comp.second;
-				js_components.push_back(c->SaveToJson(_path));
-			}
-			js_obj["Components"] = js_components;
-			js_obj["Shader_Ref"] = go_obj->GetShaderRef();
-			js_obj["Model_Type"] = go_obj->GetModelType();
-			js_all_data.push_back(js_obj);
-		}
-	}
-
-	//Open file
-	std::fstream file;
-	file.open(_path, std::fstream::out);//Open as write mode. Create it if it does not exist!
-
-	if (!file.is_open())
-	{
-		std::cerr << "Error : Can't open the file - Serializer::SaveWALL" << std::endl;
-		return;
-	}
-
-	//file << AllData; //All in 1 line
-	file << std::setw(2) << js_all_data;
-
-	file.close();
-}
-
-int Serializer::GetWallSize(const std::string& _path)
-{
-	std::fstream file;
-	file.open(_path, std::fstream::in);
-	if (!file.is_open())
-	{
-		std::cerr << "Error : Can't open the file - Serializer::GetWallSize" << std::endl;
-		return -1;
-	}
-	json js_all_data;
-	file >> js_all_data;
-	int obj_count = 0;
-	for (auto& item : js_all_data)
-		obj_count++;
-	if (obj_count == 0)
-	{
-		std::cerr << "Nothing object in " << _path << std::endl;
-		return -1;
-	}
-	return obj_count;
-}
-
 GameObject* Serializer::LoadPlayer(const std::string& _path)
 {
 	std::fstream file;
@@ -360,11 +246,54 @@ void Serializer::LoadStage(const std::string& _path)
 		std::getline(file_stream, line);
 		LoadJson("json/" + stage_name + "/" + line);
 	}
-
 	file_stream.close();
 }
 
-void Serializer::LoadJson(const std::string& _path)
+GameObject* Serializer::CreateObjectFromJson(json _item)
+{		
+	auto Name_json = _item.find("Name");
+	auto id_json = _item.find("ID");
+	if (Name_json != _item.end())
+	{
+		std::string name = (*Name_json);
+		int id = (*id_json);
+		//Create
+		GameObject* go_obj = new GameObject(name, id);
+
+		auto components = _item.find("Components");
+
+		if (components == _item.end())
+		{
+			std::cerr << "Error : " << go_obj->GetName() << "don't have components - Serializer::CreateObejectFromJson" << std::endl;
+			return nullptr;
+		}
+
+		auto comp = *components;
+		for (auto element : comp)
+		{
+			auto type = element.find("Type");
+			if (type == element.end())
+				continue;
+
+			std::string type_name = (*type);
+
+			BaseRTTI* p = Registry::GetInstance()->FindOrCreate(type_name);
+			if (p != nullptr)
+			{
+				p->LoadFromJson(element);
+			}
+		}
+		auto shader_ref = _item.find("Shader_Ref");
+		go_obj->SetShaderRef(shader_ref->begin().value());
+		auto model_type = _item.find("Model_Type");
+		go_obj->SetModelType(model_type->begin().value());	
+
+		return go_obj;
+	}
+	return nullptr;
+}
+
+GameObject* Serializer::LoadJson(const std::string& _path, bool _IsPrefabs)
 {
 	std::fstream file;
 	file.open(_path, std::fstream::in);
@@ -372,50 +301,23 @@ void Serializer::LoadJson(const std::string& _path)
 	if (!file.is_open())
 	{
 		std::cerr << "Error : Can't open the file - Serializer::LoadGameObject" << std::endl;
-		return;
+		return nullptr;
 	}
 
 	json js_all_data;
 	file >> js_all_data;
+	file.close();
+		
+	json Nothing;
+	GameObject* temp=nullptr;
 	for (auto& item : js_all_data)
-	{				
-		auto Name_json = item.find("Name");
-		auto id_json = item.find("ID");
-		if (Name_json != item.end())
-		{
-			std::string name = (*Name_json);		
-			int id = (*id_json);
-			//Create
-			GameObject* go_obj = new GameObject(name, id);
-
-			auto components = item.find("Components");
-
-			if (components == item.end())
-				continue;
-
-			auto comp = *components;
-			for (auto element : comp)
-			{
-				auto type = element.find("Type");
-				if (type == element.end())
-					continue;
-
-				std::string type_name = (*type);
-
-				BaseRTTI* p = Registry::GetInstance()->FindOrCreate(type_name);
-				if (p != nullptr)
-				{
-					p->LoadFromJson(element);
-				}
-			}
-			auto shader_ref = item.find("Shader_Ref");
-			go_obj->SetShaderRef(shader_ref->begin().value());
-			auto model_type = item.find("Model_Type");
-			go_obj->SetModelType(model_type->begin().value());
-
-			file.close();			
-		}
+	{
+		if (_IsPrefabs)		
+			return CreateObjectFromJson(item);		
+		else		
+			CreateObjectFromJson(item);		
 	}	
+	return temp;
 }
 
 bool comp_name_obj(GameObject* _obj1, GameObject* _obj2)
@@ -465,7 +367,7 @@ void Serializer::SaveJson(const std::string& _path)
 		}
 		js_obj["Components"] = js_components;
 		js_obj["Shader_Ref"] = all_objs[i]->GetShaderRef();
-		js_obj["Model_Type"] = all_objs[i]->GetModelType();
+		js_obj["Model_Type"] = all_objs[i]->GetModelType();		
 		js_all_data.push_back(js_obj);
 		
 	}
@@ -485,7 +387,6 @@ void Serializer::SaveJson(const std::string& _path)
 
 	file.close();
 }
-
 
 void Serializer::SaveStage(const std::string& _path)
 {	

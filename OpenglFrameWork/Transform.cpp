@@ -115,12 +115,14 @@ void Transform::Update()
 
 	glm::mat3 H =
 	{
-		1.f /( window_width/2.f),0,0,
+		1.f /( window_width  /2.f),0,0,
 		0,1.f/( window_height/2.f),0,
 		0,0,1
-	};	
+	};
+
+
 	m_mModelToWorld = (Transform * Rot * Scale);
-	m_mModelToNDC = H * m_mModelToWorld;	
+	m_mModelToNDC = H * m_mModelToWorld;
 }
 
 BaseRTTI* Transform::CreateTransformComponent()
