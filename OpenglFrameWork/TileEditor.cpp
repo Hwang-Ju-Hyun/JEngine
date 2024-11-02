@@ -205,19 +205,19 @@ void TileEditor::Update()
 
             Transform* trans = static_cast<Transform*>(wall_obj->FindComponent("Transform"));
             
-            glm::vec2 wall_grid;
+            glm::vec2 mouse_pos_world;
 
-            wall_grid=GetWorldPosbyScreenGrid(m_iWallWidth, m_iWallHeight, m_iScreenGridX, m_iScreenGridY);
+            mouse_pos_world=GetWorldPosbyScreenGrid(m_iWallWidth, m_iWallHeight, m_iScreenGridX, m_iScreenGridY);
 
-            trans->SetPosition({ wall_grid.x,wall_grid.y });
+            trans->SetPosition({ mouse_pos_world.x,mouse_pos_world.y });
             trans->SetScale({ m_iWallWidth, m_iWallHeight });
             wall_obj->SetModelType(MODEL_TYPE::RECTANGLE);
 
             GLHelper::GetInstance()->ResetLeftMouseTriggered();            
             m_vecWallGridCoord[(int)m_iScreenGridX][(int)m_iScreenGridY] = true;
             Wall* wall_comp=nullptr;
-            wall_comp = static_cast<Wall*>(wall_obj->AddComponent("Wall", new Wall(wall_obj)));
-            wall_comp->SetScreeGrid(wall_grid);
+            wall_comp = static_cast<Wall*>(wall_obj->AddComponent("Wall", new Wall(wall_obj)));            
+            wall_comp->SetScreeGrid({(int)m_iScreenGridX,(int)m_iScreenGridY});
             wall_comp->SetFragile(false);
             wall_comp->SetExist(true);
 

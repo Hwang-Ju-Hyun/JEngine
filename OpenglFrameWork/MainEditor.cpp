@@ -17,6 +17,7 @@
 #include "imgui_impl_opengl3.h"
 #include "Sprite.h"
 #include "GLHelper.h"
+#include "Wall.h"
 #include "TextureResource.h"
 #include "TileEditor.h"
 
@@ -392,13 +393,17 @@ void MainEditor::UniqueFunctionEachMode()
                 if (m_pTransByMouseSelect->GetOwner() != nullptr)
                 {
                     auto obj_id = m_pTransByMouseSelect->GetOwner()->GetID();
-                    std::string name = m_pTransByMouseSelect->GetOwner()->GetName();
-                    GameObjectManager::GetInstance()->RemoveObject(obj_id, name);
+                    std::string name = m_pTransByMouseSelect->GetOwner()->GetName();                                        
+                    m_bSelectedObjByClick = false;
+                    Wall* wall_comp=dynamic_cast<Wall*>(m_pTransByMouseSelect->GetOwner()->FindComponent(Wall::WallTypeName));
+                    if (wall_comp != nullptr)
+                    {
+                        glm::vec2 grid = wall_comp->GetScreenGrid();
+                        TileEditor::GetInstance()->SetWallGridCoord(grid.x, grid.y, false);
+                    }                    
                     m_pTransByMouseSelect = nullptr;
                     m_pSelectedObjByMouse = nullptr;
-                    m_bSelectedObjByClick = false;
-                    glm::vec2 grid = TileEditor::GetInstance()->GetScreenGridByPoint(screen_mouse_pos);
-                    TileEditor::GetInstance()->SetWallGridCoord(grid.x, grid.y, false);
+                    GameObjectManager::GetInstance()->RemoveObject(obj_id, name);
                     HelperInst->ResetLeftMouseTriggered();
                 }
             }

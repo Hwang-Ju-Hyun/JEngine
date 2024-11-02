@@ -7,8 +7,8 @@
         "Type": "Transform",
         "CompData": {
           "Pos": [
-            0,
-            150
+            0.0,
+            150.0
           ],
           "sca": [
             100.0,
