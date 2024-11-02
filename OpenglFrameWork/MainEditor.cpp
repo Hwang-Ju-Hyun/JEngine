@@ -283,7 +283,7 @@ void MainEditor::TopBar_ChangeEditMode()
                         ChangeCurrentEditMode(EDIT_MODE::NORMAL);
                         ImGui::CloseCurrentPopup();
                     }
-                    else if (ImGui::Button("TileEdit"))
+                    else if (/*ImGui::Button("TileEdit")*/GLHelper::GetInstance()->GetAltPressed())
                     {                        
                         ChangeCurrentEditMode(EDIT_MODE::TILE);                        
                         ImGui::CloseCurrentPopup();                        
@@ -383,27 +383,32 @@ void MainEditor::UniqueFunctionEachMode()
     if (m_bSelectedObjByClick)
     {
         if (GetCurrentEditMode() == EDIT_MODE::NORMAL)
-        {            
-            m_pTransByMouseSelect->SetPosition({ m_vWorldMousePos.x,m_vWorldMousePos.y });
+        {
+            Wall* wall_comp=dynamic_cast<Wall*>(m_pTransByMouseSelect->GetOwner()->FindComponent(Wall::WallTypeName));
+            if(wall_comp==nullptr)
+                m_pTransByMouseSelect->SetPosition({ m_vWorldMousePos.x,m_vWorldMousePos.y });
         }            
         else if (GetCurrentEditMode() == EDIT_MODE::TILE)
         {
-            if (HelperInst->GetLeftMouseTriggered() && HelperInst->GetLeftControlPressed())
+            auto a = HelperInst->GetLeftMouseTriggered();
+            auto b = HelperInst->GetLeftControlPressed();
+            if ( a&&b)
             {
                 if (m_pTransByMouseSelect->GetOwner() != nullptr)
                 {
                     auto obj_id = m_pTransByMouseSelect->GetOwner()->GetID();
-                    std::string name = m_pTransByMouseSelect->GetOwner()->GetName();                                        
+                    std::string name = m_pTransByMouseSelect->GetOwner()->GetName();
                     m_bSelectedObjByClick = false;
                     Wall* wall_comp=dynamic_cast<Wall*>(m_pTransByMouseSelect->GetOwner()->FindComponent(Wall::WallTypeName));
-                    if (wall_comp != nullptr)
+                    /*if (wall_comp != nullptr)
                     {
                         glm::vec2 grid = wall_comp->GetScreenGrid();
                         TileEditor::GetInstance()->SetWallGridCoord(grid.x, grid.y, false);
-                    }                    
-                    m_pTransByMouseSelect = nullptr;
-                    m_pSelectedObjByMouse = nullptr;
+                    }*/
                     GameObjectManager::GetInstance()->RemoveObject(obj_id, name);
+                    /*m_pTransByMouseSelect = nullptr;
+                    m_pSelectedObjByMouse = nullptr;*/
+                    auto temp = TileEditor::GetInstance()->GetWallGrid();
                     HelperInst->ResetLeftMouseTriggered();
                 }
             }

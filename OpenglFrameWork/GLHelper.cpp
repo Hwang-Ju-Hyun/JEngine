@@ -17,6 +17,8 @@ GLboolean GLHelper::m_bRightMouseTriggered      = false;
 
 GLboolean GLHelper::m_bLeftControlKeyPressed    = false;
 GLboolean GLHelper::m_bLeftControlKeyReleased   = false;
+GLboolean GLHelper::m_bLeftAltKeyPressed        = false;
+GLboolean GLHelper::m_bLeftAltKeyReleased       = false;
 GLboolean GLHelper::m_bUpArrowKeyPressed        = false;
 GLboolean GLHelper::m_bUpArrowKeyReleased       = false;
 GLboolean GLHelper::m_bDownArrowKeyPressed      = false;
@@ -83,6 +85,8 @@ void GLHelper::KeyCallBack(GLFWwindow* _window, int _key, int _scancod, int _act
             break;
         case GLFW_KEY_LEFT_CONTROL:
             m_bLeftControlKeyPressed = true;
+        case GLFW_KEY_LEFT_ALT:
+            m_bLeftAltKeyPressed = true;
         default:
             break;
         }
@@ -118,6 +122,11 @@ void GLHelper::KeyCallBack(GLFWwindow* _window, int _key, int _scancod, int _act
         {
             m_bLeftControlKeyPressed = false;
             m_bLeftControlKeyReleased = true;
+        }
+        if (m_bLeftAltKeyPressed)
+        {
+            m_bLeftAltKeyPressed = false;
+            m_bLeftAltKeyReleased = true;
         }
     }
 }
@@ -199,6 +208,16 @@ GLboolean GLHelper::GetRightMouseTriggered() const
 void GLHelper::ResetLeftMouseTriggered() const
 {
     m_bLeftMouseTriggered = false;
+}
+
+GLboolean GLHelper::GetAltPressed() const
+{
+    return m_bLeftAltKeyPressed;
+}
+
+GLboolean GLHelper::GetAltReleased() const
+{
+    return m_bLeftAltKeyReleased;
 }
 
 GLboolean GLHelper::GetLeftControlPressed() const

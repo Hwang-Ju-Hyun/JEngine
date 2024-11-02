@@ -49,6 +49,9 @@ private:
 	//Keyboard Info
 	static GLboolean m_bLeftControlKeyPressed;
 	static GLboolean m_bLeftControlKeyReleased;
+	static GLboolean m_bLeftAltKeyPressed;
+	static GLboolean m_bLeftAltKeyReleased;
+
 
 	static GLboolean m_bUpArrowKeyPressed;
 	static GLboolean m_bUpArrowKeyReleased;
@@ -61,6 +64,8 @@ private:
 	static GLboolean m_bSpaceKeyPressed;
 	static GLboolean m_bSpaceKeyReleased;
 public:
+	GLboolean GetAltPressed()const;
+	GLboolean GetAltReleased()const;
 	GLboolean GetLeftControlPressed()const;
 	GLboolean GetLeftControlReleased()const;
 	GLboolean GetUpArrowKeyPressed()const;
