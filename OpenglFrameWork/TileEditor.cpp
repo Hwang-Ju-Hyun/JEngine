@@ -64,14 +64,14 @@ glm::vec2 TileEditor::GetWorldPosbyScreenGrid(int _width, int _height, int _grid
     return wall;
 }
 
-glm::vec2 TileEditor::GetScreenGridByPoint(glm::vec2 _pointPos)
+glm::vec2 TileEditor::GetScreenGridByScreenPoint(glm::vec2 _pointPos)
 {        
     int WallWidth = window_width / m_iNumberOfWallsCol;
     int WallHeight = window_height / m_iNumberOfWallsRow;
 
     int ScreenGridX = _pointPos.x / WallWidth;
     int ScreenGridY = _pointPos.y / WallHeight;
-
+    
     return glm::vec2{ ScreenGridX,ScreenGridY };
 }
 
@@ -203,26 +203,25 @@ void TileEditor::Update()
             wall_obj->AddComponent("Sprite", new Sprite(wall_obj));            
             wall_obj->SetTexture(m_pCurrentTileTexture);
 
-            Transform* trans = static_cast<Transform*>(wall_obj->FindComponent("Transform"));
+            Transform* wall_trs = static_cast<Transform*>(wall_obj->FindComponent("Transform"));
             
             glm::vec2 mouse_pos_world;
-
             mouse_pos_world=GetWorldPosbyScreenGrid(m_iWallWidth, m_iWallHeight, m_iScreenGridX, m_iScreenGridY);
+            
+            glm::mat3 wall_mat ={ wall_trs->GetScreenByWorld() };
+            glm::vec2 wall_pos = { wall_mat[2][0],wall_mat[2][1] };
+            glm::vec2 wall_grid = TileEditor::GetInstance()->GetScreenGridByScreenPoint(wall_pos);
+            wall_trs->SetGridByScreenPos(wall_grid);            
 
-            trans->SetPosition({ mouse_pos_world.x,mouse_pos_world.y });
-            trans->SetScale({ m_iWallWidth, m_iWallHeight });
+            wall_trs->SetPosition({ mouse_pos_world.x,mouse_pos_world.y });
+            wall_trs->SetScale({ m_iWallWidth, m_iWallHeight });            
             wall_obj->SetModelType(MODEL_TYPE::RECTANGLE);
 
-            GLHelper::GetInstance()->ResetLeftMouseTriggered();            
+            GLHelper::GetInstance()->ResetLeftMouseTriggered();
             m_vecWallGridCoord[(int)m_iScreenGridX][(int)m_iScreenGridY] = true;
             Wall* wall_comp=nullptr;
             wall_comp = static_cast<Wall*>(wall_obj->AddComponent("Wall", new Wall(wall_obj)));            
-            wall_comp->SetScreeGrid({(int)m_iScreenGridX,(int)m_iScreenGridY});
             wall_comp->SetFragile(false);
-            wall_comp->SetExist(true);
-
-            std::cout << m_iScreenGridX << "," << m_iScreenGridY << std::endl;
-
         }
     }
 }

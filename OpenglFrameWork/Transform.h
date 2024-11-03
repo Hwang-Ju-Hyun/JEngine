@@ -22,6 +22,11 @@ private:
 	glm::mat3 m_mModelToNDC = {};	
 	glm::mat3 m_mModelToWorld = {};
 	glm::mat3 m_mWorldToScreen = {};
+
+	glm::vec2 m_vGrid = { 0.f,0.f, };
+public:
+	void SetGridByScreenPos(glm::vec2 _grid);
+	glm::vec2 GetGridByScreenPos()const;
 public:
 	//settor
 	void SetPosition(glm::vec2 _pos);
@@ -36,7 +41,7 @@ public:
 	glm::vec2 GetPosition()const;
 	glm::vec2 GetScale()const;
 	glm::mat3 GetModelToNDC();
-	glm::mat3 GetWorldToScreen();
+	glm::mat3 GetScreenByWorld();
 public:
     virtual void Update()override;
 public:

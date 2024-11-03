@@ -101,12 +101,12 @@ void MainEditor::TopBar_GameObject()
                     int object_last_id = -1;
                     for (int i = 0; i < all_objs.size(); i++)
                     {
-                        if (all_objs[i]->GetName() == "tempObject")
+                        if (all_objs[i]->GetName() == "GameObject")
                         {
                             object_last_id = all_objs[i]->GetID() + 1;
                         }
                     }                                 
-                    m_pNewObject = new GameObject("tempObject", object_last_id++);
+                    m_pNewObject = new GameObject("GameObject", object_last_id++);
                     if (m_bCheckBoxTransform)
                     {
                         m_pNewObject->AddComponent("Transform", new Transform(m_pNewObject));
@@ -390,25 +390,19 @@ void MainEditor::UniqueFunctionEachMode()
         }            
         else if (GetCurrentEditMode() == EDIT_MODE::TILE)
         {
-            auto a = HelperInst->GetLeftMouseTriggered();
-            auto b = HelperInst->GetLeftControlPressed();
-            if ( a&&b)
+            auto left_click_trigger = HelperInst->GetLeftMouseTriggered();
+            auto left_control_trigger = HelperInst->GetLeftControlPressed();
+            if (left_click_trigger && left_control_trigger)
             {
                 if (m_pTransByMouseSelect->GetOwner() != nullptr)
                 {
                     auto obj_id = m_pTransByMouseSelect->GetOwner()->GetID();
                     std::string name = m_pTransByMouseSelect->GetOwner()->GetName();
                     m_bSelectedObjByClick = false;
-                    Wall* wall_comp=dynamic_cast<Wall*>(m_pTransByMouseSelect->GetOwner()->FindComponent(Wall::WallTypeName));
-                    /*if (wall_comp != nullptr)
-                    {
-                        glm::vec2 grid = wall_comp->GetScreenGrid();
-                        TileEditor::GetInstance()->SetWallGridCoord(grid.x, grid.y, false);
-                    }*/
+                    Wall* wall_comp=dynamic_cast<Wall*>(m_pTransByMouseSelect->GetOwner()->FindComponent(Wall::WallTypeName));                    
                     GameObjectManager::GetInstance()->RemoveObject(obj_id, name);
-                    /*m_pTransByMouseSelect = nullptr;
-                    m_pSelectedObjByMouse = nullptr;*/
-                    auto temp = TileEditor::GetInstance()->GetWallGrid();
+                    m_pTransByMouseSelect = nullptr;
+                    m_pSelectedObjByMouse = nullptr;                    
                     HelperInst->ResetLeftMouseTriggered();
                 }
             }
@@ -488,7 +482,7 @@ void MainEditor::Update()
 {
     auto ScreenToWorld = GLHelper::GetInstance()->GetScreenToWorldMatFromMouse();
     m_vWorldMousePos = { ScreenToWorld[2][0],ScreenToWorld[2][1] };                
-    std::cout << m_vWorldMousePos.x << "," << m_vWorldMousePos.y << std::endl;
+    //std::cout << m_vWorldMousePos.x << "," << m_vWorldMousePos.y << std::endl;
     if (!m_bCurWindowObjectList)
         CheckSelecetedObjByMouse();
     if (GetCurrentEditMode() == EDIT_MODE::TILE&& !m_bCurWindowObjectList)

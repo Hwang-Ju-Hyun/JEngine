@@ -10,6 +10,7 @@
 #include "GLShader.h"
 #include "header.h"
 #include "GLModel.h"
+#include "GLHelper.h"
 #include <../GLM/gtc/type_ptr.hpp>
 #include "RigidBody.h"
 #include "TimeManager.h"
@@ -22,6 +23,16 @@ Transform::Transform(GameObject* _owner)
 
 Transform::~Transform()
 {
+}
+
+void Transform::SetGridByScreenPos(glm::vec2 _pos)
+{	
+	m_vGrid = _pos;
+}
+
+glm::vec2 Transform::GetGridByScreenPos() const
+{
+	return m_vGrid;
 }
 
 void Transform::SetPosition(glm::vec2 _pos)
@@ -69,7 +80,7 @@ glm::mat3 Transform::GetModelToNDC()
 	return m_mModelToNDC;
 }
 
-glm::mat3 Transform::GetWorldToScreen()
+glm::mat3 Transform::GetScreenByWorld()
 {	
 	glm::mat3 trans =
 	{
@@ -152,6 +163,10 @@ void Transform::LoadFromJson(const json& str)
 
 		auto rotate = comp_data->find("Rot");
 		m_vRotate =  rotate->begin().value();
+
+		auto grid = comp_data->find("Grid");
+		m_vGrid.x = grid->begin().value();
+		m_vGrid.y = (grid->begin() + 1).value();
 	}
 }
 
@@ -169,6 +184,8 @@ json Transform::SaveToJson(const json& str)
 	compData["sca"] = { m_vScale.x,m_vScale.y };
 	//rot
 	compData["Rot"] = { 0.f,0.f };
+
+	compData["Grid"] = { m_vGrid.x,m_vGrid.y };
 
 	data["CompData"] = compData;
 

@@ -38,7 +38,7 @@ void Bomb::SpawnBomb(GameObject* _bomb)
 			if (grid[i][j])
 			{				
 				Transform* bomb_trs = (Transform*)_bomb->AddComponent(Transform::TransformTypeName, new Transform(_bomb));				
-				TileEditor::GetInstance()->GetScreenGridByPoint(bomb_trs->GetPosition());
+				TileEditor::GetInstance()->GetScreenGridByScreenPoint(bomb_trs->GetPosition());
 				bomb_trs->SetPosition(master_trs->GetPosition());
 				_bomb->AddComponent(Sprite::SpriteTypeName, new Sprite(_bomb));
 				_bomb->SetModelType(MODEL_TYPE::CIRCLE);

@@ -81,7 +81,7 @@ public:
 
 public:
 	glm::mat3 GetScreenToWorldMatFromMouse();	
-	glm::mat3 GetScreenToWorldMat(glm::vec2 _pos);
+	glm::mat3 GetScreenToWorldMat(glm::vec2 _pos);	
 public:
 	float GetDistanceFromTwoVertex(glm::vec2 _vertex1, glm::vec2 _vertex2);
 	glm::vec2 GetDirectionFromTwoVector(glm::vec2 _vec1, glm::vec2 _vec2,bool _getNormalize=false);

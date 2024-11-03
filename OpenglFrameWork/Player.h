@@ -16,7 +16,7 @@ public:
 private:
     Transform* m_pPlayerTrs = nullptr;
 private:
-    glm::vec2 m_vDirection = { 0.f,0.f };
+    glm::vec2 m_vDirection = { 0.f,0.f };    
 public:
     void SetDirection(glm::vec2 _dir);
     glm::vec2 GetDirection()const;

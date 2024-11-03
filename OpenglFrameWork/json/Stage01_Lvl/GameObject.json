@@ -1,14 +1,14 @@
 [
   {
     "Name": "GameObject",
-    "ID": 1,
+    "ID": 4294967295,
     "Components": [
       {
         "Type": "Transform",
         "CompData": {
           "Pos": [
-            579.0,
-            -164.0
+            400.0,
+            200.0
           ],
           "sca": [
             100.0,
@@ -17,16 +17,58 @@
           "Rot": [
             0.0,
             0.0
+          ],
+          "Grid": [
+            0.0,
+            0.0
           ]
         }
       },
       {
         "Type": "Sprite",
         "CompData": {
-          "RED": 0.0,
-          "GREEN": 0.0,
-          "BLUE": 0.0,
-          "ALPHA": 0.0
+          "RED": 0.5,
+          "GREEN": 0.5,
+          "BLUE": 0.5,
+          "ALPHA": 0.5
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 0
+  },
+  {
+    "Name": "GameObject",
+    "ID": 0,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            400.0,
+            -100.0
+          ],
+          "sca": [
+            50.0,
+            200.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.5,
+          "GREEN": 0.5,
+          "BLUE": 0.5,
+          "ALPHA": 0.5
         }
       }
     ],

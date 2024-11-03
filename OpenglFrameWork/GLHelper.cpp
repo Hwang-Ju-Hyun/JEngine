@@ -332,6 +332,7 @@ glm::mat3 GLHelper::GetScreenToWorldMat(glm::vec2 _pos)
     return mat;
 }
 
+
 float GLHelper::GetRadianFromTwoVectors(glm::vec2 _vec1, glm::vec2 _vec2)
 {
     //I will no use cos function <- It's expensive function

@@ -1,6 +1,6 @@
 [
   {
-    "Name": "tempObject",
+    "Name": "GameObject",
     "ID": 1,
     "Components": [
       {

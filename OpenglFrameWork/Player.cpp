@@ -10,6 +10,7 @@
 #include "Bomb.h"
 #include "Serializer.h"
 #include "Sprite.h"
+#include "TileEditor.h"
 #include <iostream>
 
 Player::Player(GameObject* _owner)
@@ -76,8 +77,16 @@ void Player::MoveMent()
             player_rig->SetAccelation(glm::vec2{ 0.f, 0.f });
             player_rig->SetVelocity(glm::vec2{0.f,0.f});
         }
-    }    
-}
+    }
+
+    Transform* player_trs = static_cast<Transform*>((Transform*)m_pOwner->FindComponent(Transform::TransformTypeName));
+    glm::mat3 mat = {player_trs->GetScreenByWorld()};
+    glm::vec2 pos = { mat[2][0],mat[2][1] };
+    glm::vec2 grid=TileEditor::GetInstance()->GetScreenGridByScreenPoint(pos);
+    player_trs->SetGridByScreenPos(grid);
+    grid = player_trs->GetGridByScreenPos();
+    std::cout <<grid.x << "," << grid.y << std::endl;
+}   
     
 void Player::Attack()
 {   
@@ -110,6 +119,7 @@ void Player::LoadFromJson(const json& _str)
 
         auto hp = comp_data->find("HP");
         m_iHP = hp->begin().value();
+                
     }
 }
 
@@ -121,7 +131,7 @@ json Player::SaveToJson(const json& _str)
 
     json comp_data;
     comp_data["Current Level"] = GetCurrentLevel()->GetName();
-    comp_data["HP"] = m_iHP;
+    comp_data["HP"] = m_iHP;    
 
     data["CompData"] = comp_data;
 

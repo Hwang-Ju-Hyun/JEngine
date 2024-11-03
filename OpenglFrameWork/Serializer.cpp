@@ -36,11 +36,11 @@ GameObject* Serializer::LoadGameObject(const std::string& _path)
 	file >> js_all_data;
 	for (auto& item : js_all_data)
 	{
-		auto obj = item.find("tempObject");
+		auto obj = item.find("GameObject");
 		if (obj != item.end())
 		{
 			//Create
-			GameObject* go_obj = new GameObject("tempObject", obj->begin().value());
+			GameObject* go_obj = new GameObject("GameObject", obj->begin().value());
 			
 			auto components = item.find("Components");
 			
@@ -82,10 +82,10 @@ void Serializer::SaveGameObject(const std::string& _path)
 	for (const auto& go_obj : all_objs)
 	{
 		json js_components;
-		if (go_obj->GetName() == "tempObject")
+		if (go_obj->GetName() == "GameObject")
 		{
 			json js_obj;
-			js_obj["tempObject"] = go_obj->GetID();
+			js_obj["GameObject"] = go_obj->GetID();
 			int a = go_obj->GetID();
 			for (auto comp : go_obj->GetAllComponentOfObj())
 			{
