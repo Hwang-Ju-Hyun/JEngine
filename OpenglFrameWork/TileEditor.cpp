@@ -195,32 +195,33 @@ void TileEditor::Update()
                 {
                     wall_last_id = all_objs[i]->GetID()+1;
                 }
-            }        
+            }
+
             GameObject* wall_obj=nullptr;
             
             wall_obj = new GameObject("Wall", wall_last_id++);
-            wall_obj->AddComponent("Transform", new Transform(wall_obj));            
-            wall_obj->AddComponent("Sprite", new Sprite(wall_obj));            
+            wall_obj->AddComponent("Transform", new Transform(wall_obj));
+            wall_obj->AddComponent("Sprite", new Sprite(wall_obj));      
             wall_obj->SetTexture(m_pCurrentTileTexture);
 
-            Transform* wall_trs = static_cast<Transform*>(wall_obj->FindComponent("Transform"));
+            Transform* wall_trs = static_cast<Transform*>(wall_obj->FindComponent(Transform::TransformTypeName));
             
             glm::vec2 mouse_pos_world;
             mouse_pos_world=GetWorldPosbyScreenGrid(m_iWallWidth, m_iWallHeight, m_iScreenGridX, m_iScreenGridY);
+            wall_trs->SetPosition({ mouse_pos_world.x,mouse_pos_world.y });
             
             glm::mat3 wall_mat ={ wall_trs->GetScreenByWorld() };
             glm::vec2 wall_pos = { wall_mat[2][0],wall_mat[2][1] };
             glm::vec2 wall_grid = TileEditor::GetInstance()->GetScreenGridByScreenPoint(wall_pos);
-            wall_trs->SetGridByScreenPos(wall_grid);            
+            wall_trs->SetGridByScreenPos({ m_iScreenGridX,m_iScreenGridY });
 
-            wall_trs->SetPosition({ mouse_pos_world.x,mouse_pos_world.y });
             wall_trs->SetScale({ m_iWallWidth, m_iWallHeight });            
             wall_obj->SetModelType(MODEL_TYPE::RECTANGLE);
 
             GLHelper::GetInstance()->ResetLeftMouseTriggered();
             m_vecWallGridCoord[(int)m_iScreenGridX][(int)m_iScreenGridY] = true;
             Wall* wall_comp=nullptr;
-            wall_comp = static_cast<Wall*>(wall_obj->AddComponent("Wall", new Wall(wall_obj)));            
+            wall_comp = static_cast<Wall*>(wall_obj->AddComponent("Wall", new Wall(wall_obj)));
             wall_comp->SetFragile(false);
         }
     }

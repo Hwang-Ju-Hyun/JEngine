@@ -355,7 +355,7 @@ void MainEditor::CheckSelecetedObjByMouse()
 
                 if (mouse_inside_obj)
                 {
-                    m_pTransByMouseSelect = dynamic_cast<Transform*>(obj->FindComponent("Transform"));
+                    m_pTransByMouseSelect = dynamic_cast<Transform*>(obj->FindComponent(Transform::TransformTypeName));
                     if (L_mouse_trigger)
                     {
                         if (m_pTransByMouseSelect == nullptr)
@@ -399,10 +399,13 @@ void MainEditor::UniqueFunctionEachMode()
                     auto obj_id = m_pTransByMouseSelect->GetOwner()->GetID();
                     std::string name = m_pTransByMouseSelect->GetOwner()->GetName();
                     m_bSelectedObjByClick = false;
-                    Wall* wall_comp=dynamic_cast<Wall*>(m_pTransByMouseSelect->GetOwner()->FindComponent(Wall::WallTypeName));                    
+                    Wall* wall_comp=dynamic_cast<Wall*>(m_pTransByMouseSelect->GetOwner()->FindComponent(Wall::WallTypeName));
+                    std::vector<std::vector<bool>> temp =TileEditor::GetInstance()->GetWallGrid();
+                    glm::vec2 grid = m_pTransByMouseSelect->GetGridByScreenPos();
+                    TileEditor::GetInstance()->m_vecWallGridCoord[grid.x][grid.y] = false;
                     GameObjectManager::GetInstance()->RemoveObject(obj_id, name);
                     m_pTransByMouseSelect = nullptr;
-                    m_pSelectedObjByMouse = nullptr;                    
+                    m_pSelectedObjByMouse = nullptr;
                     HelperInst->ResetLeftMouseTriggered();
                 }
             }

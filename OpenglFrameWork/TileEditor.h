@@ -25,7 +25,9 @@ private:
 
 	bool m_bExist = false;
 
+public:
 	std::vector<std::vector<bool>> m_vecWallGridCoord;
+private:
 	TextureResource* m_pCurrentTileTexture = nullptr;	
 public:	
 	void ShowAndSetCurrentTileTexture();
