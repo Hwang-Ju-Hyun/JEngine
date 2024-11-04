@@ -117,12 +117,12 @@ void Player::MoveMent()
 void Player::Attack()
 {   
     auto Helper = GLHelper::GetInstance();    
+    bool init = false;
     if (Helper->GetSpaceKeyPressed())
     {          
         if (m_iCurBombCnt <= m_iMaxBombCnt)
         {
-            Bomb* bomb_comp= Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());
-
+            Bomb* bomb_comp= Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());            
             m_iCurBombCnt++;
         }
         
