@@ -3,11 +3,12 @@
 #include <string>
 
 class GameObject;
+class Bomb;
 
 class Prefabs
 {
 public:
 	SINGLE(Prefabs);
 public:
-	void CreateBombs(const std::string& _path, GameObject* _bombOwner);
+	Bomb* CreateBombs(const std::string& _path, GameObject* _bombOwner);
 };

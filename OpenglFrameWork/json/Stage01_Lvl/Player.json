@@ -54,7 +54,8 @@
         "Type": "Player",
         "CompData": {
           "Current Level": "Stage01_Lvl",
-          "HP": 0
+          "HP": 0,
+          "MaxBomb_Cnt": 1
         }
       }
     ],

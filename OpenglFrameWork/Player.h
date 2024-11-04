@@ -22,8 +22,14 @@ public:
     glm::vec2 GetDirection()const;
 private:
     int m_iHP = 0;
-    BaseLevel* m_pCurrentLevel = nullptr;
-    std::string m_sCurrentLevelName = "";
+    int m_iMaxBombCnt = 0;
+    int m_iCurBombCnt = 0;
+public:
+    void SetHp(int _hp);
+    int GetHp()const;
+    void SetMaxBombCnt(int _cnt);
+    void AddMaxBombCnt(int _cnt);
+    int GetMaxBombCnt()const;
 public:
     void SetCurrentLevel(BaseLevel* _level);
     BaseLevel* GetCurrentLevel()const;
@@ -38,7 +44,8 @@ public:
     virtual json SaveToJson(const json& _str);
 public:
     static BaseRTTI* CreatePlayerComponent();
-public:
-    void SpawBawn();
+private:
+    BaseLevel* m_pCurrentLevel = nullptr;
+    std::string m_sCurrentLevelName = "";
 };
 

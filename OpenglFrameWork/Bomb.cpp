@@ -2,10 +2,12 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "CollisionManager.h"
+#include "GameObjectManager.h"
 #include "TileEditor.h"
 #include "Sprite.h"
 #include "Player.h"
 #include "GameObjectManager.h"
+#include "TimeManager.h"
 #include <iostream>
 
 Bomb::Bomb(GameObject* _owner)
@@ -17,6 +19,21 @@ Bomb::~Bomb()
 {
 }
 
+void Bomb::SetIsExplode(bool _explode)
+{
+	m_bIsExplode = _explode;
+}
+
+bool Bomb::GetIsExplode() const
+{
+	return m_bIsExplode;
+}
+
+void Bomb::SetExplodeTime(float _time)
+{
+	m_fExplodeTime = _time;
+}
+
 void Bomb::AddExplodeTime(float _time)
 {
 	m_fExplodeTime += _time;
@@ -25,6 +42,19 @@ void Bomb::AddExplodeTime(float _time)
 const float Bomb::GetExplodeTime() const
 {
 	return m_fExplodeTime;
+}
+
+void Bomb::Update()
+{
+	static float AccTime = 0.f;
+	float dt = TimeManager::GetInstance()->GetDeltaTime();
+	AccTime += dt;
+	if (AccTime >= m_fExplodeTime)
+	{
+		SetIsExplode(true);
+		GameObjectManager::GetInstance()->RemoveObject(m_pOwner->GetID(), m_pOwner->GetName());
+		AccTime = 0.f;
+	}
 }
 
 void Bomb::LoadFromJson(const json& _str)

@@ -34,6 +34,31 @@ glm::vec2 Player::GetDirection() const
 	return m_vDirection;
 }
 
+void Player::SetHp(int _hp)
+{
+    m_iHP = _hp;
+}
+
+int Player::GetHp() const
+{
+    return m_iHP;
+}
+
+void Player::SetMaxBombCnt(int _cnt)
+{
+    m_iMaxBombCnt = _cnt;
+}
+
+void Player::AddMaxBombCnt(int _cnt)
+{
+    m_iMaxBombCnt += _cnt;
+}
+
+int Player::GetMaxBombCnt() const
+{
+    return m_iMaxBombCnt;
+}
+
 void Player::SetCurrentLevel(BaseLevel* _level)
 {
     m_pCurrentLevel = _level;
@@ -93,9 +118,14 @@ void Player::Attack()
 {   
     auto Helper = GLHelper::GetInstance();    
     if (Helper->GetSpaceKeyPressed())
-    {   
-        //Prefabs
-        Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());
+    {          
+        if (m_iCurBombCnt <= m_iMaxBombCnt)
+        {
+            Bomb* bomb_comp= Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());
+
+            m_iCurBombCnt++;
+        }
+        
     }
 }
 
@@ -114,8 +144,10 @@ void Player::LoadFromJson(const json& _str)
         m_sCurrentLevelName = cur_lvl->begin().value();
 
         auto hp = comp_data->find("HP");
-        m_iHP = hp->begin().value();
-                
+        m_iHP = hp->begin().value();                
+
+        auto bomb_cnt = comp_data->find("MaxBomb_Cnt");
+        m_iMaxBombCnt = bomb_cnt->begin().value();
     }
 }
 
@@ -128,6 +160,7 @@ json Player::SaveToJson(const json& _str)
     json comp_data;
     comp_data["Current Level"] = GetCurrentLevel()->GetName();
     comp_data["HP"] = m_iHP;    
+    comp_data["MaxBomb_Cnt"] = m_iMaxBombCnt;
 
     data["CompData"] = comp_data;
 
@@ -144,12 +177,4 @@ BaseRTTI* Player::CreatePlayerComponent()
         return nullptr;
     }
     return p;
-}
-
-void Player::SpawBawn()
-{
-    /*m_pBomb = new GameObject("Bomb", 0);
-    Bomb* obj_bomb=static_cast<Bomb*>(m_pBomb->AddComponent("Bomb", new Bomb(m_pBomb)2));
-    obj_bomb->SetBombMaster(m_pBomb);
-    obj_bomb->SpawnBomb(m_pBomb);*/
 }
