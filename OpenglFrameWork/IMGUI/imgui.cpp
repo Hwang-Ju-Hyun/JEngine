@@ -14192,6 +14192,19 @@ static void MetricsHelpMarker(const char* desc)
     }
 }
 
+// custom imgui code
+bool ImGui::IsMouseOutsideAnyWindow()
+{
+    ImVec2 mousePos = ImGui::GetMousePos();
+
+    ImGuiContext* context = ImGui::GetCurrentContext();
+    ImGuiWindow* window = context->HoveredWindow;
+    ImGuiWindow* moving_window = context->MovingWindow;
+    ImGuiWindow* active = context->ActiveIdWindow;
+
+    return (window == nullptr && moving_window == nullptr && active == nullptr);
+}
+
 // [DEBUG] List fonts in a font atlas and display its texture
 void ImGui::ShowFontAtlas(ImFontAtlas* atlas)
 {
@@ -15688,7 +15701,10 @@ void ImGui::ShowIDStackToolWindow(bool* p_open)
         EndTable();
     }
     End();
+
 }
+
+
 
 #else
 

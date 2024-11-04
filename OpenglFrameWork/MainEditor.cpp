@@ -36,19 +36,25 @@ MainEditor::~MainEditor()
 
 void MainEditor::TopBar_ShowGrid()
 {
+    static bool create_grid = false;
     if (ImGui::BeginMenu("Show Grid"))
-    {
-        ImGui::Checkbox("Grid", &m_bShowGrid);
-        GameObject* grid_obj= new GameObject("GridObject",0);
-        grid_obj->AddComponent(Transform::TransformTypeName, new Transform(grid_obj));
-        grid_obj->AddComponent(Sprite::SpriteTypeName, new Sprite(grid_obj));
-        grid_obj->SetModelType(MODEL_TYPE::GRID_LINE);        
-        Transform* grid_trs = static_cast<Transform*>(grid_obj->FindComponent(Transform::TransformTypeName));
-        grid_trs->SetPosition({ 0.f,0.f });
-        grid_trs->SetScale({window_width/2.f,window_height/2.f});
-        if (!m_bShowGrid)
+    {        
+        ImGui::Checkbox("Grid", &m_bShowGrid);        
+        if (m_bShowGrid && !create_grid)
         {
-            GameObjectManager::GetInstance()->RemoveObjectsByName(grid_obj->GetName());
+            GameObject* grid_obj =new GameObject("GridObject", 0);
+            grid_obj->AddComponent(Transform::TransformTypeName, new Transform(grid_obj));
+            grid_obj->AddComponent(Sprite::SpriteTypeName, new Sprite(grid_obj));
+            grid_obj->SetModelType(MODEL_TYPE::GRID_LINE);
+            Transform* grid_trs = static_cast<Transform*>(grid_obj->FindComponent(Transform::TransformTypeName));
+            grid_trs->SetPosition({ 0.f,0.f });
+            grid_trs->SetScale({ window_width / 2.f,window_height / 2.f });
+            create_grid = true;
+        }           
+        else if (!m_bShowGrid && create_grid)
+        {
+            GameObjectManager::GetInstance()->RemoveObjectsByName("GridObject");
+            create_grid = false;
         }
         ImGui::EndMenu();
     }
@@ -106,7 +112,7 @@ void MainEditor::TopBar_GameObject()
                             object_last_id = all_objs[i]->GetID() + 1;
                         }
                     }                                 
-                    m_pNewObject = new GameObject("GameObject", object_last_id++);
+                    m_pNewObject = new GameObject("GameObject", ++object_last_id);
                     if (m_bCheckBoxTransform)
                     {
                         m_pNewObject->AddComponent("Transform", new Transform(m_pNewObject));
@@ -187,8 +193,8 @@ void MainEditor::TopBar_Save()
                 {                                    
                     auto current_level=GameStateManager::GetInstance()->GetCurrentLevel();
                     std::string cur_level_str=current_level->GetName();                    
+                    Serializer::GetInstance()->SaveScreenGrid("json/" + cur_level_str + "/" + "Grid" + ".json");
                     Serializer::GetInstance()->SaveStage("json/" + cur_level_str + "/" + cur_level_str + ".txt");
-                    
                     m_bShowSaveConf = false;
                     ImGui::CloseCurrentPopup();
                 }
@@ -278,12 +284,12 @@ void MainEditor::TopBar_ChangeEditMode()
             {                       
                 if (ImGui::TreeNode("MODE"))
                 {                    
-                    if (/*ImGui::Button("Normal")&& */GLHelper::GetInstance()->GetLeftControlPressed())
+                    if (ImGui::Button("Normal"))
                     {                                                
                         ChangeCurrentEditMode(EDIT_MODE::NORMAL);
                         ImGui::CloseCurrentPopup();
                     }
-                    else if (/*ImGui::Button("TileEdit")*/GLHelper::GetInstance()->GetAltPressed())
+                    else if (ImGui::Button("TileEdit"))
                     {                        
                         ChangeCurrentEditMode(EDIT_MODE::TILE);                        
                         ImGui::CloseCurrentPopup();                        
@@ -380,6 +386,8 @@ void MainEditor::UniqueFunctionEachMode()
 {
     auto HelperInst = GLHelper::GetInstance();
     auto screen_mouse_pos = GLHelper::GetInstance()->GetMouseCursorPosition();
+    auto current_level = GameStateManager::GetInstance()->GetCurrentLevel();
+    std::string cur_level_str = current_level->GetName();
     if (m_bSelectedObjByClick)
     {
         if (GetCurrentEditMode() == EDIT_MODE::NORMAL)
@@ -387,7 +395,7 @@ void MainEditor::UniqueFunctionEachMode()
             Wall* wall_comp=dynamic_cast<Wall*>(m_pTransByMouseSelect->GetOwner()->FindComponent(Wall::WallTypeName));
             if(wall_comp==nullptr)
                 m_pTransByMouseSelect->SetPosition({ m_vWorldMousePos.x,m_vWorldMousePos.y });
-        }            
+        }
         else if (GetCurrentEditMode() == EDIT_MODE::TILE)
         {
             auto left_click_trigger = HelperInst->GetLeftMouseTriggered();
@@ -398,14 +406,16 @@ void MainEditor::UniqueFunctionEachMode()
                 {
                     auto obj_id = m_pTransByMouseSelect->GetOwner()->GetID();
                     std::string name = m_pTransByMouseSelect->GetOwner()->GetName();
-                    m_bSelectedObjByClick = false;
-                    Wall* wall_comp=dynamic_cast<Wall*>(m_pTransByMouseSelect->GetOwner()->FindComponent(Wall::WallTypeName));
-                    std::vector<std::vector<bool>> temp =TileEditor::GetInstance()->GetWallGrid();
+
+                    Wall* wall_comp=dynamic_cast<Wall*>(m_pTransByMouseSelect->GetOwner()->FindComponent(Wall::WallTypeName));                    
                     glm::vec2 grid = m_pTransByMouseSelect->GetGridByScreenPos();
-                    TileEditor::GetInstance()->m_vecWallGridCoord[grid.x][grid.y] = false;
+                    TileEditor::GetInstance()->SetWallGridCoord(grid.x, grid.y, false);                    
+                    Serializer::GetInstance()->SaveScreenGrid("json/" + cur_level_str + "/" + "Grid" + ".json");
                     GameObjectManager::GetInstance()->RemoveObject(obj_id, name);
+                    //Serializer::GetInstance()->SaveStage("json/" + cur_level_str + "/" + cur_level_str + ".txt");
                     m_pTransByMouseSelect = nullptr;
                     m_pSelectedObjByMouse = nullptr;
+                    m_bSelectedObjByClick = false;
                     HelperInst->ResetLeftMouseTriggered();
                 }
             }

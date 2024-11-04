@@ -14,6 +14,7 @@ glm::vec2 GLHelper::m_vMouseCursorPosition = { 0.f,0.f };
 GLboolean GLHelper::m_bLeftMouseTriggered       = false;
 GLboolean GLHelper::m_bLeftMouseReleased        = false;
 GLboolean GLHelper::m_bRightMouseTriggered      = false;
+GLboolean GLHelper::m_bRightMouseReleased       = false;
 
 GLboolean GLHelper::m_bLeftControlKeyPressed    = false;
 GLboolean GLHelper::m_bLeftControlKeyReleased   = false;
@@ -175,7 +176,29 @@ void GLHelper::MousebuttonCallBack(GLFWwindow* _window, int _button, int _action
                 m_bLeftMouseReleased = false;
             }
         }
-    }    
+    }
+    else if (_button == GLFW_MOUSE_BUTTON_RIGHT)
+    {
+        if (_action == GLFW_PRESS)
+        {
+            if (!m_bRightMouseTriggered)
+            {
+                m_bRightMouseTriggered = true;
+            }
+        }
+        else if (_action == GLFW_RELEASE)
+        {
+            if (m_bRightMouseTriggered)
+            {
+                m_bRightMouseTriggered = false;
+                m_bRightMouseReleased = true;
+            }
+            else
+            {
+                m_bRightMouseReleased = false;
+            }
+        }
+    }
 }
 
 void GLHelper::setup_event_callbacks()
@@ -203,6 +226,11 @@ GLboolean GLHelper::GetLeftMouseReleased() const
 GLboolean GLHelper::GetRightMouseTriggered() const
 {
     return m_bRightMouseTriggered;
+}
+
+GLboolean GLHelper::GetRightMouseReleased() const
+{
+    return m_bRightMouseReleased;
 }
 
 void GLHelper::ResetLeftMouseTriggered() const

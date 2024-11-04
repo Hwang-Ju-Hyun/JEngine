@@ -17,8 +17,8 @@ public:
 	GameObject* GetLastObject()const;
 	std::vector<GameObject*> GetAllObject()const;	
 	void RemoveAllObjects();
-	void RemoveObject(unsigned int _id);
-	void RemoveObject(unsigned int _id, std::string _name);
+	void RemoveObject(int _id);
+	void RemoveObject(int _id, std::string _name);
 	void RemoveObjectsByName(std::string _name);
 public:
 	bool Init();

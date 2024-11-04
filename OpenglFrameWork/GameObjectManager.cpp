@@ -42,7 +42,7 @@ GameObject* GameObjectManager::FindObject(const std::string& _objName) const
 
 GameObject* GameObjectManager::GetLastObject() const
 {
-    unsigned int size = m_vecGameObject.size();
+    int size = m_vecGameObject.size();
     if (size == 0)
     {
         std::cerr << "Error : container of GameObject size is Zero  - GameObjectManager::GetLastObject" << std::endl;
@@ -76,7 +76,7 @@ void GameObjectManager::RemoveAllObjects()
     temp.swap(m_vecGameObject);    
 }
 
-void GameObjectManager::RemoveObject(unsigned int _id)
+void GameObjectManager::RemoveObject(int _id)
 {
     for (auto iter = m_vecGameObject.begin(); iter != m_vecGameObject.end();)
     {
@@ -93,7 +93,7 @@ void GameObjectManager::RemoveObject(unsigned int _id)
     }
 }
 
-void GameObjectManager::RemoveObject(unsigned int _id, std::string _name)
+void GameObjectManager::RemoveObject( int _id, std::string _name)
 {
     for (auto iter = m_vecGameObject.begin(); iter != m_vecGameObject.end();)
     {

@@ -29,6 +29,12 @@
           "BLUE": 0.0,
           "ALPHA": 0.0
         }
+      },
+      {
+        "Type": "Bomb",
+        "CompData": {
+          "Explode_Time": 0.0
+        }
       }
     ],
     "Shader_Ref": 0,

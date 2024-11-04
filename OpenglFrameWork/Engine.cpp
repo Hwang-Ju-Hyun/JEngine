@@ -32,12 +32,12 @@ bool Engine::Init(GLint _width, GLint _height, const std::string& _title)
 		return false;
 	if (!GLApp::GetInstance()->Init())
 		return false;	
+	if (!TileEditor::GetInstance()->Init())	
+		return false;	
 	if (!ModelManager::GetInstance()->Init())
 		return false;
 	if (!RenderManager::GetInstance()->Init())
 		return false;
-	if (!TileEditor::GetInstance()->Init())	
-		return false;	
 	if (!GameStateManager::GetInstance()->ChangeLevel(new Stage01_Lvl("Stage01_Lvl")))
 		return false;
 	if (!CollisionManager::GetInstance()->Init())

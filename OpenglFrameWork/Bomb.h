@@ -10,17 +10,16 @@ public:
     Bomb(GameObject* _owner);
     virtual ~Bomb()override;
 private:
-    static int id;
+    float m_fExplodeTime = 0.f;
 public:
-    void SetBombMaster(GameObject* _master);
-    GameObject* GetBombMaster()const;
-private:
-    GameObject* m_pBombMaster = nullptr;
-    GameObject* m_pBomb=nullptr;
-public:
-    void SpawnBomb(GameObject* _bomb);
+    void AddExplodeTime(float _time);
+    const float GetExplodeTime()const;
 public:
     virtual void LoadFromJson(const json& _str)override;
     virtual json SaveToJson(const json& _str)override;
+public:
+    static BaseRTTI* CreateBombComponent();
+public:
+    static constexpr const char* BombTypeName = "Bomb";
 };
 

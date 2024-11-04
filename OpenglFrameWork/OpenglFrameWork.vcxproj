@@ -114,6 +114,7 @@
     <ClCompile Include="MathManager.cpp" />
     <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Prefabs.cpp" />
     <ClCompile Include="Profiler.cpp" />
     <ClCompile Include="Registry.cpp" />
     <ClCompile Include="RenderManager.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="header.h" />
     <ClInclude Include="MathManager.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Prefabs.h" />
     <ClInclude Include="Profiler.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -185,6 +187,7 @@
     <None Include="json\Bomb\Bomb.json" />
     <None Include="json\ScreenGrid\ScreenGrid.json" />
     <None Include="json\Stage01_Lvl\GameObject.json" />
+    <None Include="json\Stage01_Lvl\Grid.json" />
     <None Include="json\Stage01_Lvl\Player.json" />
     <None Include="json\Stage01_Lvl\Wall.json" />
     <None Include="json\stage02_Lvl\GameObject.json" />

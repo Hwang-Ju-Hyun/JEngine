@@ -12,7 +12,7 @@
 #include <iostream>
 
 
-GameObject::GameObject(const std::string& _name,const unsigned int _id)	
+GameObject::GameObject(const std::string& _name,int _id)	
 	:m_strName(_name),
 	m_iID(_id)
 {
@@ -65,12 +65,12 @@ GLuint GameObject::GetModelRef() const
 	return m_iModel_ref;
 }
 
-void GameObject::SetID(unsigned int _id)
+void GameObject::SetID(int _id)
 {
 	m_iID = _id;
 }
 
-unsigned int GameObject::GetID() const
+int GameObject::GetID() const
 {
 	return m_iID;
 }

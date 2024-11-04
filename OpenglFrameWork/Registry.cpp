@@ -4,7 +4,7 @@
 #include "RigidBody.h"
 #include "Player.h"
 #include "Wall.h"
-
+#include "Bomb.h"
 Registry::Registry()
 {
     m_mapRttiMap.insert({ Transform::TransformTypeName,&Transform::CreateTransformComponent });
@@ -12,6 +12,7 @@ Registry::Registry()
     m_mapRttiMap.insert({ RigidBody::RigidBodyTypeName,&RigidBody::CreateRigidBodyComponent });
     m_mapRttiMap.insert({ Player::PlayerTypeName,&Player::CreatePlayerComponent });
     m_mapRttiMap.insert({ Wall::WallTypeName,&Wall::CreateWallComponent });
+    m_mapRttiMap.insert({ Bomb::BombTypeName,&Bomb::CreateBombComponent});
 }
 
 Registry::~Registry()

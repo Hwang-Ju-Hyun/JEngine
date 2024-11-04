@@ -38,12 +38,15 @@ private:
 	static glm::vec2 m_vMouseCursorPosition;
 	static GLboolean m_bLeftMouseTriggered; 	
 	static GLboolean m_bLeftMouseReleased;
+
 	static GLboolean m_bRightMouseTriggered;
+	static GLboolean m_bRightMouseReleased;
 public:
 	glm::vec2 GetMouseCursorPosition()const;
 	GLboolean GetLeftMouseTriggered()const;
 	GLboolean GetLeftMouseReleased()const;	
 	GLboolean GetRightMouseTriggered()const;
+	GLboolean GetRightMouseReleased()const;
 	void ResetLeftMouseTriggered()const;
 private:
 	//Keyboard Info

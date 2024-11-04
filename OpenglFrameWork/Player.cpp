@@ -11,6 +11,7 @@
 #include "Serializer.h"
 #include "Sprite.h"
 #include "TileEditor.h"
+#include "Prefabs.h"
 #include <iostream>
 
 Player::Player(GameObject* _owner)
@@ -94,12 +95,7 @@ void Player::Attack()
     if (Helper->GetSpaceKeyPressed())
     {   
         //Prefabs
-        GameObject* bomb_obj = Serializer::GetInstance()->LoadJson("json/Bomb/Bomb.json",true);
-        Transform* bomb_trs = static_cast<Transform*>(bomb_obj->FindComponent(Transform::TransformTypeName));
-        Sprite* bomb_spr = static_cast<Sprite*>(bomb_obj->FindComponent(Sprite::SpriteTypeName));
-        bomb_trs->SetPosition(m_pPlayerTrs->GetPosition());
-        bomb_trs->SetScale({ 50.f,50.f });
-        bomb_obj->SetModelType(MODEL_TYPE::CIRCLE);
+        Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());
     }
 }
 

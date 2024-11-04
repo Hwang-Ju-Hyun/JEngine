@@ -23,9 +23,7 @@ Stage01_Lvl::~Stage01_Lvl()
 bool Stage01_Lvl::Init()
 {				
 	Serializer::GetInstance()->LoadStage("json/" + GetName()+"/"+ GetName() + ".txt");	
-	
-	//Serializer::GetInstance()->SaveStage("json/" + GetName() + "/" + GetName() + ".txt");
-	
+			
     return true;
 }	
 		

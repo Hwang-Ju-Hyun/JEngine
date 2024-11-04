@@ -5,8 +5,8 @@
 #include "TileEditor.h"
 #include "Sprite.h"
 #include "Player.h"
-
-int Bomb::id = 0;
+#include "GameObjectManager.h"
+#include <iostream>
 
 Bomb::Bomb(GameObject* _owner)
 	:BaseComponent(_owner)
@@ -17,42 +17,48 @@ Bomb::~Bomb()
 {
 }
 
-void Bomb::SetBombMaster(GameObject* _master)
+void Bomb::AddExplodeTime(float _time)
 {
-	m_pBombMaster = _master;
+	m_fExplodeTime += _time;
 }
 
-GameObject* Bomb::GetBombMaster() const
+const float Bomb::GetExplodeTime() const
 {
-	return m_pBombMaster;
-}
-
-void Bomb::SpawnBomb(GameObject* _bomb)
-{				
-	auto grid = TileEditor::GetInstance()->GetWallGrid();
-	Transform* master_trs = static_cast<Transform*>(m_pBombMaster->FindComponent(Transform::TransformTypeName));
-	for (int i = 0; i < 1000; i++)
-	{
-		for (int j = 0; j < 1000; j++)
-		{
-			if (grid[i][j])
-			{				
-				Transform* bomb_trs = (Transform*)_bomb->AddComponent(Transform::TransformTypeName, new Transform(_bomb));				
-				TileEditor::GetInstance()->GetScreenGridByScreenPoint(bomb_trs->GetPosition());
-				bomb_trs->SetPosition(master_trs->GetPosition());
-				_bomb->AddComponent(Sprite::SpriteTypeName, new Sprite(_bomb));
-				_bomb->SetModelType(MODEL_TYPE::CIRCLE);
-			}
-		}
-	}	
-		
+	return m_fExplodeTime;
 }
 
 void Bomb::LoadFromJson(const json& _str)
 {
+	auto comp_data = _str.find("CompData");
+	if (comp_data != _str.end())
+	{
+		auto explode_time = comp_data->find("Explode_Time");
+		m_fExplodeTime = explode_time->begin().value();
+	}
 }
 
 json Bomb::SaveToJson(const json& _str)
 {
-	return json();
+	json data;
+
+	data["Type"] = "Bomb";
+
+	json comp_data;
+	comp_data["Explode_Time"] = GetExplodeTime();
+
+	data["CompData"] = comp_data;
+
+	return data;
+}
+
+BaseRTTI* Bomb::CreateBombComponent()
+{
+	GameObject* last_obj = GameObjectManager::GetInstance()->GetLastObject();
+	BaseRTTI* p = last_obj->AddComponent(Bomb::BombTypeName, new Bomb(last_obj));
+	if (p == nullptr)
+	{
+		std::cerr << "Error : BaseRTTI is nullptr - Bomb::CreateBombComponent" << std::endl;
+		return nullptr;
+	}
+	return p;
 }

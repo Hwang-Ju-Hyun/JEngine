@@ -135,6 +135,9 @@
     <Filter Include="Component\Wall">
       <UniqueIdentifier>{c420e75d-1626-495f-aa74-f293b569b6f7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager\Prefabs">
+      <UniqueIdentifier>{2ca66bd6-7520-4642-bbbe-58cbfd1fc81e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -268,6 +271,9 @@
     </ClCompile>
     <ClCompile Include="Wall.cpp">
       <Filter>Component\Wall</Filter>
+    </ClCompile>
+    <ClCompile Include="Prefabs.cpp">
+      <Filter>Manager\Prefabs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -412,6 +418,9 @@
     <ClInclude Include="Wall.h">
       <Filter>Component\Wall</Filter>
     </ClInclude>
+    <ClInclude Include="Prefabs.h">
+      <Filter>Manager\Prefabs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="IMGUI\imgui.ini">
@@ -443,6 +452,9 @@
     </None>
     <None Include="json\ScreenGrid\ScreenGrid.json">
       <Filter>JSON</Filter>
+    </None>
+    <None Include="json\Stage01_Lvl\Grid.json">
+      <Filter>JSON\stage01_Lvl</Filter>
     </None>
   </ItemGroup>
 </Project>

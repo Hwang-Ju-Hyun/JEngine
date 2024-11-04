@@ -33,7 +33,7 @@ public:
 	void ShowAndSetCurrentTileTexture();
 	glm::vec2 GetWorldPosbyScreenGrid(int _width,int _height,int _gridX,int _gridY);
 	glm::vec2 GetScreenGridByScreenPoint(glm::vec2 _pointPos);
-public:
+public:	
 	void SetWallGridCoord(int _x, int _y,bool _flag);
 	void SetWallWidth(int _width);
 	void SetWallHeight(int _height);
@@ -47,6 +47,8 @@ public:
 	int GetWallHeight()const;
 	int GetScreenGridX()const;
 	int GetScreenGridY()const;
+	int GetMaxXGrid()const;
+	int GetMaxYGrid()const;
 	bool GetExist()const;
 	std::vector<std::vector<bool>> GetWallGrid()const;
 public:	

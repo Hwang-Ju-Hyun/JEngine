@@ -29,8 +29,7 @@ bool GLApp::Init()
 
 	vecShader.push_back({m_VertexShader,m_FragmentShader });
 	Init_Shader(vecShader);// ToDo: 함수역할과 함수 이름이 언행불일치하다
-	
-	TileEditor::GetInstance()->Init();
+		
 
 	return true;
 }

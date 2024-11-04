@@ -7,7 +7,10 @@
 #include "GameObjectManager.h"
 #include "ResourceManager.h"
 #include "Sprite.h"
+#include "Serializer.h"
 #include "Resource.h"
+#include "GameStateManager.h"
+#include "BaseLevel.h"
 #include "Wall.h"
 #include <iostream>
 #include <algorithm>
@@ -138,6 +141,16 @@ int TileEditor::GetScreenGridY() const
     return m_iScreenGridY;
 }
 
+int TileEditor::GetMaxXGrid() const
+{
+    return m_iMaxXGrid;
+}
+
+int TileEditor::GetMaxYGrid() const
+{
+    return m_iMaxYGrid;
+}
+
 bool TileEditor::GetExist() const
 {
     return m_bExist;
@@ -166,21 +179,30 @@ bool TileEditor::Init()
     m_iNumberOfWallsCol  = 15;
     m_iNumberOfWallsRow  = 10;
     m_iWallWidth = window_width / m_iNumberOfWallsCol;
-    m_iWallHeight = window_height / m_iNumberOfWallsRow;    
+    m_iWallHeight = window_height / m_iNumberOfWallsRow;
+    
+    
+
     return true;
 }
 
 void TileEditor::Update()
 {
+    auto current_level = GameStateManager::GetInstance()->GetCurrentLevel();
+    std::string cur_level_str = current_level->GetName();
+    Serializer::GetInstance()->LoadScreenGrid("json/" + cur_level_str + "/" + "Grid" + ".json");
+
+
     ShowAndSetCurrentTileTexture();
-    auto L_mouse_Trigger = GLHelper::GetInstance()->GetLeftMouseTriggered();    
+    
+    auto R_mouse_Trigger = GLHelper::GetInstance()->GetRightMouseTriggered();    
     
     glm::vec2 mouse_pos_screen = GLHelper::GetInstance()->GetMouseCursorPosition();        
 
     m_iScreenGridX = mouse_pos_screen.x / m_iWallWidth;
     m_iScreenGridY = mouse_pos_screen.y / m_iWallHeight;
     
-    if (L_mouse_Trigger)
+    if (R_mouse_Trigger&&ImGui::IsMouseOutsideAnyWindow())
     {        
         MainEditor::GetInstance()->m_bSelectedObjByClick;
         if (!m_vecWallGridCoord[m_iScreenGridX][m_iScreenGridY])
@@ -209,20 +231,22 @@ void TileEditor::Update()
             glm::vec2 mouse_pos_world;
             mouse_pos_world=GetWorldPosbyScreenGrid(m_iWallWidth, m_iWallHeight, m_iScreenGridX, m_iScreenGridY);
             wall_trs->SetPosition({ mouse_pos_world.x,mouse_pos_world.y });
+            wall_trs->SetScale({ m_iWallWidth, m_iWallHeight });            
+            wall_obj->SetModelType(MODEL_TYPE::RECTANGLE);
             
             glm::mat3 wall_mat ={ wall_trs->GetScreenByWorld() };
             glm::vec2 wall_pos = { wall_mat[2][0],wall_mat[2][1] };
             glm::vec2 wall_grid = TileEditor::GetInstance()->GetScreenGridByScreenPoint(wall_pos);
             wall_trs->SetGridByScreenPos({ m_iScreenGridX,m_iScreenGridY });
 
-            wall_trs->SetScale({ m_iWallWidth, m_iWallHeight });            
-            wall_obj->SetModelType(MODEL_TYPE::RECTANGLE);
 
             GLHelper::GetInstance()->ResetLeftMouseTriggered();
-            m_vecWallGridCoord[(int)m_iScreenGridX][(int)m_iScreenGridY] = true;
+            SetWallGridCoord(m_iScreenGridX, m_iScreenGridY, true);
             Wall* wall_comp=nullptr;
             wall_comp = static_cast<Wall*>(wall_obj->AddComponent("Wall", new Wall(wall_obj)));
             wall_comp->SetFragile(false);
+            //Serializer::GetInstance()->SaveStage("json/" + cur_level_str + "/" + cur_level_str + ".txt");
+            Serializer::GetInstance()->SaveScreenGrid("json/" + cur_level_str + "/" + "Grid" + ".json");
         }
-    }
+    }      
 }
