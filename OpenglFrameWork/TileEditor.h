@@ -5,6 +5,7 @@
 
 class MainEditor;
 class TextureResource;
+class GameObject;
 
 class TileEditor
 {
@@ -29,8 +30,11 @@ public:
 	std::vector<std::vector<bool>> m_vecWallGridCoord;
 private:
 	TextureResource* m_pCurrentTileTexture = nullptr;	
-public:	
 	void ShowAndSetCurrentTileTexture();
+private:	
+	bool m_bCurFragileType = false;
+	void ShowAndSetCurrentWallFragile();
+public:
 	glm::vec2 GetWorldPosbyScreenGrid(int _width,int _height,int _gridX,int _gridY);
 	glm::vec2 GetScreenGridByScreenPoint(glm::vec2 _pointPos);
 public:	
@@ -51,6 +55,8 @@ public:
 	int GetMaxYGrid()const;
 	bool GetExist()const;
 	std::vector<std::vector<bool>> GetWallGrid()const;
+public:
+	GameObject* FindObjectByGrid(glm::vec2 _grid);
 public:	
 	bool Init();
 	void Update();

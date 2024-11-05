@@ -15,6 +15,7 @@
 #include "TimeManager.h"
 #include "CollisionManager.h"
 #include "TileEditor.h"
+#include "EventManager.h"
 
 Engine::Engine()
 {
@@ -41,7 +42,7 @@ bool Engine::Init(GLint _width, GLint _height, const std::string& _title)
 	if (!GameStateManager::GetInstance()->ChangeLevel(new Stage01_Lvl("Stage01_Lvl")))
 		return false;
 	if (!CollisionManager::GetInstance()->Init())
-		return false;
+		return false;	
 	return true;
 }
 
@@ -76,6 +77,7 @@ bool Engine::Update()
 	//CollisionManager Update
 	if (!CollisionManager::GetInstance()->Update())
 		return false;
+	EventManager::GetInstance()->Update();
 
 #ifndef _EDITOR
 #define _EDITOR

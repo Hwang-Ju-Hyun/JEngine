@@ -11,13 +11,17 @@
 #include "Serializer.h"
 #include "Sprite.h"
 #include "TileEditor.h"
+#include "Wall.h"
 #include "Prefabs.h"
+#include "Collision.h"
+#include "CollisionManager.h"
 #include <iostream>
 
 Player::Player(GameObject* _owner)
 	:BaseComponent(_owner)
 {
     m_pPlayerTrs = static_cast<Transform*>(_owner->FindComponent(Transform::TransformTypeName));
+    m_pCol = static_cast<Collision*>(_owner->AddComponent(Collision::CollisionTypeName,new Collision(_owner)));    
 }
 
 Player::~Player()
@@ -58,6 +62,7 @@ int Player::GetMaxBombCnt() const
 {
     return m_iMaxBombCnt;
 }
+
 
 void Player::SetCurrentLevel(BaseLevel* _level)
 {
@@ -119,11 +124,15 @@ void Player::Attack()
     auto Helper = GLHelper::GetInstance();    
     bool init = false;
     if (Helper->GetSpaceKeyPressed())
-    {          
+    {           
         if (m_iCurBombCnt <= m_iMaxBombCnt)
-        {
-            Bomb* bomb_comp= Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());            
+        {            
+            bomb_comp=Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());            
             m_iCurBombCnt++;
+        }
+        if (bomb_comp != nullptr && bomb_comp->GetIsExplode())
+        {
+            m_iCurBombCnt = 0;
         }
         
     }
@@ -133,6 +142,12 @@ void Player::Update()
 {
 	MoveMent();	
     Attack();
+}
+
+void Player::EventCollision(Collision* _pOther)
+{
+    if (_pOther->GetOwner()->GetName() == Wall::WallTypeName)
+        CollisionManager::GetInstance()->HandlePosOnCollision_Rect_Rect(_pOther->GetOwner(),m_pOwner );
 }
 
 void Player::LoadFromJson(const json& _str)

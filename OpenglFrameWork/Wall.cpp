@@ -1,12 +1,13 @@
 #include "Wall.h"
 #include "GameObjectManager.h"
 #include "GameObject.h"
+#include "Collision.h"
 #include <iostream>
 
 Wall::Wall(GameObject* _owner)
 	:BaseComponent(_owner)
 {
-
+	m_pCol = static_cast<Collision*>(_owner->AddComponent(Collision::CollisionTypeName,new Collision(_owner)));
 }
 
 Wall::~Wall()
@@ -42,6 +43,11 @@ void Wall::SetFragile(bool _fragile)
 bool Wall::GetFragile() const
 {
 	return m_bFragile;
+}
+
+void Wall::EventCollision(Collision* _pOther)
+{
+	
 }
 
 void Wall::LoadFromJson(const json& _str)

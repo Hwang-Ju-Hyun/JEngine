@@ -23,7 +23,8 @@ private:
 	glm::mat3 m_mModelToWorld = {};
 	glm::mat3 m_mWorldToScreen = {};
 
-	glm::vec2 m_vGrid = { 0.f,0.f, };
+
+	glm::vec2 m_vGrid = { 0,0,};
 public:
 	void SetGridByScreenPos(glm::vec2 _grid);
 	glm::vec2 GetGridByScreenPos()const;

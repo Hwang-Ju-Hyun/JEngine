@@ -138,6 +138,12 @@
     <Filter Include="Manager\Prefabs">
       <UniqueIdentifier>{2ca66bd6-7520-4642-bbbe-58cbfd1fc81e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\Collision">
+      <UniqueIdentifier>{cd2de2b3-a7a3-496b-9769-a4d17a27cc25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\EventMgr">
+      <UniqueIdentifier>{2aa283f5-2048-4dff-84ec-7d3e10095443}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -274,6 +280,12 @@
     </ClCompile>
     <ClCompile Include="Prefabs.cpp">
       <Filter>Manager\Prefabs</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Component\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -420,6 +432,12 @@
     </ClInclude>
     <ClInclude Include="Prefabs.h">
       <Filter>Manager\Prefabs</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Component\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

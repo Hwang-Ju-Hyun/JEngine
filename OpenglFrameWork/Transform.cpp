@@ -10,6 +10,7 @@
 #include "GLShader.h"
 #include "header.h"
 #include "GLModel.h"
+#include "TileEditor.h"
 #include "GLHelper.h"
 #include <../GLM/gtc/type_ptr.hpp>
 #include "RigidBody.h"
@@ -131,9 +132,14 @@ void Transform::Update()
 		0,0,1
 	};
 
-
 	m_mModelToWorld = (Transform * Rot * Scale);
 	m_mModelToNDC = H * m_mModelToWorld;
+	
+	auto screen_mat=GetScreenByWorld();	
+	int wall_width=TileEditor::GetInstance()->GetWallWidth();
+	int wall_height = TileEditor::GetInstance()->GetWallHeight();
+	m_vGrid.x = int(screen_mat[2][0] / wall_width);
+	m_vGrid.y = int(screen_mat[2][1] / wall_height);
 }
 
 BaseRTTI* Transform::CreateTransformComponent()

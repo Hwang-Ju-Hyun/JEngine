@@ -11,6 +11,7 @@
 #include "Resource.h"
 #include "GameStateManager.h"
 #include "BaseLevel.h"
+#include "ComponentManager.h"
 #include "Wall.h"
 #include <iostream>
 #include <algorithm>
@@ -26,6 +27,30 @@ TileEditor::~TileEditor()
 
 }
    
+void TileEditor::ShowAndSetCurrentWallFragile()
+{
+    bool show_cur_tile_confirm = false;
+    ImGui::Begin("Fragile");    
+    if (ImGui::TreeNode("TILE"))
+    {
+        if (ImGui::Button("Fragile"))
+        {
+            show_cur_tile_confirm = true;
+            m_bCurFragileType = true;
+            ImGui::TreePop();
+        }
+        if (ImGui::Button("No Fragile"))
+        {
+            show_cur_tile_confirm = true;
+            m_bCurFragileType = false;
+            ImGui::TreePop();
+        }        
+        if (!show_cur_tile_confirm)
+            ImGui::TreePop();
+    }
+    ImGui::End();
+}
+
 void TileEditor::ShowAndSetCurrentTileTexture()
 {   
     bool show_cur_tile_confirm = false;
@@ -161,10 +186,26 @@ std::vector<std::vector<bool>> TileEditor::GetWallGrid() const
     return m_vecWallGridCoord;
 }
 
+GameObject* TileEditor::FindObjectByGrid(glm::vec2 _grid)
+{    
+    auto all_comps=ComponentManager::GetInstance()->GetAllComponents();
+    for (int i = 0; i < all_comps.size(); i++)
+    {
+        if (all_comps[i]->GetName() == Transform::TransformTypeName)
+        {            
+            Transform* trs = static_cast<Transform*>(all_comps[i]);
+            if (trs->GetGridByScreenPos() == _grid)
+            {
+                return trs->GetOwner();
+            }
+        }
+    }   
+}
+
 bool TileEditor::Init()
 {        
-    m_iMaxXGrid = 15;
-    m_iMaxYGrid = 15;
+    m_iMaxXGrid = 30;
+    m_iMaxYGrid = 18;
 
     for (int i = 0; i < m_iMaxXGrid; i++)
     {
@@ -176,8 +217,8 @@ bool TileEditor::Init()
         m_vecWallGridCoord.push_back(temp);
     }
 
-    m_iNumberOfWallsCol  = 15;
-    m_iNumberOfWallsRow  = 10;
+    m_iNumberOfWallsCol  = 30;
+    m_iNumberOfWallsRow  = 18;
     m_iWallWidth = window_width / m_iNumberOfWallsCol;
     m_iWallHeight = window_height / m_iNumberOfWallsRow;
     
@@ -194,7 +235,8 @@ void TileEditor::Update()
 
 
     ShowAndSetCurrentTileTexture();
-    
+    ShowAndSetCurrentWallFragile();
+
     auto R_mouse_Trigger = GLHelper::GetInstance()->GetRightMouseTriggered();    
     
     glm::vec2 mouse_pos_screen = GLHelper::GetInstance()->GetMouseCursorPosition();        
@@ -224,7 +266,7 @@ void TileEditor::Update()
             wall_obj = new GameObject("Wall", wall_last_id++);
             wall_obj->AddComponent("Transform", new Transform(wall_obj));
             wall_obj->AddComponent("Sprite", new Sprite(wall_obj));      
-            wall_obj->SetTexture(m_pCurrentTileTexture);
+            wall_obj->SetTexture(m_pCurrentTileTexture);            
 
             Transform* wall_trs = static_cast<Transform*>(wall_obj->FindComponent(Transform::TransformTypeName));
             
@@ -244,7 +286,16 @@ void TileEditor::Update()
             SetWallGridCoord(m_iScreenGridX, m_iScreenGridY, true);
             Wall* wall_comp=nullptr;
             wall_comp = static_cast<Wall*>(wall_obj->AddComponent("Wall", new Wall(wall_obj)));
-            wall_comp->SetFragile(false);
+            wall_comp->SetFragile(m_bCurFragileType);
+
+            Sprite* wall_spr = nullptr;
+            wall_spr = static_cast<Sprite*>(wall_obj->FindComponent(Sprite::SpriteTypeName));
+
+            if (wall_comp->GetFragile())
+            {
+                wall_spr->SetColor({ 0.f,1.f,0.f,1.f });
+            }
+
             //Serializer::GetInstance()->SaveStage("json/" + cur_level_str + "/" + cur_level_str + ".txt");
             Serializer::GetInstance()->SaveScreenGrid("json/" + cur_level_str + "/" + "Grid" + ".json");
         }

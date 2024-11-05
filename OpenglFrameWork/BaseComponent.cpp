@@ -2,7 +2,9 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "Collision.h"
 #include "GameObject.h"
+#include "Wall.h"
 #include <iostream>
 
 BaseComponent::BaseComponent(GameObject* _owner)
@@ -46,4 +48,9 @@ GameObject* BaseComponent::GetOwner() const
 		return nullptr;
 	}
 	return m_pOwner;
+}
+
+void BaseComponent::EventCollision(Collision* _pOther)
+{
+
 }

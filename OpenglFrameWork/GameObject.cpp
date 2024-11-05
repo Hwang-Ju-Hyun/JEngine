@@ -9,6 +9,8 @@
 #include "TextureResource.h"
 #include "Sprite.h"
 #include "GLApp.h"
+#include "Collision.h"
+#include "CollisionManager.h"
 #include <iostream>
 
 
@@ -105,7 +107,10 @@ BaseComponent* GameObject::AddComponent(const std::string _compName, BaseCompone
 {
 	_comp->m_pOwner = this;
 	m_vecComponentOfObj.push_back({ _compName,_comp });
-	auto comp=ComponentManager::GetInstance()->AddComponent(_compName, _comp);
+	auto comp=ComponentManager::GetInstance()->AddComponent(_compName, _comp);	
+
+	if (_compName == Collision::CollisionTypeName)
+		CollisionManager::GetInstance()->AddCollisionObject(_comp->GetOwner());
 	return comp;
 }
 

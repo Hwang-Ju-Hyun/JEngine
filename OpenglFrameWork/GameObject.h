@@ -9,6 +9,7 @@
 class BaseComponent;
 class GLModel;
 class TextureResource;
+class Collision;
 
 class GameObject
 {
@@ -51,7 +52,7 @@ public:
 	void DeleteComponent(const std::string& _name);
 public:
 	void SetTexture(TextureResource* _res);
-	TextureResource* GetTexture();
+	TextureResource* GetTexture();	
 public:
 	friend class BaseComponent;
 };

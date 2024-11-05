@@ -1,7 +1,9 @@
 #pragma once
 #include <string>
 #include "BaseRTTI.h"
+
 class GameObject;
+class Collision;
 
 class BaseComponent:public BaseRTTI
 {
@@ -21,4 +23,6 @@ public:
 	GameObject* m_pOwner;
 public:
 	GameObject* GetOwner()const;
+public:
+	virtual void EventCollision(Collision* _pOther);
 };

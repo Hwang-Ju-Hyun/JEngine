@@ -8,8 +8,12 @@
 #include "Transform.h"
 #include "RigidBody.h"
 #include "Player.h"
+#include "Bomb.h"
 #include "Serializer.h"
 #include "MathManager.h"
+#include "Collision.h"
+#include "EventManager.h"
+#include "wall.h"
 #include <algorithm>
 #include <iostream>
 
@@ -21,6 +25,11 @@ CollisionManager::CollisionManager()
 CollisionManager::~CollisionManager()
 {
 
+}
+
+const std::vector<CollisionManager::HitBox*> CollisionManager::GetHitBoxes() const
+{
+	return m_vecHitBoxes;
 }
 
 bool CollisionManager::IsOverLapRectAndRect(float _left1, float _right1, float _top1, float _bot1, float _left2, float _right2, float _top2, float _bot2)
@@ -387,24 +396,61 @@ bool CollisionManager::Init()
 		auto player_comp = obj->FindComponent(Player::PlayerTypeName);
 		if (player_comp != nullptr)
 			m_pPlayer = player_comp->GetOwner();
+		auto bomb_comp = obj->FindComponent(Bomb::BombTypeName);		
 	}
 	return true;
 }
 
 bool CollisionManager::Update()
-{		
+{			
 	auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
 	Transform* player_trs = static_cast<Transform*>(m_pPlayer->FindComponent(Transform::TransformTypeName));
 	//std::cout << player_trs->GetPosition().x << "," << player_trs->GetPosition().y << std::endl;
-	for (auto obj : all_objs)
-	{		
-		if (obj->GetName() == "Wall")
+
+	for (int i = 0; i < all_objs.size(); i++)
+	{
+		for (int j =0; j < all_objs.size(); j++)
 		{
-			if (IsCollisionRectAndRect(obj, m_pPlayer))
-			{
-				HandlePosOnCollision_Rect_Rect(obj,m_pPlayer );
+			Collision* left_col = dynamic_cast<Collision*>(all_objs[i]->FindComponent(Collision::CollisionTypeName));
+			Collision* right_col = dynamic_cast<Collision*>(all_objs[j]->FindComponent(Collision::CollisionTypeName));
+			
+			if (left_col == nullptr || right_col == nullptr)
+				continue;
+
+			if (IsCollisionRectAndRect(left_col->GetOwner(), right_col->GetOwner()))
+			{		
+				auto player = dynamic_cast<Player*>(all_objs[i]->FindComponent(Player::PlayerTypeName));
+				auto bomb = dynamic_cast<Bomb*>(all_objs[i]->FindComponent(Bomb::BombTypeName));
+				if (player != nullptr)
+				{
+					player->EventCollision(static_cast<Collision*>(all_objs[j]->FindComponent(Collision::CollisionTypeName)));
+				}
+				if (bomb != nullptr)
+				{
+					bomb->EventCollision(static_cast<Collision*>(all_objs[j]->FindComponent(Collision::CollisionTypeName)));
+				}
+
+				//OnCollision_Rect_Rect_Event* col_event_rect_rect = new OnCollision_Rect_Rect_Event(all_objs[i], all_objs[j]);
+				//EventManager::GetInstance()->AddEvent(col_event_rect_rect);
 			}
-		}		
+		}
 	}
 	return true;
+}
+
+std::vector<GameObject*> CollisionManager::GetCollsionVector() const
+{
+	return m_vecCollision;
+}
+
+void CollisionManager::AddCollisionObject(GameObject* _obj)
+{
+	m_vecCollision.push_back(_obj);
+}
+
+CollisionManager::HitBox::HitBox(GameObject* _obj1, GameObject* _obj2, bool _result)
+{
+	obj1 = _obj1;
+	obj2 = _obj2;
+	result = _result;
 }
