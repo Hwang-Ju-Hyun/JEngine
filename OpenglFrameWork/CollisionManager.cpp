@@ -129,12 +129,9 @@ void CollisionManager::HandlePosOnCollision_Rect_Circle(GameObject* _obj1, GameO
 	glm::vec2 direction = helper->GetDirectionFromTwoVector(circle_pos, rectangle_pos,true);
 	
 	glm::vec2 addpos = direction * distance_two_obj;
-		
-
+	
 	rectangle_trs->AddPosition(addpos);
-
 }
-
 
 bool CollisionManager::IsCollisionRectAndRect(GameObject* _obj1, GameObject* _obj2)
 {	
@@ -412,8 +409,13 @@ bool CollisionManager::Update()
 		for (int j =0; j < all_objs.size(); j++)
 		{
 			Collision* left_col = dynamic_cast<Collision*>(all_objs[i]->FindComponent(Collision::CollisionTypeName));
-			Collision* right_col = dynamic_cast<Collision*>(all_objs[j]->FindComponent(Collision::CollisionTypeName));
+			Collision* right_col = dynamic_cast<Collision*>(all_objs[j]->FindComponent(Collision::CollisionTypeName));						
 			
+			if (left_col != nullptr && right_col != nullptr)
+			{
+				if (left_col->GetOwner()->GetName()==Wall::WallTypeName&&right_col->GetOwner()->GetName()==Wall::WallTypeName)
+					continue;
+			}			
 			if (left_col == nullptr || right_col == nullptr)
 				continue;
 

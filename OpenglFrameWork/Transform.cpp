@@ -136,8 +136,10 @@ void Transform::Update()
 	m_mModelToNDC = H * m_mModelToWorld;
 	
 	auto screen_mat=GetScreenByWorld();	
+
 	int wall_width=TileEditor::GetInstance()->GetWallWidth();
 	int wall_height = TileEditor::GetInstance()->GetWallHeight();
+
 	m_vGrid.x = int(screen_mat[2][0] / wall_width);
 	m_vGrid.y = int(screen_mat[2][1] / wall_height);
 }

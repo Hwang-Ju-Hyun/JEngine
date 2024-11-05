@@ -425,7 +425,7 @@ void MainEditor::UniqueFunctionEachMode()
 
 void MainEditor::ShowObjectInfoWindow()
 {
-    if (m_bSelectedObjByClick && !GLHelper::GetInstance()->GetLeftControlPressed())
+    /*if (m_bSelectedObjByClick && !GLHelper::GetInstance()->GetLeftControlPressed())
     {
         ImGui::Begin((m_pSelectedObjByMouse->GetName() + std::to_string(m_pSelectedObjByMouse->GetID())).c_str(), &m_bSelectedObjByClick);
         GLModel* model = m_pSelectedObjByMouse->GetModel();
@@ -478,7 +478,7 @@ void MainEditor::ShowObjectInfoWindow()
             m_bSelectedObjByClick = false;
         }
         ImGui::End();
-    }
+    }*/
 }
 
 void MainEditor::ChangeCurrentEditMode(enum EDIT_MODE _eMode)
