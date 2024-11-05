@@ -59,15 +59,19 @@ void CollisionManager::HandlePosOnCollision_Rect_Rect(GameObject* _obj1, GameObj
 
 	glm::vec2 wall_scale = wall_trs->GetScale();
 	glm::vec2 obj_scale = obj_trs->GetScale();
-		
+
+	// 충돌 방향 계산
 	float upper_distance = std::fabs((wall_pos.y - (wall_scale.y / 2.f)) - (obj_pos.y + obj_scale.y / 2.f));
 	float down_distance = std::fabs((wall_pos.y + (wall_scale.y / 2.f)) - (obj_pos.y - obj_scale.y / 2.f));
 	float right_distance = std::fabs((wall_pos.x + (wall_scale.x / 2.f)) - (obj_pos.x - obj_scale.x / 2.f));
 	float left_distance = std::fabs((wall_pos.x - (wall_scale.x / 2.f)) - (obj_pos.x + obj_scale.x / 2.f));
 
-	float arr_distance[4] = { upper_distance,down_distance,right_distance,left_distance };
+	// 각 방향에 대한 거리 배열
+	float arr_distance[4] = { upper_distance, down_distance, right_distance, left_distance };
 	float min_distance = arr_distance[0];
 	int direction = 0;
+
+	// 가장 작은 충돌 거리와 방향 찾기
 	for (int i = 0; i < 4; i++)
 	{
 		if (min_distance > arr_distance[i])
@@ -77,26 +81,29 @@ void CollisionManager::HandlePosOnCollision_Rect_Rect(GameObject* _obj1, GameObj
 		}
 	}
 
+	// 충돌 방향에 따른 처리
 	switch (direction)
 	{
-	case 0://upper
-		obj_trs->AddPosition({ 0.f,-min_distance });
+	case 0: // 상단 충돌
+		// 상단 충돌 후, 상단으로 이동
+		obj_trs->AddPosition({ 0.f, -min_distance });
 		break;
-	case 1://down
-		obj_trs->AddPosition({ 0.f,min_distance });
+	case 1: // 하단 충돌
+		// 하단 충돌 후, 하단으로 이동
+		obj_trs->AddPosition({ 0.f, min_distance });
 		break;
-	case 2://right
-		obj_trs->AddPosition({ min_distance,0.f });
+	case 2: // 오른쪽 충돌
+		// 오른쪽 충돌 후, 왼쪽으로 이동
+		obj_trs->AddPosition({ min_distance, 0.f });
 		break;
-	case 3://left
-		obj_trs->AddPosition({ -min_distance,0.f });
+	case 3: // 왼쪽 충돌
+		// 왼쪽 충돌 후, 오른쪽으로 이동
+		obj_trs->AddPosition({ -min_distance, 0.f });
 		break;
 	default:
 		break;
 	}
-
 }
-
 void CollisionManager::HandlePosOnCollision_Rect_Circle(GameObject* _obj1, GameObject* _obj2)
 {
 	GameObject* circle = nullptr;
