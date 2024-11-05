@@ -285,7 +285,7 @@
       <Filter>Component\Collision</Filter>
     </ClCompile>
     <ClCompile Include="EventManager.cpp">
-      <Filter>Main</Filter>
+      <Filter>Manager\EventMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -437,7 +437,7 @@
       <Filter>Component\Collision</Filter>
     </ClInclude>
     <ClInclude Include="EventManager.h">
-      <Filter>header</Filter>
+      <Filter>Manager\EventMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -433,10 +433,12 @@ bool CollisionManager::Update()
 				if (player != nullptr)
 				{
 					player->EventCollision(static_cast<Collision*>(all_objs[j]->FindComponent(Collision::CollisionTypeName)));
+					break;
 				}
 				if (bomb != nullptr)
 				{
 					bomb->EventCollision(static_cast<Collision*>(all_objs[j]->FindComponent(Collision::CollisionTypeName)));
+					break;
 				}
 
 				//OnCollision_Rect_Rect_Event* col_event_rect_rect = new OnCollision_Rect_Rect_Event(all_objs[i], all_objs[j]);
