@@ -60,10 +60,10 @@ void CollisionManager::HandlePosOnCollision_Rect_Rect(GameObject* _obj1, GameObj
 	glm::vec2 wall_scale = wall_trs->GetScale();
 	glm::vec2 obj_scale = obj_trs->GetScale();
 		
-	float upper_distance = std::fabs((wall_pos.y - (wall_scale.y / 2.f)) - (obj_pos.y + obj_scale.y/2.f));
-	float down_distance = std::fabs((wall_pos.y  + (wall_scale.y / 2.f)) - (obj_pos.y - obj_scale.y / 2.f));
+	float upper_distance = std::fabs((wall_pos.y - (wall_scale.y / 2.f)) - (obj_pos.y + obj_scale.y / 2.f));
+	float down_distance = std::fabs((wall_pos.y + (wall_scale.y / 2.f)) - (obj_pos.y - obj_scale.y / 2.f));
 	float right_distance = std::fabs((wall_pos.x + (wall_scale.x / 2.f)) - (obj_pos.x - obj_scale.x / 2.f));
-	float left_distance = std::fabs((wall_pos.x  - (wall_scale.x / 2.f)) - (obj_pos.x + obj_scale.x / 2.f));
+	float left_distance = std::fabs((wall_pos.x - (wall_scale.x / 2.f)) - (obj_pos.x + obj_scale.x / 2.f));
 
 	float arr_distance[4] = { upper_distance,down_distance,right_distance,left_distance };
 	float min_distance = arr_distance[0];
@@ -79,16 +79,16 @@ void CollisionManager::HandlePosOnCollision_Rect_Rect(GameObject* _obj1, GameObj
 
 	switch (direction)
 	{
-	case 0:
+	case 0://upper
 		obj_trs->AddPosition({ 0.f,-min_distance });
 		break;
-	case 1:
+	case 1://down
 		obj_trs->AddPosition({ 0.f,min_distance });
 		break;
-	case 2:
-		obj_trs->AddPosition({ min_distance,0.f});
+	case 2://right
+		obj_trs->AddPosition({ min_distance,0.f });
 		break;
-	case 3:
+	case 3://left
 		obj_trs->AddPosition({ -min_distance,0.f });
 		break;
 	default:
