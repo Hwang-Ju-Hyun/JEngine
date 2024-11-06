@@ -116,8 +116,8 @@ void Player::MoveMent()
     glm::vec2 grid=TileEditor::GetInstance()->GetScreenGridByScreenPoint(pos);
     player_trs->SetGridByScreenPos(grid);
     grid = player_trs->GetGridByScreenPos();
-    //std::cout << m_pOwner->GetID() << " : " << player_trs->GetPosition().x << ", " << player_trs->GetPosition().y << std::endl;
-    //std::cout << m_pOwner->GetID() << " : " << grid.x << "," << grid.y << std::endl;
+    std::cout << m_pOwner->GetID() << " : " << player_trs->GetPosition().x << ", " << player_trs->GetPosition().y << std::endl;
+    std::cout << m_pOwner->GetID() << " : " << grid.x << "," << grid.y << std::endl;
 }   
     
 void Player::Attack()
@@ -181,8 +181,8 @@ void Player::MoveMent_temp()
     glm::vec2 grid = TileEditor::GetInstance()->GetScreenGridByScreenPoint(pos);
     player_trs->SetGridByScreenPos(grid);
     grid = player_trs->GetGridByScreenPos();
-    //std::cout << m_pOwner->GetID() << " : " << player_trs->GetPosition().x << ", " << player_trs->GetPosition().y << std::endl;
-    //std::cout << m_pOwner->GetID() << " : " << grid.x << "," << grid.y << std::endl;
+    std::cout << m_pOwner->GetID() << " : " << player_trs->GetPosition().x << ", " << player_trs->GetPosition().y << std::endl;
+    std::cout << m_pOwner->GetID() << " : " << grid.x << "," << grid.y << std::endl;
 }
 
 void Player::Attack_temp()
