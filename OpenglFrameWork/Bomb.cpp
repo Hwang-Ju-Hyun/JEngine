@@ -49,34 +49,47 @@ bool Bomb::GetIsExplode() const
 	return m_bIsExplode;
 }
 
-void Bomb::SetExplodeTime(float _time)
+void Bomb::SetRemainTime(float _time)
 {
-	m_fExplodeTime = _time;
+	m_fRemaingTime = _time;
 }
 
-void Bomb::AddExplodeTime(float _time)
+void Bomb::AddRemainTime(float _time)
 {
-	m_fExplodeTime += _time;
+	m_fRemaingTime += _time;
 }
 
-const float Bomb::GetExplodeTime() const
+const float Bomb::GetRemainTime() const
 {
-	return m_fExplodeTime;
+	return m_fRemaingTime;
+}
+
+void Bomb::SetExplodingTime(float _time)
+{
+	m_fExplodingTime = _time;
+}
+
+const float Bomb::GetExplodingTime() const
+{
+	return m_fExplodingTime;
 }
 
 void Bomb::Update()
 {
-
-	static float AccTime = 0.f;
+	static float remain_explode_AccTime = 0.f;
 	float dt = TimeManager::GetInstance()->GetDeltaTime();
-	AccTime += dt;
+	remain_explode_AccTime += dt;
 	Sprite* bomb_spr = static_cast<Sprite*>(m_pOwner->FindComponent(Sprite::SpriteTypeName));
 
 	int wall_width = TileEditor::GetInstance()->GetWallWidth();
 	int wall_height = TileEditor::GetInstance()->GetWallHeight();
 
-	if (AccTime >= m_fExplodeTime)
+	static float ExplodingAccTime = 0.f;
+
+	if (remain_explode_AccTime >= m_fRemaingTime)
 	{
+		ExplodingAccTime += dt;
+		
 		SetIsExplode(true);
 		bomb_spr->SetColor({ 1.0f, 0.f, 0.f, 1.f });
 		
@@ -166,7 +179,7 @@ void Bomb::Update()
 				}								
 			}
 		}				
-		AccTime = 0.f;
+		remain_explode_AccTime = 0.f;
 		for (int i = 0; i < bomb_fragment.size(); i++)
 		{
 			CollisionManager::GetInstance()->RemoveBombCol(static_cast<Collision*>(bomb_fragment[i]->GetOwner()->FindComponent(Collision::CollisionTypeName)));
@@ -199,7 +212,7 @@ void Bomb::LoadFromJson(const json& _str)
 	if (comp_data != _str.end())
 	{
 		auto explode_time = comp_data->find("Explode_Time");
-		m_fExplodeTime = explode_time->begin().value();
+		m_fRemaingTime = explode_time->begin().value();
 	}
 }
 
@@ -210,8 +223,8 @@ json Bomb::SaveToJson(const json& _str)
 	data["Type"] = "Bomb";
 
 	json comp_data;
-	comp_data["Explode_Time"] = GetExplodeTime();
-
+	comp_data["Remain_Time"] = GetRemainTime();
+	comp_data["Exploding_Time"] = GetExplodingTime();
 	data["CompData"] = comp_data;
 
 	return data;

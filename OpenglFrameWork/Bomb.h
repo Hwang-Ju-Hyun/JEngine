@@ -12,16 +12,19 @@ public:
     virtual ~Bomb()override;
 private:
     bool m_bIsExplode = false;
-    float m_fExplodeTime = 0.f;
+    float m_fRemaingTime = 0.f;
+    float m_fExplodingTime = 0.f;
     int m_iBombRange = 1;
 public:
     void SetBombRange(int _range);
     int  GetBombRange()const;
     void SetIsExplode(bool _explode);
     bool GetIsExplode()const;
-    void SetExplodeTime(float _time);
-    void AddExplodeTime(float _time);
-    const float GetExplodeTime()const;
+    void SetRemainTime(float _time);
+    void AddRemainTime(float _time);
+    const float GetRemainTime()const;
+    void SetExplodingTime(float _time);
+    const float GetExplodingTime()const;
 public:
     void Update();
 public:

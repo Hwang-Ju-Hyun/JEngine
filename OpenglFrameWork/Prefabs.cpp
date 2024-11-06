@@ -27,7 +27,7 @@ Bomb* Prefabs::CreateBombs(const std::string& _path, GameObject* _bombOwner)
     bomb_trs->SetPosition(owner_trs->GetPosition());
     bomb_trs->SetScale({ 50.f,50.f });
     bomb_obj->SetModelType(MODEL_TYPE::CIRCLE);
-    bomb_comp->SetExplodeTime(1.f);
+    bomb_comp->SetRemainTime(1.f);
     
     return bomb_comp;
 }
