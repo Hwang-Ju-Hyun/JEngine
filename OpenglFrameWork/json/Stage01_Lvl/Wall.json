@@ -5730,10 +5730,11 @@
           "RED": 1.0,
           "GREEN": 1.0,
           "BLUE": 1.0,
-          "ALPHA": 1.0
+          "ALPHA": 1.0,
+          "TextureName": "nofragile_wall",
+          "TexturePath": "../Extern/Assets/nofragile_wall.png"
         }
-      },
-      null,
+      },      
       {
         "Type": "Wall",
         "CompData": {
@@ -12680,7 +12681,9 @@
           "RED": 0.0,
           "GREEN": 1.0,
           "BLUE": 0.0,
-          "ALPHA": 1.0
+          "ALPHA": 1.0,
+          "TextureName": "nofragile_wall",
+          "TexturePath": "../Extern/Assets/nofragile_wall.png"
         }
       },
       null,

@@ -275,9 +275,9 @@ void TileEditor::Update()
 
             GameObject* wall_obj=nullptr;
             
-            wall_obj = new GameObject("Wall", wall_last_id++);
-            wall_obj->AddComponent("Transform", new Transform(wall_obj));
-            wall_obj->AddComponent("Sprite", new Sprite(wall_obj));      
+            wall_obj = new GameObject(Wall::WallTypeName, wall_last_id++);
+            wall_obj->AddComponent(Transform::TransformTypeName, new Transform(wall_obj));
+            wall_obj->AddComponent(Sprite::SpriteTypeName, new Sprite(wall_obj));      
             wall_obj->SetTexture(m_pCurrentTileTexture);            
 
             Transform* wall_trs = static_cast<Transform*>(wall_obj->FindComponent(Transform::TransformTypeName));

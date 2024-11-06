@@ -149,7 +149,7 @@ void GameObject::DeleteComponent(const std::string& _name)
 
 void GameObject::SetTexture(TextureResource* _res)
 {
-	Sprite* spr = (Sprite*)FindComponent("Sprite");
+	Sprite* spr = (Sprite*)FindComponent(Sprite::SpriteTypeName);
 	if (spr != nullptr)
 	{
 		spr->SetTexture(_res);
