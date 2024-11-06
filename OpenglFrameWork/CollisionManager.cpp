@@ -60,18 +60,16 @@ void CollisionManager::HandlePosOnCollision_Rect_Rect(GameObject* _obj1, GameObj
 	glm::vec2 wall_scale = wall_trs->GetScale();
 	glm::vec2 obj_scale = obj_trs->GetScale();
 
-	// 충돌 방향 계산
+
 	float upper_distance = std::fabs((wall_pos.y - (wall_scale.y / 2.f)) - (obj_pos.y + obj_scale.y / 2.f));
 	float down_distance = std::fabs((wall_pos.y + (wall_scale.y / 2.f)) - (obj_pos.y - obj_scale.y / 2.f));
 	float right_distance = std::fabs((wall_pos.x + (wall_scale.x / 2.f)) - (obj_pos.x - obj_scale.x / 2.f));
 	float left_distance = std::fabs((wall_pos.x - (wall_scale.x / 2.f)) - (obj_pos.x + obj_scale.x / 2.f));
 
-	// 각 방향에 대한 거리 배열
 	float arr_distance[4] = { upper_distance, down_distance, right_distance, left_distance };
 	float min_distance = arr_distance[0];
 	int direction = 0;
-
-	// 가장 작은 충돌 거리와 방향 찾기
+	
 	for (int i = 0; i < 4; i++)
 	{
 		if (min_distance > arr_distance[i])
@@ -80,24 +78,19 @@ void CollisionManager::HandlePosOnCollision_Rect_Rect(GameObject* _obj1, GameObj
 			direction = i;
 		}
 	}
-
-	// 충돌 방향에 따른 처리
+	
 	switch (direction)
 	{
-	case 0: // 상단 충돌
-		// 상단 충돌 후, 상단으로 이동
+	case 0:		
 		obj_trs->AddPosition({ 0.f, -min_distance });
 		break;
-	case 1: // 하단 충돌
-		// 하단 충돌 후, 하단으로 이동
+	case 1:		
 		obj_trs->AddPosition({ 0.f, min_distance });
 		break;
-	case 2: // 오른쪽 충돌
-		// 오른쪽 충돌 후, 왼쪽으로 이동
+	case 2: 		
 		obj_trs->AddPosition({ min_distance, 0.f });
 		break;
-	case 3: // 왼쪽 충돌
-		// 왼쪽 충돌 후, 오른쪽으로 이동
+	case 3: 		
 		obj_trs->AddPosition({ -min_distance, 0.f });
 		break;
 	default:
@@ -402,6 +395,26 @@ bool CollisionManager::Init()
 			m_pPlayer = player_comp->GetOwner();
 		auto bomb_comp = obj->FindComponent(Bomb::BombTypeName);		
 	}
+
+	for (int i = 0; i < all_objs.size(); i++)
+	{
+		if (all_objs[i]->GetName() == Wall::WallTypeName)
+		{
+			Collision* wall_col=static_cast<Collision*>(all_objs[i]->FindComponent(Collision::CollisionTypeName));
+			m_vecWall_Col.push_back(wall_col);
+		}
+		else if (all_objs[i]->GetName() == Player::PlayerTypeName)
+		{
+			Collision* player_col = static_cast<Collision*>(all_objs[i]->FindComponent(Collision::CollisionTypeName));
+			m_vecPlayer_Col.push_back(player_col);
+		}
+		else if (all_objs[i]->GetName() == Bomb::BombTypeName)
+		{
+			Collision* bomb_col = static_cast<Collision*>(all_objs[i]->FindComponent(Bomb::BombTypeName));
+			m_vecBomb_Col.push_back(bomb_col);
+		}
+	}	
+
 	return true;
 }
 
@@ -409,43 +422,55 @@ bool CollisionManager::Update()
 {			
 	auto all_objs = GameObjectManager::GetInstance()->GetAllObject();
 	Transform* player_trs = static_cast<Transform*>(m_pPlayer->FindComponent(Transform::TransformTypeName));
-	//std::cout << player_trs->GetPosition().x << "," << player_trs->GetPosition().y << std::endl;
 
-	for (int i = 0; i < all_objs.size(); i++)
+	auto all_walls_col_comp = GetWallCollisionVec();
+	auto all_players_col_comp = GetPlayerCollisionVec();
+	auto all_bombs_col_comp = GetBombCollisionVec();
+	
+	int walls_col_size = all_walls_col_comp.size();
+	int player_col_size = all_players_col_comp.size();
+	int bombs_col_size = all_bombs_col_comp.size();
+
+	//player vs wall 
+	for (int i = 0; i < player_col_size; i++)
 	{
-		for (int j =0; j < all_objs.size(); j++)
+		for (int j = 0; j < walls_col_size; j++)
 		{
-			Collision* left_col = dynamic_cast<Collision*>(all_objs[i]->FindComponent(Collision::CollisionTypeName));
-			Collision* right_col = dynamic_cast<Collision*>(all_objs[j]->FindComponent(Collision::CollisionTypeName));						
-			
-			if (left_col != nullptr && right_col != nullptr)
+			GameObject* player_obj = all_players_col_comp[i]->GetOwner();
+			GameObject* wall_obj = all_walls_col_comp[j]->GetOwner();
+			if (IsCollisionRectAndRect(player_obj,wall_obj))
 			{
-				if (left_col->GetOwner()->GetName()==Wall::WallTypeName&&right_col->GetOwner()->GetName()==Wall::WallTypeName)
-					continue;
-			}			
-			if (left_col == nullptr || right_col == nullptr)
-				continue;
-
-			if (IsCollisionRectAndRect(left_col->GetOwner(), right_col->GetOwner()))
-			{		
-				auto player = dynamic_cast<Player*>(all_objs[i]->FindComponent(Player::PlayerTypeName));
-				auto bomb = dynamic_cast<Bomb*>(all_objs[i]->FindComponent(Bomb::BombTypeName));
-				if (player != nullptr)
+				auto player_comp = dynamic_cast<Player*>(player_obj->FindComponent(Player::PlayerTypeName));				
+				if (player_comp!= nullptr)
 				{
-					player->EventCollision(static_cast<Collision*>(all_objs[j]->FindComponent(Collision::CollisionTypeName)));
-					break;
-				}
-				if (bomb != nullptr)
-				{
-					bomb->EventCollision(static_cast<Collision*>(all_objs[j]->FindComponent(Collision::CollisionTypeName)));
-					break;
-				}
-
-				//OnCollision_Rect_Rect_Event* col_event_rect_rect = new OnCollision_Rect_Rect_Event(all_objs[i], all_objs[j]);
-				//EventManager::GetInstance()->AddEvent(col_event_rect_rect);
+					player_comp->EventCollision(static_cast<Collision*>(wall_obj->FindComponent(Collision::CollisionTypeName)));					
+				}								
 			}
 		}
 	}
+
+	//bomb vs wall
+	for (int i = 0; i < bombs_col_size; i++)
+	{
+		for (int j = 0; j < walls_col_size; j++)
+		{
+			GameObject* bombs_obj = all_bombs_col_comp[i]->GetOwner();
+			GameObject* wall_obj  = all_walls_col_comp[j]->GetOwner();
+			if (bombs_obj != nullptr)
+			{
+				if (IsCollisionRectAndRect(bombs_obj, wall_obj))
+				{
+					auto bombs_comp = dynamic_cast<Bomb*>(bombs_obj->FindComponent(Bomb::BombTypeName));
+					if (bombs_comp != nullptr)
+					{
+						bombs_comp->EventCollision(static_cast<Collision*>(wall_obj->FindComponent(Collision::CollisionTypeName)));
+						break;
+					}
+				}
+			}			
+		}
+	}
+	
 	return true;
 }
 
@@ -457,6 +482,26 @@ std::vector<GameObject*> CollisionManager::GetCollsionVector() const
 void CollisionManager::AddCollisionObject(GameObject* _obj)
 {
 	m_vecCollision.push_back(_obj);
+}
+
+std::vector<Collision*> CollisionManager::GetWallCollisionVec() const
+{
+	return m_vecWall_Col;
+}
+
+std::vector<Collision*> CollisionManager::GetPlayerCollisionVec() const
+{
+	return m_vecPlayer_Col;
+}
+
+std::vector<Collision*> CollisionManager::GetBombCollisionVec() const
+{
+	return m_vecBomb_Col;
+}
+
+void CollisionManager::AddBombToBombColVec(Collision* _bombCol)
+{
+	m_vecBomb_Col.push_back(_bombCol);
 }
 
 CollisionManager::HitBox::HitBox(GameObject* _obj1, GameObject* _obj2, bool _result)

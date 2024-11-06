@@ -19,7 +19,8 @@ Bomb::Bomb(GameObject* _owner)
 	:BaseComponent(_owner)
 {	
 	m_pCol = static_cast<Collision*>(_owner->AddComponent(Collision::CollisionTypeName,new Collision(_owner)));
-	m_pCurrentLevel = GameStateManager::GetInstance()->GetCurrentLevel();
+	m_pCurrentLevel = GameStateManager::GetInstance()->GetCurrentLevel();	
+	CollisionManager::GetInstance()->AddBombToBombColVec(m_pCol);
 }
 
 Bomb::~Bomb()

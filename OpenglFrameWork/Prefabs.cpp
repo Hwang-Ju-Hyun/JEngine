@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "Sprite.h"
 #include "Serializer.h"
+#include "CollisionManager.h"
 #include "Bomb.h"
 
 Prefabs::Prefabs()
@@ -27,6 +28,6 @@ Bomb* Prefabs::CreateBombs(const std::string& _path, GameObject* _bombOwner)
     bomb_trs->SetScale({ 50.f,50.f });
     bomb_obj->SetModelType(MODEL_TYPE::CIRCLE);
     bomb_comp->SetExplodeTime(1.f);
-
+    
     return bomb_comp;
 }

@@ -5,7 +5,7 @@
 
 class GameObject;
 class Player;
-
+class Collision;
 
 
 class CollisionManager
@@ -49,4 +49,15 @@ private:
 public:
 	std::vector<GameObject*> GetCollsionVector()const;
 	void AddCollisionObject(GameObject* _obj);
+//Todo: 현재는 wall,player이런식으로 받지만 추후에 Layer로 수정해야함
+private:
+	std::vector<Collision*> m_vecWall_Col;
+	std::vector<Collision*> m_vecPlayer_Col;
+	std::vector<Collision*> m_vecBomb_Col;	
+public:
+	std::vector<Collision*> GetWallCollisionVec()const;
+	std::vector<Collision*> GetPlayerCollisionVec()const;
+	std::vector<Collision*> GetBombCollisionVec()const;
+public:
+	void AddBombToBombColVec(Collision* _bombCol);
 };
