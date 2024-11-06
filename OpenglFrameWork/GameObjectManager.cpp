@@ -126,6 +126,23 @@ void GameObjectManager::RemoveObjectsByName(std::string _name)
     }
 }
 
+void GameObjectManager::RemoveObject(GameObject* _obj)
+{
+    for (auto iter = m_vecGameObject.begin(); iter != m_vecGameObject.end();)
+    {
+        if ((*iter) == _obj)
+        {
+            delete* iter;
+            iter = m_vecGameObject.erase(iter);
+            return;
+        }
+        else
+        {
+            iter++;
+        }
+    }
+}
+
 bool GameObjectManager::Init()
 {
     for (int i = 0; i < m_vecGameObject.size(); i++)    

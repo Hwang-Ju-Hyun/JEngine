@@ -21,6 +21,7 @@ public:
 	void RemoveObject(int _id);
 	void RemoveObject(int _id, std::string _name);
 	void RemoveObjectsByName(std::string _name);
+	void RemoveObject(GameObject* _obj);
 public:
 	bool Init();
 	bool Update();

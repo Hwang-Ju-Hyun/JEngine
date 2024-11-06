@@ -62,5 +62,68 @@
     ],
     "Shader_Ref": 0,
     "Model_Type": 1
+  },
+  {
+    "Name": "Player",
+    "ID": 2,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            894,
+            -370
+          ],
+          "sca": [
+            40.0,
+            30.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            28.0,
+            16.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.0,
+          "GREEN": 0.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0
+        }
+      },
+      {
+        "Type": "RigidBody",
+        "CompData": {
+          "Velocity": [
+            0.0,
+            0.0
+          ],
+          "Accelation": [
+            0.0,
+            0.0
+          ],
+          "Max Velocity": [
+            1000.0,
+            1000.0
+          ]
+        }
+      },      
+      {
+        "Type": "Player",
+        "CompData": {
+          "Current Level": "Stage01_Lvl",
+          "HP": 0,
+          "MaxBomb_Cnt": 1
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
   }
 ]
