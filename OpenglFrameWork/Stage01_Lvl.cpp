@@ -8,6 +8,7 @@
 #include "GLModel.h"
 #include "Player.h"
 #include "RigidBody.h"
+#include "TileEditor.h"
 #include "Serializer.h"
 #include "ResourceManager.h"
 	
@@ -22,8 +23,8 @@ Stage01_Lvl::~Stage01_Lvl()
 
 bool Stage01_Lvl::Init()
 {				
-	Serializer::GetInstance()->LoadStage("json/" + GetName()+"/"+ GetName() + ".txt");	
-			
+	Serializer::GetInstance()->LoadStage("json/" + GetName()+"/"+ GetName() + ".txt");
+
     return true;
 }	
 		

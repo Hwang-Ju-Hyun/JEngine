@@ -1,6 +1,7 @@
 #include "GameObjectManager.h"
 #include "GameObject.h"
 #include "ModelManager.h"
+#include "Player.h"
 #include <iostream>
 
 GameObjectManager::GameObjectManager()
@@ -23,8 +24,7 @@ GameObject* GameObjectManager::AddObject(GameObject* _obj)
 
     m_vecGameObject.push_back(_obj);      
 
-    int size = m_vecGameObject.size();
-
+    int size = m_vecGameObject.size();    
 
     return m_vecGameObject[size-1];
 }
@@ -150,4 +150,17 @@ bool GameObjectManager::Draw()
         m_vecGameObject[i]->Draw();
     }
     return true;
+}
+
+
+
+
+void GameObjectManager::AddPlayerToPlayerVec(Player* _playerComp)
+{
+    m_vecPlayerCompVec.push_back(_playerComp);
+}
+
+std::vector<Player*> GameObjectManager::GetPlayerCompVec() const
+{
+    return m_vecPlayerCompVec;
 }

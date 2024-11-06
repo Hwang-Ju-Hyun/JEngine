@@ -16,6 +16,21 @@ GLboolean GLHelper::m_bLeftMouseReleased        = false;
 GLboolean GLHelper::m_bRightMouseTriggered      = false;
 GLboolean GLHelper::m_bRightMouseReleased       = false;
 
+
+GLboolean GLHelper::m_bWKeyPressed              = false;
+GLboolean GLHelper::m_bWKeyReleased                = false;
+GLboolean GLHelper::m_bAKeyPressed              = false;
+GLboolean GLHelper::m_bAKeyReleased                = false;
+GLboolean GLHelper::m_bDKeyPressed              = false;
+GLboolean GLHelper::m_bDKeyReleased                = false;
+GLboolean GLHelper::m_bSKeyPressed              = false;
+GLboolean GLHelper::m_bSKeyReleased                = false;
+
+GLboolean GLHelper::m_bNum0KeyPressed           =false;
+GLboolean GLHelper::m_bNum0KeyReleased          =false;
+
+
+
 GLboolean GLHelper::m_bLeftControlKeyPressed    = false;
 GLboolean GLHelper::m_bLeftControlKeyReleased   = false;
 GLboolean GLHelper::m_bLeftAltKeyPressed        = false;
@@ -86,8 +101,26 @@ void GLHelper::KeyCallBack(GLFWwindow* _window, int _key, int _scancod, int _act
             break;
         case GLFW_KEY_LEFT_CONTROL:
             m_bLeftControlKeyPressed = true;
+            break;
         case GLFW_KEY_LEFT_ALT:
             m_bLeftAltKeyPressed = true;
+            break;
+        case GLFW_KEY_W:
+            m_bWKeyPressed = true;
+            break;
+        case GLFW_KEY_A:
+            m_bAKeyPressed = true;
+            break;
+        case GLFW_KEY_D:
+            m_bDKeyPressed = true;
+            break;
+        case GLFW_KEY_S:
+            m_bSKeyPressed = true;
+            break;
+        case GLFW_KEY_KP_0:
+            m_bNum0KeyPressed = true;
+            break;
+
         default:
             break;
         }
@@ -128,6 +161,31 @@ void GLHelper::KeyCallBack(GLFWwindow* _window, int _key, int _scancod, int _act
         {
             m_bLeftAltKeyPressed = false;
             m_bLeftAltKeyReleased = true;
+        }
+        if (m_bWKeyPressed)
+        {
+            m_bWKeyPressed = false;
+            m_bWKeyReleased = true;
+        }
+        if (m_bAKeyPressed)
+        {
+            m_bAKeyPressed = false;
+            m_bAKeyReleased = true;
+        }
+        if (m_bDKeyPressed)
+        {
+            m_bDKeyPressed = false;
+            m_bDKeyReleased = true;
+        }
+        if (m_bSKeyPressed)
+        {
+            m_bSKeyPressed = false;
+            m_bSKeyReleased = true;
+        }
+        if (m_bNum0KeyPressed)
+        {
+            m_bNum0KeyPressed = false;
+            m_bNum0KeyReleased = true;
         }
     }
 }
@@ -306,6 +364,56 @@ GLboolean GLHelper::GetSpaceKeyPressed() const
 GLboolean GLHelper::GetSpaceKeyReleased() const
 {
     return m_bSpaceKeyReleased;
+}
+
+GLboolean GLHelper::GetWKeyPressed() const
+{
+    return m_bWKeyPressed;
+}
+
+GLboolean GLHelper::GetWKeyReleased() const
+{
+    return m_bWKeyReleased;
+}
+
+GLboolean GLHelper::GetAKeyPressed() const
+{
+    return m_bAKeyPressed;
+}
+
+GLboolean GLHelper::GetAKeyReleased() const
+{
+    return m_bAKeyReleased;
+}
+
+GLboolean GLHelper::GetDKeyPressed() const
+{
+    return m_bDKeyPressed;
+}
+
+GLboolean GLHelper::GetDKeyReleased() const
+{
+    return m_bAKeyReleased;
+}
+
+GLboolean GLHelper::GetSKeyPressed() const
+{
+    return m_bSKeyPressed;
+}
+
+GLboolean GLHelper::GetSKeyReleased() const
+{
+    return m_bAKeyReleased;
+}
+
+GLboolean GLHelper::GetNum0KeyPressed() const
+{
+    return m_bNum0KeyPressed;
+}
+
+GLboolean GLHelper::GetNum0KeyReleased() const
+{
+    return m_bNum0KeyReleased;
 }
 
 glm::mat3 GLHelper::GetScreenToWorldMatFromMouse()
@@ -530,3 +638,5 @@ bool GLHelper::Exit()
     glfwTerminate();
     return true;
 }
+
+

@@ -20,7 +20,13 @@ public:
 	void SaveJson(const std::string& _path);
 public:
 	void LoadScreenGrid(const std::string& _path);
-	void SaveScreenGrid(const std::string& _path);	
+	void SaveScreenGrid(const std::string& _path);
+public:
+	void LoadStaticScreenGrid(const std::string& _path);
+	void SaveStaticScreenGrid(const std::string& _path);
+public:
+	void LoadStaticWall(const std::string& _path);
+	void SaveStaticWall(const std::string& _path);
 public:	
 	GameObject* CreateObjectFromJson(json _item);
 private:	

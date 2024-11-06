@@ -12,6 +12,7 @@
 #include "Serializer.h"
 #include "GameStateManager.h"
 #include "BaseLevel.h"
+#include "ComponentManager.h"
 #include "Wall.h"
 #include <iostream>
 
@@ -78,6 +79,8 @@ void Bomb::Update()
 
 		glm::vec2 cur_bomb_grid = bomb_trs->GetGridByScreenPos();
 
+
+		//Todo: 함수화 시키자
 		std::vector<std::vector<bool>>& screen_grid = TileEditor::GetInstance()->GetWallGrid();
 		for (int i = 0; i < 4; i++)
 		{
@@ -91,25 +94,43 @@ void Bomb::Update()
 				if (nextX >= screen_grid.size() && nextY >= screen_grid[0].size())
 					continue;
 
+				//벽이 폭탄에 맞았다면
 				if (TileEditor::GetInstance()->m_vecWallGridCoord[nextX][nextY])
-				{					
-					GameObject* wall_obj = TileEditor::GetInstance()->FindObjectByGrid({ nextX, nextY });
-					Transform* wall_trs = static_cast<Transform*>(wall_obj->FindComponent(Transform::TransformTypeName));
-					Wall* wall_comp = dynamic_cast<Wall*>(wall_obj->FindComponent(Wall::WallTypeName));
-					if (wall_comp->GetFragile())
+				{										
+					GameObject* wall_obj = TileEditor::GetInstance()->FindObjectByGrid({ nextX, nextY });					
+					if (wall_obj != nullptr)
 					{
-						Collision* wall_col = dynamic_cast<Collision*>(wall_obj->FindComponent(Collision::CollisionTypeName));
+						Transform* wall_trs = static_cast<Transform*>(wall_obj->FindComponent(Transform::TransformTypeName));
+						Wall* wall_comp = dynamic_cast<Wall*>(wall_obj->FindComponent(Wall::WallTypeName));
 						if (wall_comp != nullptr)
 						{
-							wall_comp->SetExist(false);
-						}
-						TileEditor::GetInstance()->m_vecWallGridCoord[nextX][nextY] = false;
-						CollisionManager::GetInstance()->RemoveWallCol(wall_col);
-						GameObjectManager::GetInstance()->RemoveObject(wall_obj->GetID(), Wall::WallTypeName);
-						std::string cur_level_str = m_pCurrentLevel->GetName();
-						Serializer::GetInstance()->SaveScreenGrid("json/" + cur_level_str + "/" + "Grid" + ".json");
-					}					
+							if (wall_comp->GetFragile())
+							{
+								Collision* wall_col = dynamic_cast<Collision*>(wall_obj->FindComponent(Collision::CollisionTypeName));
+								if (wall_comp != nullptr)
+								{
+									wall_comp->SetExist(false);
+								}
+								TileEditor::GetInstance()->m_vecWallGridCoord[nextX][nextY] = false;
+								CollisionManager::GetInstance()->RemoveWallCol(wall_col);
+								GameObjectManager::GetInstance()->RemoveObject(wall_obj->GetID(), Wall::WallTypeName);
+								std::string cur_level_str = m_pCurrentLevel->GetName();
+								Serializer::GetInstance()->SaveScreenGrid("json/" + cur_level_str + "/" + "Grid" + ".json");
+							}
+						}						
+					}							
 				}
+				std::vector<Player*> players = GameObjectManager::GetInstance()->GetPlayerCompVec();
+				for (int i = 0; i < players.size(); i++)
+				{
+					Transform* player_trs = static_cast<Transform*>(players[i]->GetOwner()->FindComponent(Transform::TransformTypeName));
+					glm::vec2 player_grid=player_trs->GetGridByScreenPos();					
+					if (player_grid.x==nextX&&player_grid.y==nextY)
+					{
+						std::cout << players[i]->GetOwner()->GetID() << "is lose" << std::endl;						
+					}
+				}				
+				
 			}
 		}		
 		AccTime = 0.f;
@@ -124,7 +145,10 @@ void Bomb::EventCollision(Collision* _pOther)
 	{
 		CollisionManager::GetInstance()->HandlePosOnCollision_Rect_Rect(_pOther->GetOwner(), m_pOwner);
 	}
-		
+	if (_pOther->GetOwner()->GetName() == Bomb::BombTypeName)
+	{
+		CollisionManager::GetInstance()->HandlePosOnCollision_Rect_Rect(_pOther->GetOwner(), m_pOwner);
+	}
 }
 
 void Bomb::LoadFromJson(const json& _str)

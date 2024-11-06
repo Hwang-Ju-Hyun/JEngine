@@ -1,5 +1,7 @@
 #include "ComponentManager.h"
 #include "BaseComponent.h"
+#include "Player.h"
+#include "GameObjectManager.h"
 #include <iostream>
 
 ComponentManager::ComponentManager()
@@ -38,6 +40,12 @@ BaseComponent* ComponentManager::AddComponent(const std::string _compName,BaseCo
 	}
 	_comp->SetName(_compName);
 	m_vecComponent.push_back(_comp );
+
+	if (_compName == Player::PlayerTypeName)
+	{
+		Player* player_comp = static_cast<Player*>(_comp);
+		GameObjectManager::GetInstance()->AddPlayerToPlayerVec(player_comp);
+	}
 
 	int size = m_vecComponent.size();
 	return m_vecComponent[size - 1];

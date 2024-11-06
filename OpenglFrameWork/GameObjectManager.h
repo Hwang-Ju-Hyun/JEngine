@@ -4,6 +4,7 @@
 #include <string>
 
 class GameObject;
+class Player;
 
 class GameObjectManager
 {
@@ -24,4 +25,9 @@ public:
 	bool Init();
 	bool Update();
 	bool Draw();
+private:
+	std::vector<Player*> m_vecPlayerCompVec;
+public:
+	void AddPlayerToPlayerVec(Player* _playerComp);
+	std::vector<Player*> GetPlayerCompVec()const;
 };

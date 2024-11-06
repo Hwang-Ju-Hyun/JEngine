@@ -22,11 +22,16 @@ public:
     glm::vec2 GetDirection()const;
 private:
     Bomb* bomb_comp = nullptr;
+    Bomb* bomb_comp_temp = nullptr;
     Collision* m_pCol = nullptr;
 private:
     int m_iHP = 0;
     int m_iMaxBombCnt = 0;
     int m_iCurBombCnt = 0;    
+private:
+    int m_iHP_temp = 0;
+    int m_iMaxBombCnt_temp = 0;
+    int m_iCurBombCnt_temp = 0;
 public:
     void SetHp(int _hp);    
     int GetHp()const;
@@ -39,6 +44,11 @@ public:
 public:
     void MoveMent();
     void Attack();
+public:
+    //player2 <- 곧 사라질 코드
+    void MoveMent_temp();
+    void Attack_temp();
+public:
     virtual void Update()override;
 public:
     virtual void EventCollision(Collision* _pOther)override;

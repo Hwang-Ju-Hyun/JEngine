@@ -470,6 +470,45 @@ bool CollisionManager::Update()
 			}			
 		}
 	}
+
+	//player vs bomb
+	for (int i = 0; i < player_col_size; i++)
+	{
+		for (int j = 0; j < bombs_col_size; j++)
+		{
+			GameObject* player_obj = all_players_col_comp[i]->GetOwner();
+			GameObject* bombs_obj = all_bombs_col_comp[j]->GetOwner();
+			if (IsCollisionRectAndRect(player_obj, bombs_obj))
+			{
+				auto player_comp = dynamic_cast<Player*>(player_obj->FindComponent(Player::PlayerTypeName));
+				if (player_comp != nullptr)
+				{
+					player_comp->EventCollision(static_cast<Collision*>(bombs_obj->FindComponent(Collision::CollisionTypeName)));
+				}
+			}
+		}
+	}
+
+	//bomb vs bomb
+	/*for (int i = 0; i < bombs_col_size; i++)
+	{
+		for (int j = 0; j < bombs_col_size; j++)
+		{
+			GameObject* bombs_obj1 = all_bombs_col_comp[i]->GetOwner();
+			GameObject* bombs_obj2 = all_bombs_col_comp[j]->GetOwner();
+			if (IsCollisionRectAndRect(bombs_obj1, bombs_obj2))
+			{
+				auto bombs_comp = dynamic_cast<Bomb*>(bombs_obj1->FindComponent(Bomb::BombTypeName));
+				if (bombs_comp != nullptr)
+				{
+					bombs_comp->EventCollision(static_cast<Collision*>(bombs_obj2->FindComponent(Collision::CollisionTypeName)));
+				}
+			}
+		}
+	}*/
+
+
+	//player vs player
 	
 	return true;
 }

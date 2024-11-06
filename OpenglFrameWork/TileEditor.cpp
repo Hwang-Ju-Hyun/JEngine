@@ -199,11 +199,13 @@ GameObject* TileEditor::FindObjectByGrid(glm::vec2 _grid)
                 return trs->GetOwner();
             }
         }
-    }   
+    } 
+    return nullptr;
 }
 
 bool TileEditor::Init()
 {        
+    
     m_iMaxXGrid = 30;
     m_iMaxYGrid = 18;
 
@@ -222,6 +224,16 @@ bool TileEditor::Init()
     m_iWallWidth = window_width / m_iNumberOfWallsCol;
     m_iWallHeight = window_height / m_iNumberOfWallsRow;
     
+    Serializer::GetInstance()->LoadStaticScreenGrid("json/Static/ScreenGrid.json");    
+    std::vector<std::vector<bool>> stage_grid = TileEditor::GetInstance()->m_vecWallGridCoord;
+    std::vector<std::vector<bool>> static_grid = TileEditor::GetInstance()->m_vecStaticWallGridCoord;
+    for (int i = 0; i < stage_grid.size(); i++)
+    {
+        for (int j = 0; j < stage_grid[0].size(); j++)
+        {
+            m_vecWallGridCoord[i][j] = static_grid[i][j];
+        }
+    }
     
 
     return true;

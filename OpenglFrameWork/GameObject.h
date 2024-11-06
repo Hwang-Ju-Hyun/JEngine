@@ -10,6 +10,7 @@ class BaseComponent;
 class GLModel;
 class TextureResource;
 class Collision;
+class Player;
 
 class GameObject
 {

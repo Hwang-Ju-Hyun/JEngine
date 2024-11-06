@@ -24,10 +24,10 @@ private:
 	int m_iScreenGridX = 0;
 	int m_iScreenGridY = 0;
 
-	bool m_bExist = false;
-
+	bool m_bExist = false;	
 public:
 	std::vector<std::vector<bool>> m_vecWallGridCoord;
+	std::vector<std::vector<bool>> m_vecStaticWallGridCoord;
 private:
 	TextureResource* m_pCurrentTileTexture = nullptr;	
 	void ShowAndSetCurrentTileTexture();

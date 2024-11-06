@@ -55,6 +55,18 @@ private:
 	static GLboolean m_bLeftAltKeyPressed;
 	static GLboolean m_bLeftAltKeyReleased;
 
+	static GLboolean m_bWKeyPressed;
+	static GLboolean m_bWKeyReleased;
+	static GLboolean m_bAKeyPressed;
+	static GLboolean m_bAKeyReleased;
+	static GLboolean m_bDKeyPressed;
+	static GLboolean m_bDKeyReleased;
+	static GLboolean m_bSKeyPressed;
+	static GLboolean m_bSKeyReleased;
+	static GLboolean m_bSpaceKeyPressed;
+	static GLboolean m_bSpaceKeyReleased;
+
+		
 
 	static GLboolean m_bUpArrowKeyPressed;
 	static GLboolean m_bUpArrowKeyReleased;
@@ -64,9 +76,22 @@ private:
 	static GLboolean m_bLeftArrowKeyReleased;
 	static GLboolean m_bRightArrowKeyPressed;
 	static GLboolean m_bRightArrowKeyReleased;
-	static GLboolean m_bSpaceKeyPressed;
-	static GLboolean m_bSpaceKeyReleased;
+	static GLboolean m_bNum0KeyPressed;
+	static GLboolean m_bNum0KeyReleased;
+
 public:
+	GLboolean GetWKeyPressed()const;
+	GLboolean GetWKeyReleased()const;
+	GLboolean GetAKeyPressed()const;
+	GLboolean GetAKeyReleased()const;
+	GLboolean GetDKeyPressed()const;
+	GLboolean GetDKeyReleased()const;
+	GLboolean GetSKeyPressed()const;
+	GLboolean GetSKeyReleased()const;
+
+	GLboolean GetNum0KeyPressed()const;	
+	GLboolean GetNum0KeyReleased()const;
+
 	GLboolean GetAltPressed()const;
 	GLboolean GetAltReleased()const;
 	GLboolean GetLeftControlPressed()const;
