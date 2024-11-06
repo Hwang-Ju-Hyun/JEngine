@@ -7,8 +7,8 @@
         "Type": "Transform",
         "CompData": {
           "Pos": [
-            -891,
-            376
+            -891.0,
+            376.0
           ],
           "sca": [
             40.0,
@@ -20,7 +20,7 @@
           ],
           "Grid": [
             1.0,
-            16.0
+            1.0
           ]
         }
       },
@@ -50,6 +50,7 @@
           ]
         }
       },
+      null,
       {
         "Type": "Player",
         "CompData": {
@@ -70,8 +71,8 @@
         "Type": "Transform",
         "CompData": {
           "Pos": [
-            895,
-            -384
+            895.0,
+            -384.0
           ],
           "sca": [
             40.0,
@@ -113,6 +114,7 @@
           ]
         }
       },
+      null,
       {
         "Type": "Player",
         "CompData": {

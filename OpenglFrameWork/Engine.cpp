@@ -75,8 +75,8 @@ bool Engine::Update()
 		return false;
 
 	//CollisionManager Update
-	if (!CollisionManager::GetInstance()->Update())
-		return false;
+	//if (!CollisionManager::GetInstance()->Update())
+	//	return false;
 	EventManager::GetInstance()->Update();
 
 #ifndef _EDITOR

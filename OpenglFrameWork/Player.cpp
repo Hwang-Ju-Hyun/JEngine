@@ -221,10 +221,10 @@ void Player::EventCollision(Collision* _pOther)
     if (_pOther->GetOwner()->GetName() == Wall::WallTypeName)
         CollisionManager::GetInstance()->HandlePosOnCollision_Rect_Rect(_pOther->GetOwner(),m_pOwner );
 
-    else if (_pOther->GetOwner()->GetName() == Bomb::BombTypeName)
-    {
-        CollisionManager::GetInstance()->HandlePosOnCollision_Rect_Rect(_pOther->GetOwner(), m_pOwner);
-    }
+    //else if (_pOther->GetOwner()->GetName() == Bomb::BombTypeName)
+    //{
+    //    CollisionManager::GetInstance()->HandlePosOnCollision_Rect_Rect(_pOther->GetOwner(), m_pOwner);
+    //}
         
 }
 

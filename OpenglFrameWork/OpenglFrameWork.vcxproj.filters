@@ -144,6 +144,9 @@
     <Filter Include="Manager\EventMgr">
       <UniqueIdentifier>{2aa283f5-2048-4dff-84ec-7d3e10095443}</UniqueIdentifier>
     </Filter>
+    <Filter Include="JSON\Static">
+      <UniqueIdentifier>{bb364260-ca03-48f5-b200-3b9349478742}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -473,6 +476,9 @@
     </None>
     <None Include="json\Stage01_Lvl\Grid.json">
       <Filter>JSON\stage01_Lvl</Filter>
+    </None>
+    <None Include="json\Static\ScreenGrid.json">
+      <Filter>JSON\Static</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -1,106 +1,6 @@
 [
   {
     "Name": "Wall",
-    "ID": 2,
-    "Components": [
-      {
-        "Type": "Transform",
-        "CompData": {
-          "Pos": [
-            -957.0,
-            425.0
-          ],
-          "sca": [
-            66.0,
-            50.0
-          ],
-          "Rot": [
-            0.0,
-            0.0
-          ],
-          "Grid": [
-            0.0,
-            0.0
-          ]
-        }
-      },
-      {
-        "Type": "Sprite",
-        "CompData": {
-          "RED": 1.0,
-          "GREEN": 1.0,
-          "BLUE": 1.0,
-          "ALPHA": 1.0
-        }
-      },
-      null,
-      {
-        "Type": "Wall",
-        "CompData": {
-          "Grid": [
-            0.0,
-            0.0
-          ],
-          "Exist": false,
-          "Fragile": false
-        }
-      }
-    ],
-    "Shader_Ref": 0,
-    "Model_Type": 1
-  },
-  {
-    "Name": "Wall",
-    "ID": 3,
-    "Components": [
-      {
-        "Type": "Transform",
-        "CompData": {
-          "Pos": [
-            -957.0,
-            375.0
-          ],
-          "sca": [
-            66.0,
-            50.0
-          ],
-          "Rot": [
-            0.0,
-            0.0
-          ],
-          "Grid": [
-            0.0,
-            1.0
-          ]
-        }
-      },
-      {
-        "Type": "Sprite",
-        "CompData": {
-          "RED": 1.0,
-          "GREEN": 1.0,
-          "BLUE": 1.0,
-          "ALPHA": 1.0
-        }
-      },
-      null,
-      {
-        "Type": "Wall",
-        "CompData": {
-          "Grid": [
-            0.0,
-            0.0
-          ],
-          "Exist": false,
-          "Fragile": false
-        }
-      }
-    ],
-    "Shader_Ref": 0,
-    "Model_Type": 1
-  },
-  {
-    "Name": "Wall",
     "ID": 4,
     "Components": [
       {
@@ -7801,56 +7701,6 @@
   },
   {
     "Name": "Wall",
-    "ID": 160,
-    "Components": [
-      {
-        "Type": "Transform",
-        "CompData": {
-          "Pos": [
-            891.0,
-            -275.0
-          ],
-          "sca": [
-            66.0,
-            50.0
-          ],
-          "Rot": [
-            0.0,
-            0.0
-          ],
-          "Grid": [
-            28.0,
-            14.0
-          ]
-        }
-      },
-      {
-        "Type": "Sprite",
-        "CompData": {
-          "RED": 0.0,
-          "GREEN": 1.0,
-          "BLUE": 0.0,
-          "ALPHA": 1.0
-        }
-      },
-      null,
-      {
-        "Type": "Wall",
-        "CompData": {
-          "Grid": [
-            0.0,
-            0.0
-          ],
-          "Exist": false,
-          "Fragile": true
-        }
-      }
-    ],
-    "Shader_Ref": 0,
-    "Model_Type": 1
-  },
-  {
-    "Name": "Wall",
     "ID": 161,
     "Components": [
       {
@@ -12893,6 +12743,206 @@
           ],
           "Exist": false,
           "Fragile": false
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 2,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -957.0,
+            425.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": false
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 3,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -957.0,
+            375.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            0.0,
+            1.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": false
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 231,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            891.0,
+            -175.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            28.0,
+            12.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.0,
+          "GREEN": 1.0,
+          "BLUE": 0.0,
+          "ALPHA": 1.0
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": true
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 232,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            825.0,
+            -225.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            27.0,
+            13.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.0,
+          "GREEN": 1.0,
+          "BLUE": 0.0,
+          "ALPHA": 1.0
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": true
         }
       }
     ],

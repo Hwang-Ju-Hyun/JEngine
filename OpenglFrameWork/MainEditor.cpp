@@ -192,7 +192,8 @@ void MainEditor::TopBar_Save()
                 if (ImGui::Button("YES"))
                 {                                    
                     auto current_level=GameStateManager::GetInstance()->GetCurrentLevel();
-                    std::string cur_level_str=current_level->GetName();                    
+                    std::string cur_level_str=current_level->GetName();                 
+                    Serializer::GetInstance()->SaveStaticScreenGrid("json/Static/ScreenGrid.json");
                     Serializer::GetInstance()->SaveScreenGrid("json/" + cur_level_str + "/" + "Grid" + ".json");
                     Serializer::GetInstance()->SaveStage("json/" + cur_level_str + "/" + cur_level_str + ".txt");
                     m_bShowSaveConf = false;

@@ -196,6 +196,7 @@
     <None Include="json\Stage01_Lvl\Wall.json" />
     <None Include="json\stage02_Lvl\GameObject.json" />
     <None Include="json\stage02_Lvl\Wall.json" />
+    <None Include="json\Static\ScreenGrid.json" />
     <None Include="shader.frag" />
     <None Include="shader.vert" />
   </ItemGroup>
