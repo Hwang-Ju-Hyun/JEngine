@@ -78,6 +78,7 @@ void Bomb::Update()
 {
 	static float remain_explode_AccTime = 0.f;
 	float dt = TimeManager::GetInstance()->GetDeltaTime();
+
 	remain_explode_AccTime += dt;
 	Sprite* bomb_spr = static_cast<Sprite*>(m_pOwner->FindComponent(Sprite::SpriteTypeName));
 
@@ -85,22 +86,23 @@ void Bomb::Update()
 	int wall_height = TileEditor::GetInstance()->GetWallHeight();
 
 	static float ExplodingAccTime = 0.f;
+	static int bomb_frag_cnt = 0;
+	bomb_frag_cnt = 0;
 
 	if (remain_explode_AccTime >= m_fRemaingTime)
-	{
-		ExplodingAccTime += dt;
-		
+	{				
 		SetIsExplode(true);
+		remain_explode_AccTime = 0.f;
+	}
+	if (GetIsExplode())
+	{
+		ExplodingAccTime += dt;		
 		bomb_spr->SetColor({ 1.0f, 0.f, 0.f, 1.f });
-		
 		//동남서북 반시계방향
 		int direction[4][2] = { {1,0},{0,-1},{-1,0},{0,1} };
 		Transform* bomb_trs = static_cast<Transform*>(m_pOwner->FindComponent(Transform::TransformTypeName));
 		glm::vec2 cur_bomb_grid = bomb_trs->GetGridByScreenPos();
-		
-		std::vector<Bomb*> bomb_fragment;
 
-		static int bomb_frag_cnt = 0;
 		//Todo: 함수화 시키자
 		std::vector<std::vector<bool>>& screen_grid = TileEditor::GetInstance()->GetWallGrid();
 		for (int i = 0; i < 4; i++)
@@ -113,85 +115,89 @@ void Bomb::Update()
 				if (nextX < 0 || nextY < 0)
 					continue;
 				if (nextX >= screen_grid.size() && nextY >= screen_grid[0].size())
-					continue;				
+					continue;
 
 				GameObject* wall_fragile_obj = TileEditor::GetInstance()->FindObjectByGrid({ nextX, nextY });
 				if (wall_fragile_obj != nullptr)
-				{					
+				{
 					Wall* wall_fragile_comp = static_cast<Wall*>(wall_fragile_obj->FindComponent(Wall::WallTypeName));
-					if (wall_fragile_comp->GetFragile())
+					if (wall_fragile_comp!=nullptr&&wall_fragile_comp->GetFragile())
 					{
-						bomb_fragment.push_back(Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner()));
-						Transform* bomb_frag_trs = static_cast<Transform*>(bomb_fragment[bomb_frag_cnt]->GetOwner()->FindComponent(Transform::TransformTypeName));
+						m_vecBombFragment.push_back(Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner()));
+						Transform* bomb_frag_trs = static_cast<Transform*>(m_vecBombFragment[bomb_frag_cnt]->GetOwner()->FindComponent(Transform::TransformTypeName));
 						bomb_frag_trs->SetPosition(TileEditor::GetInstance()->GetWorldPosbyScreenGrid(wall_width, wall_height, nextX, nextY));
-						Sprite* bomb_frag_spr = static_cast<Sprite*>(bomb_fragment[bomb_frag_cnt]->GetOwner()->FindComponent(Sprite::SpriteTypeName));
+						Sprite* bomb_frag_spr = static_cast<Sprite*>(m_vecBombFragment[bomb_frag_cnt]->GetOwner()->FindComponent(Sprite::SpriteTypeName));
 						bomb_frag_spr->SetColor({ 1.f,1.f,0.f,1.f });
 						bomb_frag_cnt++;
 					}
 				}
 				if (wall_fragile_obj == nullptr)
 				{
-					bomb_fragment.push_back(Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner()));
-					Transform* bomb_frag_trs = static_cast<Transform*>(bomb_fragment[bomb_frag_cnt]->GetOwner()->FindComponent(Transform::TransformTypeName));
+					m_vecBombFragment.push_back(Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner()));
+					Transform* bomb_frag_trs = static_cast<Transform*>(m_vecBombFragment[bomb_frag_cnt]->GetOwner()->FindComponent(Transform::TransformTypeName));
 					bomb_frag_trs->SetPosition(TileEditor::GetInstance()->GetWorldPosbyScreenGrid(wall_width, wall_height, nextX, nextY));
-					Sprite* bomb_frag_spr = static_cast<Sprite*>(bomb_fragment[bomb_frag_cnt]->GetOwner()->FindComponent(Sprite::SpriteTypeName));
+					Sprite* bomb_frag_spr = static_cast<Sprite*>(m_vecBombFragment[bomb_frag_cnt]->GetOwner()->FindComponent(Sprite::SpriteTypeName));
 					bomb_frag_spr->SetColor({ 1.f,1.f,0.f,1.f });
 					bomb_frag_cnt++;
 				}
-				
-				
+
+
 
 				//벽이 폭탄에 맞았다면
 				if (TileEditor::GetInstance()->m_vecWallGridCoord[nextX][nextY])
-				{	
-					GameObject* wall_obj = TileEditor::GetInstance()->FindObjectByGrid({ nextX, nextY });										
+				{
+					GameObject* wall_obj = TileEditor::GetInstance()->FindObjectByGrid({ nextX, nextY });
 					if (wall_obj != nullptr)
 					{
 						Transform* wall_trs = static_cast<Transform*>(wall_obj->FindComponent(Transform::TransformTypeName));
-						Wall* wall_comp = dynamic_cast<Wall*>(wall_obj->FindComponent(Wall::WallTypeName));																		
+						Wall* wall_comp = dynamic_cast<Wall*>(wall_obj->FindComponent(Wall::WallTypeName));
 						if (wall_comp != nullptr)
 						{
 							if (wall_comp->GetFragile())
-							{																
+							{
 								Collision* wall_col = dynamic_cast<Collision*>(wall_obj->FindComponent(Collision::CollisionTypeName));
 								if (wall_comp != nullptr)
 								{
 									wall_comp->SetExist(false);
-								}								
+								}
 								TileEditor::GetInstance()->m_vecWallGridCoord[nextX][nextY] = false;
 								CollisionManager::GetInstance()->RemoveWallCol(wall_col);
 								GameObjectManager::GetInstance()->RemoveObject(wall_obj->GetID(), Wall::WallTypeName);
 								std::string cur_level_str = m_pCurrentLevel->GetName();
 								Serializer::GetInstance()->SaveScreenGrid("json/" + cur_level_str + "/" + "Grid" + ".json");
 							}
-						}						
-					}							
+						}
+					}
 				}
 				std::vector<Player*> players = GameObjectManager::GetInstance()->GetPlayerCompVec();
 				for (int i = 0; i < players.size(); i++)
 				{
 					Transform* player_trs = static_cast<Transform*>(players[i]->GetOwner()->FindComponent(Transform::TransformTypeName));
-					glm::vec2 player_grid=player_trs->GetGridByScreenPos();					
-					if (player_grid.x==nextX&&player_grid.y==nextY)
+					glm::vec2 player_grid = player_trs->GetGridByScreenPos();
+					if (player_grid.x == nextX && player_grid.y == nextY)
 					{
 						//std::cout << players[i]->GetOwner()->GetID() << "is lose" << std::endl;						
 					}
-				}								
+				}
 			}
-		}				
-		remain_explode_AccTime = 0.f;
-		for (int i = 0; i < bomb_fragment.size(); i++)
+		}		
+	}
+	if (ExplodingAccTime >= GetExplodingTime())
+	{
+		for (int i = 0; i < m_vecBombFragment.size(); i++)
 		{
-			CollisionManager::GetInstance()->RemoveBombCol(static_cast<Collision*>(bomb_fragment[i]->GetOwner()->FindComponent(Collision::CollisionTypeName)));
-			GameObjectManager::GetInstance()->RemoveObject(bomb_fragment[i]->GetOwner());
+			CollisionManager::GetInstance()->RemoveBombCol(static_cast<Collision*>(m_vecBombFragment[i]->GetOwner()->FindComponent(Collision::CollisionTypeName)));
+			GameObjectManager::GetInstance()->RemoveObject(m_vecBombFragment[i]->GetOwner());
 		}
 
-
-		bomb_fragment.clear();
+		ExplodingAccTime = 0.f;
+		m_vecBombFragment.clear();
+		SetIsExplode(false);
 		bomb_frag_cnt = 0;
 		CollisionManager::GetInstance()->RemoveBombCol(m_pCol);
-		GameObjectManager::GetInstance()->RemoveObject(m_pOwner->GetID(), Bomb::BombTypeName);		
-	}			
+		GameObjectManager::GetInstance()->RemoveObject(m_pOwner->GetID(), Bomb::BombTypeName);
+		remain_explode_AccTime = 0.f;
+	}
 }
 
 void Bomb::EventCollision(Collision* _pOther)
@@ -211,8 +217,10 @@ void Bomb::LoadFromJson(const json& _str)
 	auto comp_data = _str.find("CompData");
 	if (comp_data != _str.end())
 	{
-		auto explode_time = comp_data->find("Explode_Time");
-		m_fRemaingTime = explode_time->begin().value();
+		auto remain_time = comp_data->find("Remain_Time");
+		m_fRemaingTime = remain_time->begin().value();
+		auto explode_time = comp_data->find("Exploding_Time");
+		m_fExplodingTime = explode_time->begin().value();
 	}
 }
 

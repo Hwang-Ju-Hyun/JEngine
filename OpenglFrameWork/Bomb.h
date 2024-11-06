@@ -30,7 +30,7 @@ public:
 public:
     BaseLevel* m_pCurrentLevel = nullptr;
 private:
-
+    std::vector<Bomb*> m_vecBombFragment;
     Collision* m_pCol = nullptr;
 public:
     virtual void EventCollision(Collision* _pOther)override;
