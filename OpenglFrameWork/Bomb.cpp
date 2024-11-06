@@ -127,7 +127,7 @@ void Bomb::Update()
 					glm::vec2 player_grid=player_trs->GetGridByScreenPos();					
 					if (player_grid.x==nextX&&player_grid.y==nextY)
 					{
-						std::cout << players[i]->GetOwner()->GetID() << "is lose" << std::endl;						
+						//std::cout << players[i]->GetOwner()->GetID() << "is lose" << std::endl;						
 					}
 				}				
 				

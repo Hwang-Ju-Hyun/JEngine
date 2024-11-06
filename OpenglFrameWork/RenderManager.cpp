@@ -10,6 +10,7 @@
 #include "Sprite.h"
 #include <iostream>
 #include "GLApp.h"
+#include "TextureResource.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm.hpp>
@@ -71,7 +72,9 @@ bool RenderManager::Draw()
                 if (spr->GetTexture()) // 텍스처가 있는 경우
                 {           
                     GLint texture_location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "uOutTexture");
-                    GLint has_texture_location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "uHasTexture");
+                    GLint has_texture_location = glGetUniformLocation(shaders[shader_ref].GetShaderPgmHandle(), "uHasTexture");                    
+                    GLuint tex_id = spr->GetTexture()->GetTextureID();                    
+                    glBindTextureUnit(0, tex_id);
                     
                     if (texture_location <= -1 || has_texture_location <= -1)
                     {
@@ -81,7 +84,7 @@ bool RenderManager::Draw()
                     {
                         glUniform1i(texture_location, 0); 
                         glUniform1i(has_texture_location, true); 
-                    }
+                    }                    
                 }
                 else 
                 {

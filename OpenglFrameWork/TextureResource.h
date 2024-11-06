@@ -15,6 +15,7 @@ public:
     int GetTextureWidth()const;
     int GetTextureHeight()const;
     int GetTextureChannels()const;
+    unsigned int GetTextureID()const;
 public:
     virtual void Load(const std::string& _path)override;
     virtual void UnLoad()override;
