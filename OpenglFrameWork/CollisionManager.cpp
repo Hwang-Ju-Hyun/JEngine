@@ -465,7 +465,7 @@ bool CollisionManager::Update()
 					{
 						bombs_comp->EventCollision(static_cast<Collision*>(wall_obj->FindComponent(Collision::CollisionTypeName)));
 						break;
-					}
+					}					
 				}
 			}			
 		}
@@ -502,6 +502,30 @@ std::vector<Collision*> CollisionManager::GetBombCollisionVec() const
 void CollisionManager::AddBombToBombColVec(Collision* _bombCol)
 {
 	m_vecBomb_Col.push_back(_bombCol);
+}
+
+void CollisionManager::RemoveBombCol(Collision* _bombCol)
+{
+	for (auto iter = m_vecBomb_Col.begin(); iter != m_vecBomb_Col.end(); iter++)
+	{
+		if (*iter == _bombCol)
+		{
+			m_vecBomb_Col.erase(iter);
+			break;
+		}
+	}
+}
+
+void CollisionManager::RemoveWallCol(Collision* _wallCol)
+{
+	for (auto iter = m_vecWall_Col.begin(); iter != m_vecWall_Col.end(); iter++)
+	{
+		if (*iter == _wallCol)
+		{
+			m_vecWall_Col.erase(iter);
+			break;
+		}
+	}
 }
 
 CollisionManager::HitBox::HitBox(GameObject* _obj1, GameObject* _obj2, bool _result)

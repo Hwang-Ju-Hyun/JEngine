@@ -125,7 +125,7 @@ void Player::Attack()
     bool init = false;
     if (Helper->GetSpaceKeyPressed())
     {           
-        if (m_iCurBombCnt <= m_iMaxBombCnt)
+        if (m_iCurBombCnt < m_iMaxBombCnt)
         {            
             bomb_comp=Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());            
             m_iCurBombCnt++;

@@ -92,31 +92,30 @@ void Bomb::Update()
 					continue;
 
 				if (TileEditor::GetInstance()->m_vecWallGridCoord[nextX][nextY])
-				{
+				{					
 					GameObject* wall_obj = TileEditor::GetInstance()->FindObjectByGrid({ nextX, nextY });
 					Transform* wall_trs = static_cast<Transform*>(wall_obj->FindComponent(Transform::TransformTypeName));
 					Wall* wall_comp = dynamic_cast<Wall*>(wall_obj->FindComponent(Wall::WallTypeName));
-					if (wall_comp != nullptr)
+					if (wall_comp->GetFragile())
 					{
-						wall_comp->SetExist(false);
-					}
-					TileEditor::GetInstance()->m_vecWallGridCoord[nextX][nextY] = false;
-					GameObjectManager::GetInstance()->RemoveObject(wall_obj->GetID(), Wall::WallTypeName);
-
-					std::string cur_level_str = m_pCurrentLevel->GetName();
-					Serializer::GetInstance()->SaveScreenGrid("json/" + cur_level_str + "/" + "Grid" + ".json");
+						Collision* wall_col = dynamic_cast<Collision*>(wall_obj->FindComponent(Collision::CollisionTypeName));
+						if (wall_comp != nullptr)
+						{
+							wall_comp->SetExist(false);
+						}
+						TileEditor::GetInstance()->m_vecWallGridCoord[nextX][nextY] = false;
+						CollisionManager::GetInstance()->RemoveWallCol(wall_col);
+						GameObjectManager::GetInstance()->RemoveObject(wall_obj->GetID(), Wall::WallTypeName);
+						std::string cur_level_str = m_pCurrentLevel->GetName();
+						Serializer::GetInstance()->SaveScreenGrid("json/" + cur_level_str + "/" + "Grid" + ".json");
+					}					
 				}
 			}
 		}		
 		AccTime = 0.f;
-		GameObjectManager::GetInstance()->RemoveObject(m_pOwner->GetID(), Bomb::BombTypeName);
-	}
-
-	
-
-
-	
-	
+		CollisionManager::GetInstance()->RemoveBombCol(m_pCol);		
+		GameObjectManager::GetInstance()->RemoveObject(m_pOwner->GetID(), Bomb::BombTypeName);		
+	}			
 }
 
 void Bomb::EventCollision(Collision* _pOther)
@@ -124,7 +123,6 @@ void Bomb::EventCollision(Collision* _pOther)
 	if (_pOther->GetOwner()->GetName() == Wall::WallTypeName)
 	{
 		CollisionManager::GetInstance()->HandlePosOnCollision_Rect_Rect(_pOther->GetOwner(), m_pOwner);
-
 	}
 		
 }
