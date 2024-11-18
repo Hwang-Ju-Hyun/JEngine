@@ -32,6 +32,7 @@ public:
 private:
     std::vector<Bomb*> m_vecBombFragment;
     Collision* m_pCol = nullptr;
+    bool m_bBombFrag = false;
 public:
     virtual void EventCollision(Collision* _pOther)override;
 public:

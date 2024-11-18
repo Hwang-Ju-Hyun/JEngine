@@ -34,7 +34,7 @@
         "Type": "Bomb",
         "CompData": {
           "Remain_Time": 3.0,
-          "Exploding_Time": 3.0
+          "Exploding_Time": 1.0
         }
       }
     ],
