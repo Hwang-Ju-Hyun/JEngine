@@ -92,16 +92,19 @@ void Bomb::Update()
 	if (remain_explode_AccTime >= m_fRemaingTime)
 	{				
 		SetIsExplode(true);
-		remain_explode_AccTime = 0.f;
+		remain_explode_AccTime = 0.f;								
 	}
 	if (GetIsExplode())
 	{
 		ExplodingAccTime += dt;		
 		bomb_spr->SetColor({ 1.0f, 0.f, 0.f, 1.f });
-		//동남서북 반시계방향
+		//동북서남 반시계방향
+		//						  →     ↑     ←       ↓
 		int direction[4][2] = { {1,0},{0,-1},{-1,0},{0,1} };
 		Transform* bomb_trs = static_cast<Transform*>(m_pOwner->FindComponent(Transform::TransformTypeName));
 		glm::vec2 cur_bomb_grid = bomb_trs->GetGridByScreenPos();
+		std::cout << std::endl;
+		std::cout <<"Bomb Grid : "<< cur_bomb_grid.x << "," << cur_bomb_grid.y << std::endl;
 
 		//Todo: 함수화 시키자
 		std::vector<std::vector<bool>>& screen_grid = TileEditor::GetInstance()->GetWallGrid();
@@ -140,8 +143,6 @@ void Bomb::Update()
 					bomb_frag_spr->SetColor({ 1.f,1.f,0.f,1.f });
 					bomb_frag_cnt++;
 				}
-
-
 
 				//벽이 폭탄에 맞았다면
 				if (TileEditor::GetInstance()->m_vecWallGridCoord[nextX][nextY])
