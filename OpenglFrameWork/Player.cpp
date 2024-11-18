@@ -128,7 +128,7 @@ void Player::Attack()
     {           
         if (m_iCurBombCnt < m_iMaxBombCnt)
         {            
-            bomb_comp=Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());            
+            bomb_comp=Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());
             m_iCurBombCnt++;
         }
         if (bomb_comp == nullptr )

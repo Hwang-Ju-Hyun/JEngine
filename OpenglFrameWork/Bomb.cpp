@@ -49,6 +49,16 @@ bool Bomb::GetIsExplode() const
 	return m_bIsExplode;
 }
 
+void Bomb::SetIsFragment(bool _frag)
+{
+	m_bIsFragmenet = _frag;
+}
+
+bool Bomb::GetIsFragment() const
+{
+	return m_bIsFragmenet;
+}
+
 void Bomb::SetRemainTime(float _time)
 {
 	m_fRemaingTime = _time;
@@ -84,12 +94,11 @@ void Bomb::Update()
 	{
 		SetIsExplode(true);
 		bomb_spr->SetColor({ 1.0f, 0.f, 0.f, 1.f });
-		//동남서북 반시계방향
+		//동북서남 반시계방향
 		int direction[4][2] = { {1,0},{0,-1},{-1,0},{0,1} };
 		Transform* bomb_trs = static_cast<Transform*>(m_pOwner->FindComponent(Transform::TransformTypeName));
 
 		glm::vec2 cur_bomb_grid = bomb_trs->GetGridByScreenPos();
-
 
 		//Todo: 함수화 시키자
 		std::vector<std::vector<bool>>& screen_grid = TileEditor::GetInstance()->GetWallGrid();
@@ -103,7 +112,17 @@ void Bomb::Update()
 				if (nextX < 0 || nextY < 0)
 					continue;
 				if (nextX >= screen_grid.size() && nextY >= screen_grid[0].size())
-					continue;
+					continue;				
+				
+				
+
+
+
+
+
+
+
+
 
 				//벽이 폭탄에 맞았다면
 				if (TileEditor::GetInstance()->m_vecWallGridCoord[nextX][nextY])
@@ -141,12 +160,43 @@ void Bomb::Update()
 						std::cout << players[i]->GetOwner()->GetID() << "is lose" << std::endl;						
 					}
 				}
-
 			}
 		}
 		AccTime = 0.f;
 		CollisionManager::GetInstance()->RemoveBombCol(m_pCol);
 		GameObjectManager::GetInstance()->RemoveObject(m_pOwner->GetID(), Bomb::BombTypeName);
+	}
+}
+
+void Bomb::CreateBombFragment(Bomb* _bomb)
+{	
+	int direction[4][2] = { {1,0},{0,-1},{-1,0},{0,1} };
+
+	Transform* bomb_trs = static_cast<Transform*>(_bomb->GetOwner()->FindComponent(Transform::TransformTypeName));
+	glm::vec2 cur_bomb_grid = bomb_trs->GetGridByScreenPos();
+
+	//Todo: 함수화 시키자
+	std::vector<std::vector<bool>>& screen_grid = TileEditor::GetInstance()->GetWallGrid();
+	for (int i = 0; i < 4; i++)
+	{
+		for (int range = 1; range <= m_iBombRange; range++)
+		{			
+			int nextX = direction[i][0] + (int)cur_bomb_grid.x * range;
+			int nextY = direction[i][1] + (int)cur_bomb_grid.y * range;
+
+			if (nextX < 0 || nextY < 0)
+				continue;
+			if (nextX >= screen_grid.size() && nextY >= screen_grid[0].size())
+				continue;
+			if (TileEditor::GetInstance()->m_vecWallGridCoord[nextX][nextY])			//벽에 맞았으면 생성 x
+				continue;
+
+			Bomb* bomb_frag = Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", _bomb->GetOwner());
+			bomb_frag->SetIsFragment(true);
+			bomb_frag->SetRemainTime(0.f);
+			Transform* bomb_frag_trs = static_cast<Transform*>(bomb_frag->GetOwner()->FindComponent(Transform::TransformTypeName));
+
+		}
 	}
 }
 
@@ -172,6 +222,8 @@ void Bomb::LoadFromJson(const json& _str)
 		m_fRemaingTime = remain_time->begin().value();
 		auto explode_time = comp_data->find("Exploding_Time");
 		m_fExplodingTime = explode_time->begin().value();
+		auto is_fragment = comp_data->find("IsFragment");
+		m_bIsFragmenet = is_fragment->begin().value();
 	}
 }
 
@@ -184,7 +236,9 @@ json Bomb::SaveToJson(const json& _str)
 	json comp_data;
 	comp_data["Remain_Time"] = GetRemainTime();
 	comp_data["Exploding_Time"] = GetExplodingTime();
+	comp_data["IsFragment"] = GetIsFragment();
 	data["CompData"] = comp_data;
+
 
 	return data;
 }
