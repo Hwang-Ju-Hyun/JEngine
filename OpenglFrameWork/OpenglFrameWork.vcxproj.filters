@@ -147,6 +147,9 @@
     <Filter Include="JSON\Static">
       <UniqueIdentifier>{bb364260-ca03-48f5-b200-3b9349478742}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager\BombMgr">
+      <UniqueIdentifier>{f2d721c6-57e7-41ed-9dfc-872f9a57d8ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -289,6 +292,9 @@
     </ClCompile>
     <ClCompile Include="EventManager.cpp">
       <Filter>Manager\EventMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="BombManager.cpp">
+      <Filter>Manager\BombMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -441,6 +447,9 @@
     </ClInclude>
     <ClInclude Include="EventManager.h">
       <Filter>Manager\EventMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="BombManager.h">
+      <Filter>Manager\BombMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

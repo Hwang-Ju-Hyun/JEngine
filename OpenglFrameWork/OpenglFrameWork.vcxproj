@@ -90,6 +90,7 @@
     <ClCompile Include="BaseLevel.cpp" />
     <ClCompile Include="BaseRTTI.cpp" />
     <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="BombManager.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
     <ClCompile Include="ComponentManager.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="BaseLevel.h" />
     <ClInclude Include="BaseRTTI.h" />
     <ClInclude Include="Bomb.h" />
+    <ClInclude Include="BombManager.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="CollisionManager.h" />
     <ClInclude Include="ComponentManager.h" />

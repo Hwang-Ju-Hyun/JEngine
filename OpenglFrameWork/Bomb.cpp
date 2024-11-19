@@ -15,6 +15,7 @@
 #include "ComponentManager.h"
 #include "Wall.h"
 #include "Prefabs.h"
+#include "BombManager.h"
 #include <iostream>
 
 float Bomb::AccFragmentExplodeTime = 0.f;
@@ -89,8 +90,7 @@ const float Bomb::GetExplodingTime() const
 }
 static int a = 1;
 void Bomb::Update()
-{
-	
+{	
 	static float AccTime = 0.f;
 	float dt = TimeManager::GetInstance()->GetDeltaTime();
 	AccTime += dt;
@@ -106,7 +106,7 @@ void Bomb::Update()
 
 		glm::vec2 cur_bomb_grid = bomb_trs->GetGridByScreenPos();
 
-		if (a==1)
+		if (!GetIsExplode()&&!flag)
 		{
 			CreateBombFragment(static_cast<Bomb*>(GetOwner()->FindComponent(Bomb::BombTypeName)));
 			flag = true;
@@ -121,25 +121,25 @@ void Bomb::Update()
 		}
 
 		AccTime = 0.f;
-		CollisionManager::GetInstance()->RemoveBombCol(m_pCol);
+		//CollisionManager::GetInstance()->RemoveBombCol(m_pCol);
 		//GameObjectManager::GetInstance()->RemoveObject(m_pOwner->GetID(), Bomb::BombTypeName);
 	}
 
-	if (AccFragmentExplodeTime >= m_fBombFragExplodeTime)
+	if (AccFragmentExplodeTime >= m_fBombFragExplodeTime&&flag)
 	{
 		SetIsExplode(true);
 		flag = false;
-		for (int i = 0; i < m_vecBombFragment.size(); i++)
+		auto all_bomb_fragments = BombManager::GetInstance()->GetAllBombFragmenets();
+		for (int i = 0; i < all_bomb_fragments.size(); i++)
 		{
-			Collision* bomb_frag_col = static_cast<Collision*>(m_vecBombFragment[i]->FindComponent(Collision::CollisionTypeName));
+			Collision* bomb_frag_col = static_cast<Collision*>(all_bomb_fragments[i]->FindComponent(Collision::CollisionTypeName));
 			CollisionManager::GetInstance()->RemoveBombCol(bomb_frag_col);
-			GameObjectManager::GetInstance()->RemoveObject(m_vecBombFragment[i]);
+			GameObjectManager::GetInstance()->RemoveObject(all_bomb_fragments[i]);
 			
-			m_vecBombFragment[i] = nullptr;
+			all_bomb_fragments[i] = nullptr;
 		}
-		m_vecBombFragment.clear();
-		AccFragmentExplodeTime = 0.f;
-		
+		all_bomb_fragments.clear();
+		AccFragmentExplodeTime = 0.f;		
 	}
 
 }
@@ -156,7 +156,7 @@ void Bomb::CreateBombFragment(Bomb* _bomb)
 	glm::vec2 bomb_pos = bomb_trs->GetPosition();
 	glm::vec2 bomb_scale = bomb_trs->GetScale();	
 
-	//Todo: 개 미 친 놈 코드
+	//Todo: 개 미 친 놈 코드 <- 무조건 수정 해야 함 
 	std::vector<std::vector<bool>>& screen_grid = TileEditor::GetInstance()->GetWallGrid();
 	for (int i = 0; i < 4; i++)
 	{
@@ -225,10 +225,12 @@ void Bomb::CreateBombFragment(Bomb* _bomb)
 			}
 													
 			bomb_frag_spr->SetColor({ 1.0f,0.f,0.f,1.f });			
-			m_vecBombFragment.push_back(bomb_frag->m_pOwner);
+			BombManager::GetInstance()->AddBombFragment(bomb_frag->m_pOwner);
+			//m_vecBombFragment.push_back(bomb_frag->m_pOwner);
 		}
 	}	
-	m_vecBombFragment;
+	auto vec=BombManager::GetInstance()->GetAllBombFragmenets();
+	vec;
 	int a = 0;
 }
 
