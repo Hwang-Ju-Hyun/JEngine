@@ -119,7 +119,7 @@
         "CompData": {
           "Current Level": "Stage01_Lvl",
           "HP": 0,
-          "MaxBomb_Cnt": 1
+          "MaxBomb_Cnt": 10
         }
       }
     ],

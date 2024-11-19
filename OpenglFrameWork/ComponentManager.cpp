@@ -16,19 +16,34 @@ ComponentManager::~ComponentManager()
 
 bool ComponentManager::Update()
 {
-	auto all_compoents = m_vecComponent;
+	auto all_components = m_vecComponent;
 
-	for (auto comp : all_compoents)
+
+	for (int i = 0; i < m_vecComponent.size(); i++)
 	{
-		if (comp != nullptr)
-			comp->Update();
+		if (m_vecComponent[i] != nullptr)
+		{
+			m_vecComponent[i]->Update();
+		}
 		else
 		{
 			std::cerr << "Error : Component is nullptr - ComponentManager::Update" << std::endl;
 			return false;
-		}			
+		}
 	}
 	return true;
+
+	//for (auto comp : all_components)
+	//{
+	//	if (comp != nullptr)
+	//		comp->Update();
+	//	else
+	//	{
+	//		std::cerr << "Error : Component is nullptr - ComponentManager::Update" << std::endl;
+	//		return false;
+	//	}			
+	//}
+	//return true;
 }
 
 BaseComponent* ComponentManager::AddComponent(const std::string _compName,BaseComponent* _comp)

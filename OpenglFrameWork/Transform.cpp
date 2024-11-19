@@ -66,6 +66,8 @@ void Transform::AddScale(glm::vec2 _scale)
 	m_vScale += _scale;
 }
 
+
+
 glm::vec2 Transform::GetPosition() const
 {
 	return m_vPosition;
@@ -99,6 +101,43 @@ glm::mat3 Transform::GetScreenByWorld()
 	m_mWorldToScreen = trans*X_axis_Revert *(m_mModelToWorld);
 	m_mWorldToScreen *= X_axis_Revert;
 	return m_mWorldToScreen;
+}
+
+
+void Transform::SetModelToWorld(glm::vec2 _pos,glm::vec2 _scale)
+{
+	glm::mat3 Transform =
+	{
+		1,0,0,
+		0,1,0,
+		_pos.x,_pos.y,1
+	};
+	glm::mat3 Scale =
+	{
+		_scale.x,0,0,
+		0,_scale.y,0,
+		0,0,1
+	};
+
+	glm::mat3 Rot =
+	{
+		1,0,0,
+		0,1,0,
+		0,0,1
+	};
+
+	glm::mat3 H =
+	{
+		1.f / (window_width / 2.f),0,0,
+		0,1.f / (window_height / 2.f),0,
+		0,0,1
+	};
+	m_mModelToWorld = (Transform * Rot * Scale);
+}
+
+glm::mat3 Transform::GetModelToWorld()
+{	
+	return m_mModelToWorld;
 }
 
 

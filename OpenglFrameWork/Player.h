@@ -22,7 +22,7 @@ public:
     glm::vec2 GetDirection()const;
 private:
     Bomb* bomb_comp = nullptr;
-    Bomb* bomb_comp_temp = nullptr;
+    Transform* bomb_trs = nullptr;  
     Collision* m_pCol = nullptr;
 private:
     int m_iHP = 0;

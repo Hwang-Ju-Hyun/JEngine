@@ -106,9 +106,8 @@ public:
 	GLboolean GetRightArrowKeyReleased()const;
 	GLboolean GetSpaceKeyPressed()const;
 	GLboolean GetSpaceKeyReleased()const;
-
 public:
-	glm::mat3 GetScreenToWorldMatFromMouse();	
+	glm::mat3 GetScreenToWorldMatFromMouse();
 	glm::mat3 GetScreenToWorldMat(glm::vec2 _pos);	
 public:
 	float GetDistanceFromTwoVertex(glm::vec2 _vertex1, glm::vec2 _vertex2);

@@ -18,12 +18,13 @@
 #include <iostream>
 
 float Bomb::AccFragmentExplodeTime = 0.f;
+bool Bomb::flag = false;
 
 Bomb::Bomb(GameObject* _owner)
 	:BaseComponent(_owner)
-{	
-	m_pCol = static_cast<Collision*>(_owner->AddComponent(Collision::CollisionTypeName,new Collision(_owner)));
-	m_pCurrentLevel = GameStateManager::GetInstance()->GetCurrentLevel();	
+{
+	m_pCol = static_cast<Collision*>(_owner->AddComponent(Collision::CollisionTypeName, new Collision(_owner)));
+	m_pCurrentLevel = GameStateManager::GetInstance()->GetCurrentLevel();
 	CollisionManager::GetInstance()->AddBombToBombColVec(m_pCol);
 	m_fBombFragExplodeTime = 3.f;
 }
@@ -86,99 +87,149 @@ const float Bomb::GetExplodingTime() const
 {
 	return m_fExplodingTime;
 }
-
+static int a = 1;
 void Bomb::Update()
-{	
+{
+	
 	static float AccTime = 0.f;
 	float dt = TimeManager::GetInstance()->GetDeltaTime();
 	AccTime += dt;
 	Sprite* bomb_spr = static_cast<Sprite*>(m_pOwner->FindComponent(Sprite::SpriteTypeName));
-	auto a1 = GameObjectManager::GetInstance()->GetAllObject();
-	auto c1 = ComponentManager::GetInstance()->GetAllComponents();
-	a1, c1;
+	static int cnt = 0;
 	if (AccTime >= m_fRemaingTime)
-	{		
+	{
 		bomb_spr->SetColor({ 1.0f, 0.f, 0.f, 1.f });
+
 		//동북서남 반시계방향
 		int direction[4][2] = { {1,0},{0,-1},{-1,0},{0,1} };
 		Transform* bomb_trs = static_cast<Transform*>(m_pOwner->FindComponent(Transform::TransformTypeName));
 
 		glm::vec2 cur_bomb_grid = bomb_trs->GetGridByScreenPos();
-		
-		if (!GetIsExplode()&&!flag)
+
+		if (a==1)
 		{
 			CreateBombFragment(static_cast<Bomb*>(GetOwner()->FindComponent(Bomb::BombTypeName)));
 			flag = true;
+			std::cout << cnt++ << std::endl; a++;
 		}
-		if(flag)
-			AccFragmentExplodeTime += dt;		
+		
+
+		if (flag)
+		{
+			float frag_explode_dt = TimeManager::GetInstance()->GetDeltaTime();
+			AccFragmentExplodeTime += frag_explode_dt;
+		}
 
 		AccTime = 0.f;
-		//CollisionManager::GetInstance()->RemoveBombCol(m_pCol);
+		CollisionManager::GetInstance()->RemoveBombCol(m_pCol);
 		//GameObjectManager::GetInstance()->RemoveObject(m_pOwner->GetID(), Bomb::BombTypeName);
 	}
-	auto a = GameObjectManager::GetInstance()->GetAllObject();
-	auto c = ComponentManager::GetInstance()->GetAllComponents();
-	a, c;
+
 	if (AccFragmentExplodeTime >= m_fBombFragExplodeTime)
 	{
 		SetIsExplode(true);
 		flag = false;
 		for (int i = 0; i < m_vecBombFragment.size(); i++)
 		{
+			Collision* bomb_frag_col = static_cast<Collision*>(m_vecBombFragment[i]->FindComponent(Collision::CollisionTypeName));
+			CollisionManager::GetInstance()->RemoveBombCol(bomb_frag_col);
 			GameObjectManager::GetInstance()->RemoveObject(m_vecBombFragment[i]);
+			
+			m_vecBombFragment[i] = nullptr;
 		}
 		m_vecBombFragment.clear();
 		AccFragmentExplodeTime = 0.f;
+		
 	}
 
 }
 
 void Bomb::CreateBombFragment(Bomb* _bomb)
-{		
+{
 	float dt = TimeManager::GetInstance()->GetDeltaTime();
-		
+
 	//						  →     ↑      ←      ↓
 	int direction[4][2] = { {1,0},{0,-1},{-1,0},{0,1} };
 
 	Transform* bomb_trs = static_cast<Transform*>(_bomb->GetOwner()->FindComponent(Transform::TransformTypeName));
 	glm::vec2 cur_bomb_grid = bomb_trs->GetGridByScreenPos();
 	glm::vec2 bomb_pos = bomb_trs->GetPosition();
-	glm::vec2 bomb_scale = bomb_trs->GetScale();
+	glm::vec2 bomb_scale = bomb_trs->GetScale();	
 
-	//Todo: 함수화 시키자
+	//Todo: 개 미 친 놈 코드
 	std::vector<std::vector<bool>>& screen_grid = TileEditor::GetInstance()->GetWallGrid();
 	for (int i = 0; i < 4; i++)
 	{
-		for (int range = 1; range <= m_iBombRange; range++)
-		{			
-			int nextX = direction[i][0] + (int)cur_bomb_grid.x * range;
-			int nextY = direction[i][1] + (int)cur_bomb_grid.y * range;
+		for (int range = 0; range < m_iBombRange; range++)
+		{		
+			int nextX;
+			int nextY;
+			if (i % 2 == 0)
+			{				
+				if (i == 2)
+					range *= -1;
+				nextX = direction[i][0] + (int)cur_bomb_grid.x + range;
+				nextY = direction[i][1] + (int)cur_bomb_grid.y;
+			}			
+			else
+			{
+				if (i == 1)
+				{					
+					range *= -1;
+				}					
+				nextX = direction[i][0] + (int)cur_bomb_grid.x ;
+				nextY = direction[i][1] + (int)cur_bomb_grid.y + range;				
+			}
 
 			if (nextX < 0 || nextY < 0)
 				continue;
 			if (nextX >= screen_grid.size() || nextY >= screen_grid[0].size())
 				continue;
 			if (TileEditor::GetInstance()->m_vecWallGridCoord[nextX][nextY])			//벽에 맞았으면 생성 x
-				continue;
+			{
+				GameObject* wall_obj = TileEditor::GetInstance()->FindObjectByGrid({ nextX, nextY });
+				if (wall_obj != nullptr)
+				{					
+					Wall* wall_comp = dynamic_cast<Wall*>(wall_obj->FindComponent(Wall::WallTypeName));
+					if (wall_comp != nullptr)
+					{
+						break;
+					}
+				}
+			}
 
-			Bomb* bomb_frag = Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", _bomb->GetOwner());
-			m_vecBombFragment.push_back(bomb_frag->m_pOwner);
+			Bomb* bomb_frag = Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", _bomb->GetOwner());			
 			bomb_frag->SetIsFragment(true);
-			bomb_frag->SetRemainTime(0.f);			
-			Transform* bomb_frag_trs = static_cast<Transform*>(bomb_frag->GetOwner()->FindComponent(Transform::TransformTypeName));			
+			bomb_frag->SetRemainTime(0.f);
+			Transform* bomb_frag_trs = static_cast<Transform*>(bomb_frag->GetOwner()->FindComponent(Transform::TransformTypeName));
 			bomb_frag_trs->SetPosition(bomb_trs->GetPosition());
-			Sprite* bomb_frag_spr= static_cast<Sprite*>(bomb_frag->GetOwner()->FindComponent(Sprite::SpriteTypeName));
+			Sprite* bomb_frag_spr = static_cast<Sprite*>(bomb_frag->GetOwner()->FindComponent(Sprite::SpriteTypeName));
+			
 			if (i == 1)
-				direction[i][1] *= -1;
-			bomb_frag_trs->AddPosition({ bomb_scale.x * range * direction[i][0],bomb_scale.y * range * direction[i][1] });
-			auto b = bomb_pos;
-			b;
-			auto a= bomb_frag_trs->GetPosition();
-			a;
-			bomb_frag_spr->SetColor({ 1.0f,0.f,0.f,1.f });
+			{
+				bomb_frag_trs->SetPosition({ bomb_trs->GetPosition().x,bomb_trs->GetPosition().y + (bomb_scale.y * (range - 1) * direction[i][1]) });
+				range *= -1;
+			}
+			else if (i == 2)
+			{				
+				direction[i][0] *= -1;			
+				bomb_frag_trs->SetPosition({ bomb_trs->GetPosition().x + (bomb_scale.x * (range - 1) * direction[i][0]), bomb_trs->GetPosition().y });
+				range *= -1;				
+				direction[i][0] *= -1;				
+			}
+			else
+			{				
+				direction[i][1] *= -1;			
+				bomb_frag_trs->SetPosition({ bomb_trs->GetPosition().x + (bomb_scale.x * (range + 1) * direction[i][0]),bomb_trs->GetPosition().y + (bomb_scale.y * (range + 1) * direction[i][1]) });				
+				direction[i][1] *= -1;				
+			}
+													
+			bomb_frag_spr->SetColor({ 1.0f,0.f,0.f,1.f });			
+			m_vecBombFragment.push_back(bomb_frag->m_pOwner);
 		}
-	}		
+	}	
+	m_vecBombFragment;
+	int a = 0;
 }
 
 

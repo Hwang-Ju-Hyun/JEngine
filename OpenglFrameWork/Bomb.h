@@ -14,7 +14,7 @@ private:
     bool m_bIsExplode = false;
     float m_fRemaingTime = 0.f;
     float m_fExplodingTime = 0.f;
-    int m_iBombRange = 1;
+    int m_iBombRange = 3;
     bool m_bIsFragmenet = false;
 public:
     void SetBombRange(int _range);
@@ -40,7 +40,7 @@ private:
     bool m_bBombFrag = false;
     float m_fBombFragExplodeTime = 0.f;
     static float AccFragmentExplodeTime;   
-    bool flag = false;
+    static bool flag;
 public:
     virtual void EventCollision(Collision* _pOther)override;
 public:

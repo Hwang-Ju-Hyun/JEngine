@@ -38,11 +38,14 @@ public:
 	void SetScale(glm::vec2 _scale);
 	void AddScale(glm::vec2 _scale);
 public:
+	void SetModelToWorld(glm::vec2 _pos, glm::vec2 _scale);
+public:
 	//gettor
 	glm::vec2 GetPosition()const;
 	glm::vec2 GetScale()const;
 	glm::mat3 GetModelToNDC();
 	glm::mat3 GetScreenByWorld();
+	glm::mat3 GetModelToWorld();
 public:
     virtual void Update()override;
 public:

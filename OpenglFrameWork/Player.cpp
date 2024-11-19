@@ -128,7 +128,7 @@ void Player::Attack()
     {           
         if (m_iCurBombCnt < m_iMaxBombCnt)
         {            
-            bomb_comp=Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());
+            bomb_comp=Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());                        
             m_iCurBombCnt++;
         }
         if (bomb_comp == nullptr )
@@ -180,7 +180,7 @@ void Player::MoveMent_temp()
     glm::vec2 grid = TileEditor::GetInstance()->GetScreenGridByScreenPoint(pos);
     player_trs->SetGridByScreenPos(grid);
     grid = player_trs->GetGridByScreenPos();
-    std::cout << m_pOwner->GetID() << " : " << player_trs->GetPosition().x << ", " << player_trs->GetPosition().y << std::endl;
+    //std::cout << m_pOwner->GetID() << " : " << player_trs->GetPosition().x << ", " << player_trs->GetPosition().y << std::endl;
     std::cout << m_pOwner->GetID() << " : " << grid.x << "," << grid.y << std::endl;
 }
 
@@ -191,13 +191,27 @@ void Player::Attack_temp()
     {
         if (m_iCurBombCnt_temp < m_iMaxBombCnt_temp)
         {
-            bomb_comp_temp = Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());
+            Bomb* bomb_comp_temp = Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());
+
+            Transform* bomb_trs_temp = static_cast<Transform*>((Transform*)bomb_comp_temp->GetOwner()->FindComponent(Transform::TransformTypeName));
+            glm::vec2 bomb_world_pos = bomb_trs_temp->GetPosition();
+            glm::vec2 bomb_scale = bomb_trs_temp->GetScale();
+            
+            bomb_trs_temp->SetModelToWorld(bomb_world_pos, bomb_scale);
+            glm::mat3 bomb_mat_temp = { bomb_trs_temp->GetScreenByWorld() };
+            glm::vec2 bomb_screen_pos = { bomb_mat_temp[2][0],bomb_mat_temp[2][1] };
+            glm::vec2 bomb_grid = TileEditor::GetInstance()->GetScreenGridByScreenPoint(bomb_screen_pos);
+
+            glm::vec2 bomb_pos = TileEditor::GetInstance()->GetWorldPosbyScreenGrid(bomb_scale.x, bomb_scale.y, bomb_grid.x, bomb_grid.y);
+            bomb_trs_temp->SetPosition({ bomb_pos.x,bomb_pos.y });
+
+
             m_iCurBombCnt_temp++;
         }
-        if (bomb_comp_temp != nullptr && bomb_comp_temp->GetIsExplode())
+        /*if (bomb_comp_temp != nullptr && !bomb_comp_temp->GetIsExplode())
         {
             m_iCurBombCnt_temp = 0;
-        }
+        }*/
     }
 }
 
