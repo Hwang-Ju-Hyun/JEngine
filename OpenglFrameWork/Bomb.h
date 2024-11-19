@@ -35,14 +35,17 @@ public:
 public:
     void CreateBombFragment(Bomb* _bomb);
 private:
-    std::vector<Bomb*> m_vecBombFragment;
+    std::vector<GameObject*> m_vecBombFragment;
     Collision* m_pCol = nullptr;
     bool m_bBombFrag = false;
+    float m_fBombFragExplodeTime = 0.f;
+    static float AccFragmentExplodeTime;   
+    bool flag = false;
 public:
     virtual void EventCollision(Collision* _pOther)override;
 public:
     virtual void LoadFromJson(const json& _str)override;
-    virtual json SaveToJson(const json& _str)override;
+    virtual json SaveToJson(const json& _str)override;    
 public:
     static BaseRTTI* CreateBombComponent();
 public:

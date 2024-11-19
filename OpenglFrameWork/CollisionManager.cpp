@@ -135,8 +135,8 @@ void CollisionManager::HandlePosOnCollision_Rect_Circle(GameObject* _obj1, GameO
 
 bool CollisionManager::IsCollisionRectAndRect(GameObject* _obj1, GameObject* _obj2)
 {	
-	Transform* obj_trs1 = static_cast<Transform*>(_obj1->FindComponent("Transform"));
-	Transform* obj_trs2 = static_cast<Transform*>(_obj2->FindComponent("Transform"));
+	Transform* obj_trs1 = static_cast<Transform*>(_obj1->FindComponent(Transform::TransformTypeName));
+	Transform* obj_trs2 = static_cast<Transform*>(_obj2->FindComponent(Transform::TransformTypeName));
 	
 	glm::vec2 obj1_Pos = static_cast<Transform*>(obj_trs1)->GetPosition();
 	glm::vec2 obj2_Pos = static_cast<Transform*>(obj_trs2)->GetPosition();	
