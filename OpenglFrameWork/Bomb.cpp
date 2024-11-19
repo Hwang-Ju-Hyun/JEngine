@@ -156,7 +156,7 @@ void Bomb::CreateBombFragment(Bomb* _bomb)
 	glm::vec2 bomb_pos = bomb_trs->GetPosition();
 	glm::vec2 bomb_scale = bomb_trs->GetScale();	
 
-	//Todo: 개 미 친 놈 코드 <- 무조건 수정 해야 함 
+	//Todo:  미 친 놈 코드 <- 무조건 수정 해야 함 
 	std::vector<std::vector<bool>>& screen_grid = TileEditor::GetInstance()->GetWallGrid();
 	for (int i = 0; i < 4; i++)
 	{

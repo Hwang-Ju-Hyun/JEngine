@@ -150,6 +150,9 @@
     <Filter Include="Manager\BombMgr">
       <UniqueIdentifier>{f2d721c6-57e7-41ed-9dfc-872f9a57d8ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\Bomb\BombFragment">
+      <UniqueIdentifier>{8974bbf5-90c8-4536-80a3-f855e662479b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -295,6 +298,9 @@
     </ClCompile>
     <ClCompile Include="BombManager.cpp">
       <Filter>Manager\BombMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="BombFragment.cpp">
+      <Filter>Component\Bomb\BombFragment</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -450,6 +456,9 @@
     </ClInclude>
     <ClInclude Include="BombManager.h">
       <Filter>Manager\BombMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="BombFragment.h">
+      <Filter>Component\Bomb\BombFragment</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
