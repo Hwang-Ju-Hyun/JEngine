@@ -16,7 +16,7 @@ public:
     virtual void Update()override;
     virtual void Exit()override;
 private:
-    
+    bool m_bEnemyGoing = false;
 public:
     static constexpr const char* IdleTypeName = "Idle";
 };

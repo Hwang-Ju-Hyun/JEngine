@@ -101,7 +101,7 @@ void Player::MoveMent()
     {
         if (direction != glm::vec2{ 0.f, 0.f })
         {
-            player_rig->SetAccelation(direction * 3000.f);
+            player_rig->SetAccelation(direction * 1000.f);
         }
         else
         {

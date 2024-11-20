@@ -45,12 +45,11 @@
             0.0
           ],
           "Max Velocity": [
-            1000.0,
-            1000.0
+            300.0,
+            300.0
           ]
         }
-      },
-      null,
+      },      
       {
         "Type": "Player",
         "CompData": {

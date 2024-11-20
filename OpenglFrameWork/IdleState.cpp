@@ -31,41 +31,48 @@ void IdleState::Update()
     int range = rand_dist(mt);
 
     Transform* enemy_trs = static_cast<Transform*>(m_pEnemy->FindComponent(Transform::TransformTypeName));
-    glm::vec2 cur_enemy_grid=enemy_trs->GetGridByScreenPos();
-    std::cout << cur_enemy_grid.x << "," << cur_enemy_grid.y << std::endl;
+    glm::vec2 cur_enemy_grid=enemy_trs->GetGridByScreenPos();    
     
-    int nextX=cur_enemy_grid.x;
-    int nextY=cur_enemy_grid.y;
-    switch (rand_dir)
+    static int nextX=0;
+    static int nextY=0;
+
+    float dt = TimeManager::GetInstance()->GetDeltaTime();
+    static glm::vec2 dir = { 0.f,0.f };
+     
+    if (!m_bEnemyGoing)
     {
-    case 0:
-        nextX = range+cur_enemy_grid.x;        
-        break;
-    case 1:        
-        nextY = range + rand_dir;    
-        break;
-    case 2:
-        nextX = -range + cur_enemy_grid.x;
-        break;
-    case 3:
-        nextY = -range + rand_dir;
-        break;
-    default:
-        break;
-    }
-
-    float dt=TimeManager::GetInstance()->GetDeltaTime();
-    glm::vec2 dir;
-    if (nextX > 0 && nextY > 0)
-        dir = { 1.f,0.f };
-    else if (nextX < 0 && nextY >0)
-        dir = { -1.f,0.f };
-    else if (nextX > 0 && nextY < 0)
-        dir = { 0.f,-1.f };
-    else
-        dir = { 0.f,1.f, };
-
+        switch (rand_dir)
+        {
+        case 0:
+            nextX = range + cur_enemy_grid.x;
+            dir = { 1.f,0.f };
+            break;
+        case 1:
+            nextY = range + rand_dir;
+            dir = { 0.f,-1.f };
+            break;
+        case 2:
+            nextX = -range + cur_enemy_grid.x;
+            dir = { 0.f,-1.f };
+            break;
+        case 3:
+            nextY = -range + rand_dir;
+            dir = { 0.f,1.f, };
+            break;
+        default:
+            break;
+        }
+    }    
+    m_bEnemyGoing = true;
+    glm::vec2 cur_grid = enemy_trs->GetGridByScreenPos();
     enemy_trs->AddPosition(dir);
+
+    if (cur_grid.x == nextX && cur_grid.y ==nextY)
+    {        
+        m_bEnemyGoing = false;
+        nextX = cur_grid.x;
+        nextY = cur_grid.y;
+    }
 }
 
 void IdleState::Exit()

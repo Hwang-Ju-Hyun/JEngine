@@ -428,6 +428,7 @@ bool CollisionManager::Update()
 	auto all_players_col_comp = GetPlayerCollisionVec();
 	auto all_bombs_col_comp = GetBombCollisionVec();	
 	
+
 	int walls_col_size = all_walls_col_comp.size();
 	int player_col_size = all_players_col_comp.size();
 	int bombs_col_size = all_bombs_col_comp.size();

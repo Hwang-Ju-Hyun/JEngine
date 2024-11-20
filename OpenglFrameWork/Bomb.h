@@ -14,7 +14,7 @@ private:
     bool m_bIsExplode = false;
     float m_fRemaingTime = 0.f;
     float m_fExplodingTime = 0.f;
-    int m_iBombRange = 3;
+    int m_iBombRange = 1;
     bool m_bIsFragmenet = false;    
     bool m_bDoExplode = false;
 public:
