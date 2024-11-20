@@ -8,6 +8,7 @@
 #include "Collision.h"
 #include "BombFragment.h"
 #include "AI.h"
+#include "Enemy.h"
 
 Registry::Registry()
 {
@@ -19,6 +20,7 @@ Registry::Registry()
     m_mapRttiMap.insert({ Bomb::BombTypeName,&Bomb::CreateBombComponent});
     m_mapRttiMap.insert({ BombFragment::BombFragmentTypeName,&BombFragment::CreateBombFragComponent });
     m_mapRttiMap.insert({ AI::AITypeName,&AI::CreateAIComponent });
+    m_mapRttiMap.insert({ Enemy::EnemyTypeName,&Enemy::CreateEnemyComponent });
     //m_mapRttiMap.insert({ Collision::CollisionTypeName,&Collision::CreateCollisionComponent });
 }
 

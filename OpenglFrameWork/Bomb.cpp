@@ -229,7 +229,7 @@ void Bomb::CreateBombFragment(Bomb* _bomb)
 			else
 			{				
 				direction[i][1] *= -1;			
-				bomb_frag_trs->SetPosition({ bomb_trs->GetPosition().x + (bomb_scale.x * (range + 1) * direction[i][0]),bomb_trs->GetPosition().y + (bomb_scale.y * (range + 1) * direction[i][1]) });				
+				bomb_frag_trs->SetPosition({ bomb_trs->GetPosition().x + (bomb_scale.x * (range + 1) * direction[i][0]),bomb_trs->GetPosition().y + (bomb_scale.y * (range + 1) * direction[i][1]) });
 				direction[i][1] *= -1;				
 			}
 													

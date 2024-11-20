@@ -124,19 +124,19 @@ void Player::Attack()
     auto Helper = GLHelper::GetInstance();    
     if (Helper->GetKeyState(Helper->KEY::SPACE) == Helper->KEY_STATE::PUSH)
     {
-        Bomb* bomb_comp_temp = Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());
+        Bomb* bomb_comp = Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());
 
-        Transform* bomb_trs_temp = static_cast<Transform*>((Transform*)bomb_comp_temp->GetOwner()->FindComponent(Transform::TransformTypeName));
-        glm::vec2 bomb_world_pos = bomb_trs_temp->GetPosition();
-        glm::vec2 bomb_scale = bomb_trs_temp->GetScale();
+        Transform* bomb_trs = static_cast<Transform*>((Transform*)bomb_comp->GetOwner()->FindComponent(Transform::TransformTypeName));
+        glm::vec2 bomb_world_pos = bomb_trs->GetPosition();
+        glm::vec2 bomb_scale = bomb_trs->GetScale();
 
-        bomb_trs_temp->SetModelToWorld(bomb_world_pos, bomb_scale);
-        glm::mat3 bomb_mat_temp = { bomb_trs_temp->GetScreenByWorld() };
+        bomb_trs->SetModelToWorld(bomb_world_pos, bomb_scale);
+        glm::mat3 bomb_mat_temp = { bomb_trs->GetScreenByWorld() };
         glm::vec2 bomb_screen_pos = { bomb_mat_temp[2][0],bomb_mat_temp[2][1] };
         glm::vec2 bomb_grid = TileEditor::GetInstance()->GetScreenGridByScreenPoint(bomb_screen_pos);
 
         glm::vec2 bomb_pos = TileEditor::GetInstance()->GetWorldPosbyScreenGrid(bomb_scale.x, bomb_scale.y, bomb_grid.x, bomb_grid.y);
-        bomb_trs_temp->SetPosition({ bomb_pos.x,bomb_pos.y });
+        bomb_trs->SetPosition({ bomb_pos.x,bomb_pos.y });
 
 
         m_iCurBombCnt_temp++;

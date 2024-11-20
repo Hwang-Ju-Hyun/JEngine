@@ -68,6 +68,12 @@ GameObject* Serializer::CreateObjectFromJson(json _item)
 
 			std::string type_name = (*type);
 
+			if (type_name == "AI")
+			{
+				int a;
+				a = 0;
+			}
+				
 			BaseRTTI* p = Registry::GetInstance()->FindOrCreate(type_name);
 			if (p != nullptr)
 			{

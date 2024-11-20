@@ -1,58 +1,6 @@
 [
   {
     "Name": "Wall",
-    "ID": 2,
-    "Components": [
-      {
-        "Type": "Transform",
-        "CompData": {
-          "Pos": [
-            825.0,
-            -225.0
-          ],
-          "sca": [
-            66.0,
-            50.0
-          ],
-          "Rot": [
-            0.0,
-            0.0
-          ],
-          "Grid": [
-            27.0,
-            13.0
-          ]
-        }
-      },
-      {
-        "Type": "Sprite",
-        "CompData": {
-          "RED": 0.0,
-          "GREEN": 1.0,
-          "BLUE": 0.0,
-          "ALPHA": 1.0,
-          "TextureName": "fragile_wall",
-          "TexturePath": "../Extern/Assets/fragile_wall.png"
-        }
-      },
-      null,
-      {
-        "Type": "Wall",
-        "CompData": {
-          "Grid": [
-            0.0,
-            0.0
-          ],
-          "Exist": false,
-          "Fragile": true
-        }
-      }
-    ],
-    "Shader_Ref": 0,
-    "Model_Type": 1
-  },
-  {
-    "Name": "Wall",
     "ID": 3,
     "Components": [
       {
@@ -10817,14 +10765,14 @@
   },
   {
     "Name": "Wall",
-    "ID": 210,
+    "ID": 2,
     "Components": [
       {
         "Type": "Transform",
         "CompData": {
           "Pos": [
-            -165.0,
-            225.0
+            825.0,
+            -225.0
           ],
           "sca": [
             66.0,
@@ -10835,8 +10783,8 @@
             0.0
           ],
           "Grid": [
-            12.0,
-            4.0
+            27.0,
+            13.0
           ]
         }
       },
@@ -12637,13 +12585,13 @@
   },
   {
     "Name": "Wall",
-    "ID": 211,
+    "ID": 210,
     "Components": [
       {
         "Type": "Transform",
         "CompData": {
           "Pos": [
-            -99.0,
+            -165.0,
             225.0
           ],
           "sca": [
@@ -12655,7 +12603,7 @@
             0.0
           ],
           "Grid": [
-            13.0,
+            12.0,
             4.0
           ]
         }
@@ -14425,6 +14373,58 @@
           "Grid": [
             20.0,
             3.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.0,
+          "GREEN": 1.0,
+          "BLUE": 0.0,
+          "ALPHA": 1.0,
+          "TextureName": "fragile_wall",
+          "TexturePath": "../Extern/Assets/fragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": true
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 211,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -99.0,
+            225.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            13.0,
+            4.0
           ]
         }
       },

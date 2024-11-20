@@ -2,11 +2,16 @@
 #include "GameObjectManager.h"
 #include "GameObject.h"
 #include <iostream>
-
+#include "Collision.h"
+#include "AI.h"
+#include "IdleState.h"
 
 Enemy::Enemy(GameObject* _owner)
 	:BaseComponent(_owner)
 {
+    m_pOwner->AddComponent(Collision::CollisionTypeName, new Collision(_owner));
+    AI* ai=(AI*)m_pOwner->FindComponent(AI::AITypeName);
+    ai->SetState(m_pOwner->GetName());
 }
 
 Enemy::~Enemy()
