@@ -58,6 +58,10 @@ bool Engine::Update()
 	ImGui::NewFrame();
 	ImGui::ShowDemoWindow(); // Show demo window! :)
 
+	//GLHelperManager Udpate
+	if (!GLHelper::GetInstance()->Update())
+		return false;
+
 	//TimeManager Udpate
 	if (!TimeManager::GetInstance()->Update())
 		return false;

@@ -72,73 +72,9 @@ void Player::SetCurrentLevel(BaseLevel* _level)
 BaseLevel* Player::GetCurrentLevel() const
 {
     return GameStateManager::GetInstance()->GetCurrentLevel();
-}
-
+} 
+   
 void Player::MoveMent()
-{
-    auto helper = GLHelper::GetInstance();
-    glm::vec2 direction = { 0.f, 0.f };
-
-    if (helper->GetUpArrowKeyPressed())
-    {
-        direction.y = 1.f; 
-    }
-    if (helper->GetDownArrowKeyPressed())
-    {
-        direction.y = -1.f;
-    }
-    if (helper->GetRightArrowKeyPressed())
-    {
-        direction.x = 1.f; 
-    }
-    if (helper->GetLeftArrowKeyPressed())
-    {
-        direction.x = -1.f; 
-    }
-
-    RigidBody* player_rig = (RigidBody*)m_pOwner->FindComponent(RigidBody::RigidBodyTypeName);    
-    if (player_rig)
-    {
-        if (direction != glm::vec2{0.f, 0.f})
-        {
-            player_rig->SetAccelation(direction * 3000.f);             
-        }
-        else
-        {
-            player_rig->SetAccelation(glm::vec2{ 0.f, 0.f });
-            player_rig->SetVelocity(glm::vec2{0.f,0.f});
-        }
-    }
-
-    Transform* player_trs = static_cast<Transform*>((Transform*)m_pOwner->FindComponent(Transform::TransformTypeName));
-    glm::mat3 mat = {player_trs->GetScreenByWorld()};
-    glm::vec2 pos = { mat[2][0],mat[2][1] };
-    glm::vec2 grid=TileEditor::GetInstance()->GetScreenGridByScreenPoint(pos);
-    player_trs->SetGridByScreenPos(grid);
-    grid = player_trs->GetGridByScreenPos();
-    //std::cout << m_pOwner->GetID() << " : " << player_trs->GetPosition().x << ", " << player_trs->GetPosition().y << std::endl;
-    //std::cout << m_pOwner->GetID() << " : " << grid.x << "," << grid.y << std::endl;
-}   
-    
-void Player::Attack()
-{   
-    auto Helper = GLHelper::GetInstance();    
-    bool init = false;
-    if (Helper->GetNum0KeyPressed())
-    {           
-        if (m_iCurBombCnt < m_iMaxBombCnt)
-        {            
-            bomb_comp=Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());                        
-            m_iCurBombCnt++;
-        }
-        if (bomb_comp == nullptr )
-        {
-            m_iCurBombCnt = 0;
-        }        
-    }
-}
-
-void Player::MoveMent_temp()
 {
     auto helper = GLHelper::GetInstance();
     glm::vec2 direction = { 0.f, 0.f };
@@ -180,39 +116,35 @@ void Player::MoveMent_temp()
     glm::vec2 grid = TileEditor::GetInstance()->GetScreenGridByScreenPoint(pos);
     player_trs->SetGridByScreenPos(grid);
     grid = player_trs->GetGridByScreenPos();
-    //std::cout << m_pOwner->GetID() << " : " << player_trs->GetPosition().x << ", " << player_trs->GetPosition().y << std::endl;
-    std::cout << m_pOwner->GetID() << " : " << grid.x << "," << grid.y << std::endl;
+    
 }
 
-void Player::Attack_temp()
+void Player::Attack()
 {
     auto Helper = GLHelper::GetInstance();    
-    if (Helper->GetSpaceKeyPressed())
+    if (Helper->GetKeyState(Helper->KEY::SPACE) == Helper->KEY_STATE::PUSH)
     {
-        if (m_iCurBombCnt_temp < m_iMaxBombCnt_temp)
-        {
-            Bomb* bomb_comp_temp = Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());
+        Bomb* bomb_comp_temp = Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());
 
-            Transform* bomb_trs_temp = static_cast<Transform*>((Transform*)bomb_comp_temp->GetOwner()->FindComponent(Transform::TransformTypeName));
-            glm::vec2 bomb_world_pos = bomb_trs_temp->GetPosition();
-            glm::vec2 bomb_scale = bomb_trs_temp->GetScale();
-            
-            bomb_trs_temp->SetModelToWorld(bomb_world_pos, bomb_scale);
-            glm::mat3 bomb_mat_temp = { bomb_trs_temp->GetScreenByWorld() };
-            glm::vec2 bomb_screen_pos = { bomb_mat_temp[2][0],bomb_mat_temp[2][1] };
-            glm::vec2 bomb_grid = TileEditor::GetInstance()->GetScreenGridByScreenPoint(bomb_screen_pos);
+        Transform* bomb_trs_temp = static_cast<Transform*>((Transform*)bomb_comp_temp->GetOwner()->FindComponent(Transform::TransformTypeName));
+        glm::vec2 bomb_world_pos = bomb_trs_temp->GetPosition();
+        glm::vec2 bomb_scale = bomb_trs_temp->GetScale();
 
-            glm::vec2 bomb_pos = TileEditor::GetInstance()->GetWorldPosbyScreenGrid(bomb_scale.x, bomb_scale.y, bomb_grid.x, bomb_grid.y);
-            bomb_trs_temp->SetPosition({ bomb_pos.x,bomb_pos.y });
+        bomb_trs_temp->SetModelToWorld(bomb_world_pos, bomb_scale);
+        glm::mat3 bomb_mat_temp = { bomb_trs_temp->GetScreenByWorld() };
+        glm::vec2 bomb_screen_pos = { bomb_mat_temp[2][0],bomb_mat_temp[2][1] };
+        glm::vec2 bomb_grid = TileEditor::GetInstance()->GetScreenGridByScreenPoint(bomb_screen_pos);
+
+        glm::vec2 bomb_pos = TileEditor::GetInstance()->GetWorldPosbyScreenGrid(bomb_scale.x, bomb_scale.y, bomb_grid.x, bomb_grid.y);
+        bomb_trs_temp->SetPosition({ bomb_pos.x,bomb_pos.y });
 
 
-            m_iCurBombCnt_temp++;
-        }
-        /*if (bomb_comp_temp != nullptr && !bomb_comp_temp->GetIsExplode())
-        {
-            m_iCurBombCnt_temp = 0;
-        }*/
+        m_iCurBombCnt_temp++;
     }
+    /*if (bomb_comp_temp != nullptr && !bomb_comp_temp->GetIsExplode())
+    {
+        m_iCurBombCnt_temp = 0;
+    }*/
 }
 
 void Player::Update()
@@ -221,12 +153,7 @@ void Player::Update()
     {
         MoveMent();
         Attack();
-    }
-    else if (m_pOwner->GetID() == 2)
-    {
-        MoveMent_temp();
-        Attack_temp();
-    }            
+    }        
 }
 
 void Player::EventCollision(Collision* _pOther)

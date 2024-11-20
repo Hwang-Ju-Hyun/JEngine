@@ -15,12 +15,13 @@ private:
     float m_fRemaingTime = 0.f;
     float m_fExplodingTime = 0.f;
     int m_iBombRange = 3;
-    bool m_bIsFragmenet = false;
+    bool m_bIsFragmenet = false;    
+    bool m_bDoExplode = false;
 public:
     void SetBombRange(int _range);
     int  GetBombRange()const;
-    void SetIsExplode(bool _explode);
-    bool GetIsExplode()const;
+    void SetIsExploding(bool _explode);
+    bool GetIsExploding()const;
     void SetIsFragment(bool _frag);
     bool GetIsFragment()const;
     void SetRemainTime(float _time);
@@ -28,6 +29,8 @@ public:
     const float GetRemainTime()const;
     void SetExplodingTime(float _time);
     const float GetExplodingTime()const;
+    void SetCanExplode(bool _explode);
+    bool GetCanExplode()const;
 public:
     void Update();
 public:
@@ -35,12 +38,10 @@ public:
 public:
     void CreateBombFragment(Bomb* _bomb);
 private:
-    std::vector<GameObject*> m_vecBombFragment;
+    //std::vector<GameObject*> m_vecBombFragment;
     Collision* m_pCol = nullptr;
     bool m_bBombFrag = false;
-    float m_fBombFragExplodeTime = 0.f;
-    static float AccFragmentExplodeTime;   
-    static bool flag;
+    float m_fBombFragExplodeTime = 0.f;        
 public:
     virtual void EventCollision(Collision* _pOther)override;
 public:

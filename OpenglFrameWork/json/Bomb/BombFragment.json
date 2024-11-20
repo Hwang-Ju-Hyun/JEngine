@@ -1,6 +1,6 @@
 [
   {
-    "Name": "Bomb",
+    "Name": "BombFragment",
     "ID": 1,
     "Components": [
       {
@@ -31,11 +31,9 @@
         }
       },
       {
-        "Type": "Bomb",
-        "CompData": {
-          "Remain_Time": 3.0,
-          "Exploding_Time": 1.0,
-          "IsFragment": false
+        "Type": "BombFragment",
+        "CompData": {          
+          "Exploding_Time": 1.0          
         }
       }
     ],

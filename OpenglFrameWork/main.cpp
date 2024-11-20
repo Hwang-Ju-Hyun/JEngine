@@ -120,13 +120,16 @@ int main(void)
     // contexts but isn't necessary for our simple use case.
     glDebugMessageCallback(GLDebugMessageCallback, NULL);
 
-
+    bool prev_up_key = false;
 	while (!glfwWindowShouldClose(GLHelper::GetInstance()->GetWindow()))
 	{			
+        //if(prev_up_key == true && up_key_state )
+            // 
 		if (!Engine::GetInstance()->Update())
 			break;
 		if (!Engine::GetInstance()->Draw())
 			break;
+        //prev_up_key = up_key_state;
 	}
 	Engine::GetInstance()->Exit();
 

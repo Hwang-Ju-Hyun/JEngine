@@ -41,13 +41,9 @@ public:
 public:
     void SetCurrentLevel(BaseLevel* _level);
     BaseLevel* GetCurrentLevel()const;
-public:
+public:    
     void MoveMent();
     void Attack();
-public:
-    //player2 <- 곧 사라질 코드
-    void MoveMent_temp();
-    void Attack_temp();
 public:
     virtual void Update()override;
 public:

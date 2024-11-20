@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Player.h"
 #include "Wall.h"
+#include "Bomb.h"
 #include <iostream>
 
 Collision::Collision(GameObject* _owner)
@@ -12,7 +13,11 @@ Collision::Collision(GameObject* _owner)
 }
 
 Collision::~Collision()
-{
+{		
+	if(this->GetOwner()->GetName() == Bomb::BombTypeName)
+		CollisionManager::GetInstance()->RemoveBombCol(this);	
+	if (this->GetOwner()->GetName() == Wall::WallTypeName)
+		CollisionManager::GetInstance()->RemoveWallCol(this);
 }
 
 void Collision::Update()

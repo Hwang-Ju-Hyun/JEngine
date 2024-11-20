@@ -24,6 +24,7 @@ CollisionManager::CollisionManager()
 
 CollisionManager::~CollisionManager()
 {
+	
 
 }
 
@@ -425,13 +426,14 @@ bool CollisionManager::Update()
 
 	auto all_walls_col_comp = GetWallCollisionVec();
 	auto all_players_col_comp = GetPlayerCollisionVec();
-	auto all_bombs_col_comp = GetBombCollisionVec();
+	auto all_bombs_col_comp = GetBombCollisionVec();	
 	
 	int walls_col_size = all_walls_col_comp.size();
 	int player_col_size = all_players_col_comp.size();
 	int bombs_col_size = all_bombs_col_comp.size();
 
-	//player vs wall 
+
+	//player vs wall
 	for (int i = 0; i < player_col_size; i++)
 	{
 		for (int j = 0; j < walls_col_size; j++)

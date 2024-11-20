@@ -153,6 +153,27 @@
     <Filter Include="Component\Bomb\BombFragment">
       <UniqueIdentifier>{8974bbf5-90c8-4536-80a3-f855e662479b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\Enemy">
+      <UniqueIdentifier>{854e1d2b-2a9a-4313-957f-da66e553a67c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\EnemyStateMgr">
+      <UniqueIdentifier>{03f7df99-100a-4c19-bf2b-cd05fe827b68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\AI">
+      <UniqueIdentifier>{3124f51b-65a7-45e4-926b-298202a1e26d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EnemyState">
+      <UniqueIdentifier>{6933790c-4a6a-4bbd-aac3-ebe8a42d6f15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EnemyState\Idle">
+      <UniqueIdentifier>{a02b4a09-e2c8-4fee-a804-49d32d097b22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EnemyState\Chase">
+      <UniqueIdentifier>{f4c3b616-ccb4-4e12-a171-c81dcd84e155}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EnemyState\Attack">
+      <UniqueIdentifier>{a5c90be7-9d04-477c-8ff7-172504a0a905}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -301,6 +322,21 @@
     </ClCompile>
     <ClCompile Include="BombFragment.cpp">
       <Filter>Component\Bomb\BombFragment</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Component\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyStateManager.cpp">
+      <Filter>Manager\EnemyStateMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseEnemyState.cpp">
+      <Filter>EnemyState</Filter>
+    </ClCompile>
+    <ClCompile Include="AI.cpp">
+      <Filter>Component\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="IdleState.cpp">
+      <Filter>EnemyState\Idle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -459,6 +495,21 @@
     </ClInclude>
     <ClInclude Include="BombFragment.h">
       <Filter>Component\Bomb\BombFragment</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Component\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyStateManager.h">
+      <Filter>Manager\EnemyStateMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseEnemyState.h">
+      <Filter>EnemyState</Filter>
+    </ClInclude>
+    <ClInclude Include="AI.h">
+      <Filter>Component\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="IdleState.h">
+      <Filter>EnemyState\Idle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

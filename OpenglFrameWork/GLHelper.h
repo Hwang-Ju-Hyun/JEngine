@@ -5,6 +5,7 @@
 #include <glm.hpp>
 #include "header.h"
 #include <string>
+#include <vector>
 
 class GameObject;
 
@@ -19,6 +20,7 @@ private:
 	GLFWwindow* m_ptrWindow=nullptr;
 public:	
 	bool Init(GLint _width, GLint _height, const std::string& _title);
+	bool Update();
 	bool Exit();
 public:
 	GLFWwindow* GetWindow()const;
@@ -48,8 +50,39 @@ public:
 	GLboolean GetRightMouseTriggered()const;
 	GLboolean GetRightMouseReleased()const;
 	void ResetLeftMouseTriggered()const;
+public:
+	enum KEY_STATE
+	{
+		NOTHING=0,
+		PUSH=1,
+		REPEAT=2,
+		RELEASED=3
+	};
+	static enum KEY
+	{
+		LEFT_CONTROL=0,
+		LEFT_ALT=1,
+		W=2,
+		A=3,
+		D=4,
+		S=5,
+		UP=5,
+		DOWN=6,
+		LEFT=7,
+		RIGHT=8,
+		NUM0=9,
+		SPACE=10,
+		END=11
+	};
+	std::vector<std::pair<bool, KEY_STATE>> m_vecKeyInfo;
+public:
+	KEY_STATE GetKeyState(KEY _key)const;
 private:
 	//Keyboard Info
+	//std::vector<bool> m_vKeyArrPrev;
+	static std::vector<bool> m_vKeyArr;
+
+	static bool m_bPrevPush;
 	static GLboolean m_bLeftControlKeyPressed;
 	static GLboolean m_bLeftControlKeyReleased;
 	static GLboolean m_bLeftAltKeyPressed;
@@ -66,8 +99,6 @@ private:
 	static GLboolean m_bSpaceKeyPressed;
 	static GLboolean m_bSpaceKeyReleased;
 
-		
-
 	static GLboolean m_bUpArrowKeyPressed;
 	static GLboolean m_bUpArrowKeyReleased;
 	static GLboolean m_bDownArrowKeyPressed;
@@ -80,6 +111,9 @@ private:
 	static GLboolean m_bNum0KeyReleased;
 
 public:
+	void SetPrevPush(bool _key);
+	bool GetPrevPush()const;
+
 	GLboolean GetWKeyPressed()const;
 	GLboolean GetWKeyReleased()const;
 	GLboolean GetAKeyPressed()const;
