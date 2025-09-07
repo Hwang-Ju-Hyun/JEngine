@@ -167,6 +167,8 @@ void Player::Attack()
 
 void Player::Update()
 {  
+    m_pOwner;
+    int a = 0;
     if (m_pOwner->GetID() == 1)
     {
         MoveMent();
