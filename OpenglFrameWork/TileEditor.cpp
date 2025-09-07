@@ -249,7 +249,8 @@ void TileEditor::Update()
     ShowAndSetCurrentTileTexture();
     ShowAndSetCurrentWallFragile();
 
-    auto R_mouse_Trigger = GLHelper::GetInstance()->GetRightMouseTriggered();    
+    bool R_mouse_Trigger = GLHelper::GetInstance()->GetRightMouseTriggered();
+    
     
     glm::vec2 mouse_pos_screen = GLHelper::GetInstance()->GetMouseCursorPosition();        
 

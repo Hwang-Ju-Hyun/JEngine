@@ -1,162 +1,6 @@
 [
   {
     "Name": "Wall",
-    "ID": 3,
-    "Components": [
-      {
-        "Type": "Transform",
-        "CompData": {
-          "Pos": [
-            -957.0,
-            -275.0
-          ],
-          "sca": [
-            66.0,
-            50.0
-          ],
-          "Rot": [
-            0.0,
-            0.0
-          ],
-          "Grid": [
-            0.0,
-            14.0
-          ]
-        }
-      },
-      {
-        "Type": "Sprite",
-        "CompData": {
-          "RED": 1.0,
-          "GREEN": 1.0,
-          "BLUE": 1.0,
-          "ALPHA": 1.0,
-          "TextureName": "nofragile_wall",
-          "TexturePath": "../Extern/Assets/nofragile_wall.png"
-        }
-      },
-      null,
-      {
-        "Type": "Wall",
-        "CompData": {
-          "Grid": [
-            0.0,
-            0.0
-          ],
-          "Exist": false,
-          "Fragile": false
-        }
-      }
-    ],
-    "Shader_Ref": 0,
-    "Model_Type": 1
-  },
-  {
-    "Name": "Wall",
-    "ID": 4,
-    "Components": [
-      {
-        "Type": "Transform",
-        "CompData": {
-          "Pos": [
-            -957.0,
-            -225.0
-          ],
-          "sca": [
-            66.0,
-            50.0
-          ],
-          "Rot": [
-            0.0,
-            0.0
-          ],
-          "Grid": [
-            0.0,
-            13.0
-          ]
-        }
-      },
-      {
-        "Type": "Sprite",
-        "CompData": {
-          "RED": 1.0,
-          "GREEN": 1.0,
-          "BLUE": 1.0,
-          "ALPHA": 1.0,
-          "TextureName": "nofragile_wall",
-          "TexturePath": "../Extern/Assets/nofragile_wall.png"
-        }
-      },
-      null,
-      {
-        "Type": "Wall",
-        "CompData": {
-          "Grid": [
-            0.0,
-            0.0
-          ],
-          "Exist": false,
-          "Fragile": false
-        }
-      }
-    ],
-    "Shader_Ref": 0,
-    "Model_Type": 1
-  },
-  {
-    "Name": "Wall",
-    "ID": 5,
-    "Components": [
-      {
-        "Type": "Transform",
-        "CompData": {
-          "Pos": [
-            -957.0,
-            -175.0
-          ],
-          "sca": [
-            66.0,
-            50.0
-          ],
-          "Rot": [
-            0.0,
-            0.0
-          ],
-          "Grid": [
-            0.0,
-            12.0
-          ]
-        }
-      },
-      {
-        "Type": "Sprite",
-        "CompData": {
-          "RED": 1.0,
-          "GREEN": 1.0,
-          "BLUE": 1.0,
-          "ALPHA": 1.0,
-          "TextureName": "nofragile_wall",
-          "TexturePath": "../Extern/Assets/nofragile_wall.png"
-        }
-      },
-      null,
-      {
-        "Type": "Wall",
-        "CompData": {
-          "Grid": [
-            0.0,
-            0.0
-          ],
-          "Exist": false,
-          "Fragile": false
-        }
-      }
-    ],
-    "Shader_Ref": 0,
-    "Model_Type": 1
-  },
-  {
-    "Name": "Wall",
     "ID": 6,
     "Components": [
       {
@@ -14449,6 +14293,1358 @@
           ],
           "Exist": false,
           "Fragile": true
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 3,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -957.0,
+            -275.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            0.0,
+            14.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0,
+          "TextureName": "nofragile_wall",
+          "TexturePath": "../Extern/Assets/nofragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": false
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 4,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -957.0,
+            -225.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            0.0,
+            13.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0,
+          "TextureName": "nofragile_wall",
+          "TexturePath": "../Extern/Assets/nofragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": false
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 5,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -957.0,
+            -175.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            0.0,
+            12.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0,
+          "TextureName": "nofragile_wall",
+          "TexturePath": "../Extern/Assets/nofragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": false
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 212,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -297.0,
+            75.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            10.0,
+            7.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.0,
+          "GREEN": 1.0,
+          "BLUE": 0.0,
+          "ALPHA": 1.0,
+          "TextureName": "fragile_wall",
+          "TexturePath": "../Extern/Assets/fragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": true
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 213,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -297.0,
+            25.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            10.0,
+            8.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.0,
+          "GREEN": 1.0,
+          "BLUE": 0.0,
+          "ALPHA": 1.0,
+          "TextureName": "fragile_wall",
+          "TexturePath": "../Extern/Assets/fragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": true
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 214,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -363.0,
+            25.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            9.0,
+            8.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.0,
+          "GREEN": 1.0,
+          "BLUE": 0.0,
+          "ALPHA": 1.0,
+          "TextureName": "fragile_wall",
+          "TexturePath": "../Extern/Assets/fragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": true
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 215,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -363.0,
+            75.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            9.0,
+            7.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.0,
+          "GREEN": 1.0,
+          "BLUE": 0.0,
+          "ALPHA": 1.0,
+          "TextureName": "fragile_wall",
+          "TexturePath": "../Extern/Assets/fragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": true
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 216,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -165.0,
+            75.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            12.0,
+            7.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.0,
+          "GREEN": 1.0,
+          "BLUE": 0.0,
+          "ALPHA": 1.0,
+          "TextureName": "fragile_wall",
+          "TexturePath": "../Extern/Assets/fragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": true
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 217,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -165.0,
+            -25.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            12.0,
+            9.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.0,
+          "GREEN": 1.0,
+          "BLUE": 0.0,
+          "ALPHA": 1.0,
+          "TextureName": "fragile_wall",
+          "TexturePath": "../Extern/Assets/fragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": true
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 218,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -99.0,
+            25.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            13.0,
+            8.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.0,
+          "GREEN": 1.0,
+          "BLUE": 0.0,
+          "ALPHA": 1.0,
+          "TextureName": "fragile_wall",
+          "TexturePath": "../Extern/Assets/fragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": true
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 219,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -33.0,
+            25.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            14.0,
+            8.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.0,
+          "GREEN": 1.0,
+          "BLUE": 0.0,
+          "ALPHA": 1.0,
+          "TextureName": "fragile_wall",
+          "TexturePath": "../Extern/Assets/fragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": true
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 220,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -33.0,
+            -25.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            14.0,
+            9.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.0,
+          "GREEN": 1.0,
+          "BLUE": 0.0,
+          "ALPHA": 1.0,
+          "TextureName": "fragile_wall",
+          "TexturePath": "../Extern/Assets/fragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": true
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 221,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -99.0,
+            -25.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            13.0,
+            9.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.0,
+          "GREEN": 1.0,
+          "BLUE": 0.0,
+          "ALPHA": 1.0,
+          "TextureName": "fragile_wall",
+          "TexturePath": "../Extern/Assets/fragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": true
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 222,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -99.0,
+            -75.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            13.0,
+            10.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.0,
+          "GREEN": 1.0,
+          "BLUE": 0.0,
+          "ALPHA": 1.0,
+          "TextureName": "fragile_wall",
+          "TexturePath": "../Extern/Assets/fragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": true
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 223,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -99.0,
+            -125.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            13.0,
+            11.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0.0,
+          "GREEN": 1.0,
+          "BLUE": 0.0,
+          "ALPHA": 1.0,
+          "TextureName": "fragile_wall",
+          "TexturePath": "../Extern/Assets/fragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": true
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 224,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            33.0,
+            -75.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            15.0,
+            10.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0,
+          "TextureName": "nofragile_wall",
+          "TexturePath": "../Extern/Assets/nofragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": false
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 225,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            99.0,
+            -75.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            16.0,
+            10.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0,
+          "TextureName": "nofragile_wall",
+          "TexturePath": "../Extern/Assets/nofragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": false
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 226,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            165.0,
+            -25.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            17.0,
+            9.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0,
+          "TextureName": "nofragile_wall",
+          "TexturePath": "../Extern/Assets/nofragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": false
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 227,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            165.0,
+            25.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            17.0,
+            8.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0,
+          "TextureName": "nofragile_wall",
+          "TexturePath": "../Extern/Assets/nofragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": false
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 228,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            165.0,
+            75.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            17.0,
+            7.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0,
+          "TextureName": "nofragile_wall",
+          "TexturePath": "../Extern/Assets/nofragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": false
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 229,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            99.0,
+            75.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            16.0,
+            7.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0,
+          "TextureName": "nofragile_wall",
+          "TexturePath": "../Extern/Assets/nofragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": false
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 230,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            33.0,
+            125.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            15.0,
+            6.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0,
+          "TextureName": "nofragile_wall",
+          "TexturePath": "../Extern/Assets/nofragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": false
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 231,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            33.0,
+            275.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            15.0,
+            3.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0,
+          "TextureName": "nofragile_wall",
+          "TexturePath": "../Extern/Assets/nofragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": false
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 232,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            33.0,
+            225.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            15.0,
+            4.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0,
+          "TextureName": "nofragile_wall",
+          "TexturePath": "../Extern/Assets/nofragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": false
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 233,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -99.0,
+            125.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            13.0,
+            6.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0,
+          "TextureName": "nofragile_wall",
+          "TexturePath": "../Extern/Assets/nofragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": false
+        }
+      }
+    ],
+    "Shader_Ref": 0,
+    "Model_Type": 1
+  },
+  {
+    "Name": "Wall",
+    "ID": 234,
+    "Components": [
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -99.0,
+            175.0
+          ],
+          "sca": [
+            66.0,
+            50.0
+          ],
+          "Rot": [
+            0.0,
+            0.0
+          ],
+          "Grid": [
+            13.0,
+            5.0
+          ]
+        }
+      },
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 1.0,
+          "GREEN": 1.0,
+          "BLUE": 1.0,
+          "ALPHA": 1.0,
+          "TextureName": "nofragile_wall",
+          "TexturePath": "../Extern/Assets/nofragile_wall.png"
+        }
+      },
+      null,
+      {
+        "Type": "Wall",
+        "CompData": {
+          "Grid": [
+            0.0,
+            0.0
+          ],
+          "Exist": false,
+          "Fragile": false
         }
       }
     ],

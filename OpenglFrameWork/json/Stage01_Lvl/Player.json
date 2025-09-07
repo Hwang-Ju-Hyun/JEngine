@@ -50,6 +50,7 @@
           ]
         }
       },
+      null,
       {
         "Type": "Player",
         "CompData": {
@@ -113,6 +114,7 @@
           ]
         }
       },
+      null,
       {
         "Type": "Player",
         "CompData": {
