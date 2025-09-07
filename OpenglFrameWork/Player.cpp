@@ -79,22 +79,45 @@ void Player::MoveMent()
     auto helper = GLHelper::GetInstance();
     glm::vec2 direction = { 0.f, 0.f };
 
-    if (helper->GetKetCode(GLFW_KEY_W) == GLFW_REPEAT)
+    if (GetOwner()->GetID() == 0)
     {
-        direction.y = 1.f;
+        if (helper->GetKetCode(GLFW_KEY_UP) == GLFW_REPEAT)
+        {
+            direction.y = 1.f;
+        }
+        if (helper->GetKetCode(GLFW_KEY_DOWN) == GLFW_REPEAT)
+        {
+            direction.y = -1.f;
+        }
+        if (helper->GetKetCode(GLFW_KEY_RIGHT) == GLFW_REPEAT)
+        {
+            direction.x = 1.f;
+        }
+        if (helper->GetKetCode(GLFW_KEY_LEFT) == GLFW_REPEAT)
+        {
+            direction.x = -1.f;
+        }
     }
-    if (helper->GetKetCode(GLFW_KEY_S) == GLFW_REPEAT)
+
+    if (GetOwner()->GetID() == 1)
     {
-        direction.y = -1.f;
-    }
-    if (helper->GetKetCode(GLFW_KEY_D) == GLFW_REPEAT)
-    {
-        direction.x = 1.f;
-    }
-    if (helper->GetKetCode(GLFW_KEY_A) == GLFW_REPEAT)
-    {
-        direction.x = -1.f;
-    }
+        if (helper->GetKetCode(GLFW_KEY_W) == GLFW_REPEAT)
+        {
+            direction.y = 1.f;
+        }
+        if (helper->GetKetCode(GLFW_KEY_S) == GLFW_REPEAT)
+        {
+            direction.y = -1.f;
+        }
+        if (helper->GetKetCode(GLFW_KEY_D) == GLFW_REPEAT)
+        {
+            direction.x = 1.f;
+        }
+        if (helper->GetKetCode(GLFW_KEY_A) == GLFW_REPEAT)
+        {
+            direction.x = -1.f;
+        }
+    }    
 
 
     /*if (helper->GetWKeyPressed())
@@ -140,7 +163,7 @@ void Player::MoveMent()
 void Player::Attack()
 {
     auto Helper = GLHelper::GetInstance();        
-    if (Helper->GetKetCode(GLFW_KEY_SPACE) == GLFW_PRESS)
+    if ((Helper->GetKetCode(GLFW_KEY_SPACE) == GLFW_PRESS&&GetOwner()->GetID()==1)|| Helper->GetKetCode(GLFW_KEY_0) == GLFW_PRESS && GetOwner()->GetID() == 0)
     {
         Bomb* bomb_comp = Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());
 
@@ -166,14 +189,9 @@ void Player::Attack()
 }
 
 void Player::Update()
-{  
-    m_pOwner;
-    int a = 0;
-    if (m_pOwner->GetID() == 1)
-    {
-        MoveMent();
-        Attack();
-    }        
+{      
+    MoveMent();
+    Attack();
 }
 
 void Player::EventCollision(Collision* _pOther)
