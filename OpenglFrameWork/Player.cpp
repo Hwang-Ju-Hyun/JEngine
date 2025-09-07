@@ -79,7 +79,25 @@ void Player::MoveMent()
     auto helper = GLHelper::GetInstance();
     glm::vec2 direction = { 0.f, 0.f };
 
-    if (helper->GetWKeyPressed())
+    if (helper->GetKetCode(GLFW_KEY_W) == GLFW_REPEAT)
+    {
+        direction.y = 1.f;
+    }
+    if (helper->GetKetCode(GLFW_KEY_S) == GLFW_REPEAT)
+    {
+        direction.y = -1.f;
+    }
+    if (helper->GetKetCode(GLFW_KEY_D) == GLFW_REPEAT)
+    {
+        direction.x = 1.f;
+    }
+    if (helper->GetKetCode(GLFW_KEY_A) == GLFW_REPEAT)
+    {
+        direction.x = -1.f;
+    }
+
+
+    /*if (helper->GetWKeyPressed())
     {
         direction.y = 1.f;
     }
@@ -94,7 +112,7 @@ void Player::MoveMent()
     if (helper->GetAKeyPressed())
     {
         direction.x = -1.f;
-    }
+    }*/
 
     RigidBody* player_rig = (RigidBody*)m_pOwner->FindComponent(RigidBody::RigidBodyTypeName);
     if (player_rig)
@@ -121,8 +139,8 @@ void Player::MoveMent()
 
 void Player::Attack()
 {
-    auto Helper = GLHelper::GetInstance();    
-    if (Helper->GetKeyState(Helper->KEY::SPACE) == Helper->KEY_STATE::PUSH)
+    auto Helper = GLHelper::GetInstance();        
+    if (Helper->GetKetCode(GLFW_KEY_SPACE) == GLFW_PRESS)
     {
         Bomb* bomb_comp = Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());
 

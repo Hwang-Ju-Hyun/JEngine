@@ -6,7 +6,7 @@
 #include "header.h"
 #include <string>
 #include <vector>
-
+#include <unordered_map>
 class GameObject;
 
 class GLHelper
@@ -53,11 +53,19 @@ public:
 public:
 	enum KEY_STATE
 	{
-		NOTHING=0,
-		PUSH=1,
-		REPEAT=2,
-		RELEASED=3
+		NOTHING = 0,
+		PUSH = 1,
+		REPEAT = 2,
+		RELEASED = 3
 	};
+
+	struct KeyInfo
+	{
+		bool bHeld = false;      // 현재 눌려 있는 상태 (콜백에서 설정됨)
+		bool bPrevHeld = false;  // 이전 프레임 눌림 여부
+		KEY_STATE eState = KEY_STATE::NOTHING; // 최종 Key 상태 (Update()에서 계산됨)
+	};	
+	
 	static enum KEY
 	{
 		LEFT_CONTROL=0,
@@ -74,6 +82,9 @@ public:
 		SPACE=10,
 		END=11
 	};
+
+	static std::unordered_map<int, KeyInfo> m_mKeyState;
+
 	std::vector<std::pair<bool, KEY_STATE>> m_vecKeyInfo;
 public:
 	KEY_STATE GetKeyState(KEY _key)const;
@@ -141,6 +152,7 @@ public:
 	GLboolean GetSpaceKeyPressed()const;
 	GLboolean GetSpaceKeyReleased()const;
 public:
+	inline KEY_STATE GetKetCode(int _key) { return m_mKeyState[_key].eState; }
 	glm::mat3 GetScreenToWorldMatFromMouse();
 	glm::mat3 GetScreenToWorldMat(glm::vec2 _pos);	
 public:

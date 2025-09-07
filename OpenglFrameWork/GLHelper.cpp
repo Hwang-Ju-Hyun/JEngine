@@ -6,9 +6,58 @@
 #include "GameObject.h"
 #include "Transform.h"
 
+
+
 #define _MOUSE_CURSOR
 #define _KEY
 //#define _KEY_PRESSED
+std::unordered_map<int, GLHelper::KeyInfo> GLHelper::m_mKeyState = {};
+
+static int g_aKey[42] =
+{
+    GLFW_KEY_ESCAPE,
+    GLFW_KEY_ENTER,
+    GLFW_KEY_LEFT_ALT,
+    GLFW_KEY_LEFT_CONTROL,
+    GLFW_KEY_LEFT_SHIFT,
+    GLFW_KEY_SPACE,
+    GLFW_KEY_0,
+    GLFW_KEY_1,
+    GLFW_KEY_2,
+    GLFW_KEY_3,
+    GLFW_KEY_4,
+    GLFW_KEY_5,
+    GLFW_KEY_Q,
+    GLFW_KEY_W,
+    GLFW_KEY_E,
+    GLFW_KEY_R,
+    GLFW_KEY_T,
+    GLFW_KEY_A,
+    GLFW_KEY_S,
+    GLFW_KEY_D,
+    GLFW_KEY_F,
+    GLFW_KEY_G,
+    GLFW_KEY_Z,
+    GLFW_KEY_X,
+    GLFW_KEY_C,
+    GLFW_KEY_V,
+    GLFW_KEY_Y,
+    GLFW_KEY_U,
+    GLFW_KEY_I,
+    GLFW_KEY_O,
+    GLFW_KEY_P,
+    GLFW_KEY_H,
+    GLFW_KEY_J,
+    GLFW_KEY_K,
+    GLFW_KEY_L,
+    GLFW_KEY_B,
+    GLFW_KEY_N,
+    GLFW_KEY_M,
+    GLFW_KEY_UP,
+    GLFW_KEY_DOWN,
+    GLFW_KEY_LEFT,
+    GLFW_KEY_RIGHT,
+};
 
 glm::vec2 GLHelper::m_vMouseCursorPosition = { 0.f,0.f };
 GLboolean GLHelper::m_bLeftMouseTriggered       = false;
@@ -84,136 +133,13 @@ bool GLHelper::m_bPrevPush = false;
 void GLHelper::KeyCallBack(GLFWwindow* _window, int _key, int _scancod, int _action, int _mod)
 {                
     //This code looks like yandere simulator?!
-    if (_action == GLFW_PRESS)
-    {     
-        switch (_key)
-        {
-        case GLFW_KEY_UP:
-            m_bUpArrowKeyPressed = true;
-            m_vKeyArr[(int)KEY::UP] = true;
-            break;
-        case GLFW_KEY_DOWN:
-            m_bDownArrowKeyPressed = true;
-            m_vKeyArr[(int)KEY::DOWN] = true;
-            break;
-        case GLFW_KEY_LEFT:
-            m_bLeftArrowKeyPressed = true;
-            m_vKeyArr[(int)KEY::LEFT] = true;
-            break;
-        case GLFW_KEY_RIGHT:
-            m_bRightArrowKeyPressed = true;
-            m_vKeyArr[(int)KEY::RIGHT] = true;
-            break;
-        case GLFW_KEY_SPACE:
-            m_bSpaceKeyPressed = true;
-            m_vKeyArr[(int)KEY::SPACE] = true;
-            break;
-        case GLFW_KEY_LEFT_CONTROL:
-            m_bLeftControlKeyPressed = true;
-            m_vKeyArr[(int)KEY::LEFT_CONTROL] = true;
-            break;
-        case GLFW_KEY_LEFT_ALT:
-            m_bLeftAltKeyPressed = true;
-            m_vKeyArr[(int)KEY::LEFT_ALT] = true;
-            break;
-        case GLFW_KEY_W:
-            m_bWKeyPressed = true;
-            m_vKeyArr[(int)KEY::W] = true;
-            break;
-        case GLFW_KEY_A:
-            m_bAKeyPressed = true;
-            m_vKeyArr[(int)KEY::A] = true;
-            break;
-        case GLFW_KEY_D:
-            m_bDKeyPressed = true;
-            m_vKeyArr[(int)KEY::D] = true;
-            break;
-        case GLFW_KEY_S:
-            m_bSKeyPressed = true;
-            m_vKeyArr[(int)KEY::S] = true;
-            break;
-        case GLFW_KEY_KP_0:
-            m_bNum0KeyPressed = true;
-            m_vKeyArr[(int)KEY::NUM0] = true;
-            break;
-        default:
-            break;
-        }
-    }    
-    else if(_action==GLFW_RELEASE)
+    if (_action == GLFW_PRESS || _action == GLFW_REPEAT)
     {
-        if (m_bUpArrowKeyPressed)
-        {
-            m_bUpArrowKeyPressed = false;
-            m_bUpArrowKeyReleased = true;
-            m_vKeyArr[(int)KEY::UP] = false;
-        }            
-        if (m_bDownArrowKeyPressed)
-        {
-            m_bDownArrowKeyPressed = false;
-            m_bDownArrowKeyReleased = true;
-            m_vKeyArr[(int)KEY::DOWN] = false;
-        }            
-        if (m_bLeftArrowKeyPressed)
-        {
-            m_bLeftArrowKeyPressed = false;
-            m_bLeftArrowKeyReleased = true;
-            m_vKeyArr[(int)KEY::LEFT] = false;
-        }
-        if (m_bRightArrowKeyPressed)
-        {
-            m_bRightArrowKeyPressed = false;
-            m_bRightArrowKeyReleased = true;
-            m_vKeyArr[(int)KEY::RIGHT] = false;
-        }
-        if (m_bSpaceKeyPressed)
-        {
-            m_bSpaceKeyPressed = false;
-            m_bSpaceKeyReleased = true;
-            m_vKeyArr[(int)KEY::SPACE] = false;
-        }            
-        if (m_bLeftControlKeyPressed)
-        {
-            m_bLeftControlKeyPressed = false;
-            m_bLeftControlKeyReleased = true;
-            m_vKeyArr[(int)KEY::LEFT_CONTROL] = false;
-        }
-        if (m_bLeftAltKeyPressed)
-        {
-            m_bLeftAltKeyPressed = false;
-            m_bLeftAltKeyReleased = true;
-            m_vKeyArr[(int)KEY::LEFT_ALT] = false;
-        }
-        if (m_bWKeyPressed)
-        {
-            m_bWKeyPressed = false;
-            m_bWKeyReleased = true;
-            m_vKeyArr[(int)KEY::W] = false;
-        }
-        if (m_bAKeyPressed)
-        {
-            m_bAKeyPressed = false;
-            m_bAKeyReleased = true;
-            m_vKeyArr[(int)KEY::A] = false;
-        }
-        if (m_bDKeyPressed)
-        {
-            m_bDKeyPressed = false;
-            m_bDKeyReleased = true;
-            m_vKeyArr[(int)KEY::D] = false;
-        }
-        if (m_bSKeyPressed)
-        {
-            m_bSKeyPressed = false;
-            m_bSKeyReleased = true;
-            m_vKeyArr[(int)KEY::S] = false;
-        }
-        if (m_bNum0KeyPressed)
-        {
-            m_bNum0KeyPressed = false;
-            m_bNum0KeyReleased = true;
-            m_vKeyArr[(int)KEY::NUM0] = false;
-        }
+        m_mKeyState[_key].bHeld = true;
+    }
+    else if (_action == GLFW_RELEASE)
+    {
+        m_mKeyState[_key].bHeld = false;
     }
 }
 
@@ -680,38 +606,37 @@ bool GLHelper::Init(GLint _width, GLint _height, const std::string& _title)
         m_vKeyArr.push_back(false);
     }
 
+    for (int i = 0; i < 42; i++)
+    {
+        GLHelper::m_mKeyState[g_aKey[i]] = {};
+    }
+
     return true;
 }
 
 bool GLHelper::Update()
 {
-    for (int i = 0; i < KEY::END; i++)
+    for (auto iter = m_mKeyState.begin(); iter != m_mKeyState.end(); iter++)
     {
-        if (m_vKeyArr[i])//눌렸어
+        int key = iter->first;
+        KeyInfo& info = iter->second;
+
+        info.eState = NOTHING;
+
+        if (!info.bPrevHeld && info.bHeld)
         {
-            if (m_vecKeyInfo[i].first) //<-근데 이전 프레임에 눌렸다면
-            {
-                m_vecKeyInfo[i].second = KEY_STATE::REPEAT;                
-            }
-            else if (!m_vecKeyInfo[i].first)//<-이전 프레임에 안눌렸으면
-            {
-                m_vecKeyInfo[i].second = KEY_STATE::PUSH;                
-            }
-            m_vecKeyInfo[i].first = true;
+            info.eState = PUSH;
         }
-        else //안눌렸어
+        else if (info.bPrevHeld && info.bHeld)
         {
-            if (m_vecKeyInfo[i].first)//근데 이전 프레임에는 눌렸어?
-            {
-                m_vecKeyInfo[i].second = KEY_STATE::RELEASED;
-            }
-            else //이전 프레임에도 안눌려썽?
-            {
-                m_vecKeyInfo[i].second = KEY_STATE::NOTHING;
-            }
-            m_vecKeyInfo[i].first = false;
+            info.eState=REPEAT;
         }
-        
+        else if (info.bPrevHeld && !info.bHeld)
+        {
+            info.eState = RELEASED;
+        }
+
+        info.bPrevHeld = info.bHeld;
     }
     return true;
 }
