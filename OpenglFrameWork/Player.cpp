@@ -163,7 +163,7 @@ void Player::MoveMent()
 void Player::Attack()
 {
     auto Helper = GLHelper::GetInstance();        
-    if ((Helper->GetKetCode(GLFW_KEY_SPACE) == GLFW_PRESS&&GetOwner()->GetID()==1)|| Helper->GetKetCode(GLFW_KEY_0) == GLFW_PRESS && GetOwner()->GetID() == 0)
+    if ((Helper->GetKetCode(GLFW_KEY_SPACE) == GLFW_PRESS&&GetOwner()->GetID()==1)|| Helper->GetKetCode(GLFW_KEY_KP_0) == GLFW_PRESS && GetOwner()->GetID() == 0)
     {
         Bomb* bomb_comp = Prefabs::GetInstance()->CreateBombs("json/Bomb/Bomb.json", this->GetOwner());
 
